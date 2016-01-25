@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="index.css"/>
+    <link rel="stylesheet" href="fontello.css"/>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <td><b>Enable Reloader for this tab:</b></td>
+        <td class="icon-toggle-off" align="right" data-type='enable'>Disabled</td>
+      </tr>
+    </table>
+    <p class="fancy"><span><b>Adjust Reloading Time</b></span></p>
+    <table>
+      <tr align="middle">
+        <td><input data-type='dd' type="number" min="0" max="10"></td>
+        <td><input data-type='hh' type="number" min="0" max="23"></td>
+        <td><input data-type='mm' type="number" min="0" max="59"></td>
+        <td><input data-type='ss' type="number" min="0" max="59"></td>
+      </tr>
+      <tr align="middle" mode="info">
+        <td>Days</td>
+        <td>Hours</td>
+        <td>Minutes</td>
+        <td>Seconds</td>
+      </tr>
+    </table>
+    <p class="fancy"><span><b>Status</b></span></p>
+    <div>
+      <b>[Current Tab]</b>: <span data-type='msg'></span>
+      <br>
+      <b>[All Jobs]</b>: Currently, Tab Reloader is active on <b data-type='jobs'>0</b> tabs
+    </div>
+    <p class="fancy"><span><b>Notes</b></span></p>
+    <div class="note">
+      1. To adjust a new count down, first disable the timer (if it is enabled)
+      <br>
+      2. Minimum acceptable period for count down is 10 seconds.
+    </div>
+  </body>
+    <script src="chrome/chrome.js"></script>
+    <script src="index.js"></script>
+</html>

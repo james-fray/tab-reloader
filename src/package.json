@@ -1,0 +1,16 @@
+{
+  "fullName": "Tab Reloader",
+  "name": "itreloader",
+  "description": "An easy-to-use tab reloader",
+  "id": "jid0-bnmfwWw2w2w4e4edvcdDbnMhdVg@jetpack",
+  "license": "Mozilla Public License, version 2.0",
+  "version": "0.1.1",
+  "author": "James Fray",
+  "main": "./lib/common.js",
+  "url": "http://add0n.com/tab-reloader.html",
+  "icon": "data/icons/32.png",
+  "icon64": "data/icons/64.png",
+  "permissions": {
+    "private-browsing": true
+  }
+}
