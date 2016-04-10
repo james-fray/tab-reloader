@@ -126,9 +126,23 @@ app.tab = {
   reload: function (tab) {
     chrome.tabs.reload(tab.id);
   },
+  array: function () {
+    var d = app.Promise.defer();
+    chrome.tabs.query({}, function (tabs) {
+      d.resolve(tabs);
+    });
+    return d.promise;
+  },
   onActivate: function (c) {
     chrome.tabs.onActivated.addListener(function (obj) {
       c({id: obj.tabId});
+    });
+    chrome.windows.onFocusChanged.addListener(function () {
+      app.tab.active().then(function (tab) {
+        if (tab) {
+          c({id: tab.id});
+        }
+      });
     });
   },
   onRefresh: function (c) {

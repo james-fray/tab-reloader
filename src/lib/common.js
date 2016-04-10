@@ -93,17 +93,24 @@ app.popup.receive('update', function () {
     app.popup.send('update', storage[tab.id]);
   });
 });
-app.popup.receive('enable', function (obj) {
+
+function session (obj) {
+  config.session.store(obj);
+}
+
+function enable (obj, _tab) {
   console.error(obj);
-  app.tab.active().then(function (tab) {
+  (_tab ? app.Promise.resolve(_tab) : app.tab.active()).then(function (tab) {
     var id = tab.id;
-    if (storage[id].id) {
+    if (storage[id] && storage[id].id) {
       app.timer.clearInterval(storage[id].id);
       storage[id].id = null;
     }
     storage[id] = storage[id] || {};
     storage[id].status = !storage[id].status;
-    app.button.mode = storage[id].status;
+    if (!_tab) {
+      app.button.mode = storage[id].status;
+    }
     storage[id].dd = obj.dd;
     storage[id].hh = obj.hh;
     storage[id].mm = obj.mm;
@@ -126,8 +133,51 @@ app.popup.receive('enable', function (obj) {
     }
     storage[id].jobs = count();
     app.popup.send('update', storage[id]);
+    if (!_tab) {
+      session({
+        url: tab.url,
+        status: storage[id].status,
+        period: {
+          dd: obj.dd,
+          hh: obj.hh,
+          mm: obj.mm,
+          ss: obj.ss
+        }
+      });
+    }
   });
-});
+}
+app.popup.receive('enable', enable);
+
+function restore () {
+  let entries = config.session.restore();
+  app.tab.array().then(function (tabs) {
+    tabs.forEach(function (tab) {
+      let entry = entries.filter(e => e.url === tab.url);
+      console.error(tab.url, entry)
+      if (entry.length) {
+        entry = entry[0];
+        if (entry.status) {
+          enable({
+            dd: entry.period.dd,
+            hh: entry.period.hh,
+            mm: entry.period.mm,
+            ss: entry.period.ss
+          }, tab);
+        }
+        else {
+          storage[tab.id] = {
+            dd: entry.period.dd,
+            hh: entry.period.hh,
+            mm: entry.period.mm,
+            ss: entry.period.ss
+          };
+        }
+      }
+    });
+  });
+}
+app.timer.setTimeout(restore, 1000);
 
 app.tab.onActivate(function (tab) {
   app.button.mode = (storage[tab.id] || {}).status;

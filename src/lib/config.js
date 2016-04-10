@@ -14,6 +14,22 @@ config.options = {
 
 };
 
+config.session = {
+  store: function (obj) {
+    let session = app.storage.read('session') || '[]';
+    session = JSON.parse(session);
+    session = session.filter(o => o.url !== obj.url);
+    session.push(obj);
+    // do not save more than 20 entries
+    session = session.slice(-20);
+    app.storage.write('session', JSON.stringify(session));
+  },
+  restore: function () {
+    let session = app.storage.read('session') || '[]';
+    return JSON.parse(session);
+  }
+};
+
 config.welcome = {
   get version () {
     return app.storage.read('version');
