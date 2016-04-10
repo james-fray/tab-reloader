@@ -94,6 +94,7 @@ app.popup.receive('update', function () {
   });
 });
 app.popup.receive('enable', function (obj) {
+  console.error(obj);
   app.tab.active().then(function (tab) {
     var id = tab.id;
     if (storage[id].id) {
