@@ -79,8 +79,10 @@ app.popup.receive('update', function () {
       var period = toSecond(storage[id]);
       var diff = period - ((new Date()).getTime() - time);
       dd = Math.floor(diff / (1000 * 60 * 60) / 24);
-      hh = Math.floor(diff / (1000 * 60 * 60) / 1) % 24;
-      mm = Math.floor((diff / (60 * 1000)) % 60 % 24);
+      diff = diff - dd * 24 * 60 * 60 * 1000;
+      hh = Math.floor(diff / (1000 * 60 * 60));
+      diff = diff - hh * 60 * 60 * 1000;
+      mm = Math.floor(diff / (60 * 1000));
       ss = Math.floor(diff % (60 * 1000) / 1000);
       storage[id].msg = 'Time left to refresh: ' + twoDigit(dd) + ':' + twoDigit(hh) + ':' + twoDigit(mm) + ':' + twoDigit(ss);
     }
