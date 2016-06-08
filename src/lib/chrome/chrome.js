@@ -5,7 +5,7 @@ var app = new EventEmitter();
 app.once('load', function () {
   var script = document.createElement('script');
   document.body.appendChild(script);
-  script.src = '../common.js';
+  script.src = './lib/common.js';
 });
 
 if (!Promise.defer) {
@@ -19,7 +19,11 @@ if (!Promise.defer) {
     return deferred;
   };
 }
-app.Promise = {Promise};
+app.Promise = Promise;
+
+Object.values = Object.values || function (obj) {
+  return Object.keys(obj).map(n => obj[n]);
+};
 
 app.EventEmitter = EventEmitter;
 

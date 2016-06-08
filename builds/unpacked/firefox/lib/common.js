@@ -10,14 +10,12 @@ var twoDigit  = num => ('00' + num).substr(-2);
 var session  = obj => config.session.store(obj);
 
 function count () {
-  console.error('count is called');
   let num = Object.values(storage).reduce((p, c) => p + (c.status ? 1 : 0), 0);
   app.button.badge = num ? num : '';
   return num;
 }
 
 app.popup.receive('update', function () {
-  console.error('updating');
   app.tab.active().then(function (tab) {
     if (!tab) {
       return;
@@ -41,11 +39,10 @@ app.popup.receive('update', function () {
     }
     storage[id].jobs = count();
     app.popup.send('update', storage[tab.id]);
-  }).catch (e => console.error(e));
+  });
 });
 
 function enable (obj, _tab) {
-  console.error('enable is called');
   app.Promise.resolve(_tab || app.tab.active()).then(function (tab) {
     let id = tab.id;
     storage[id] = storage[id] || {};
@@ -63,7 +60,6 @@ function enable (obj, _tab) {
     if (storage[id].status) {
       storage[id].period = toSecond(obj);
       storage[id].callback = function () {
-        console.error('callback is called');
         storage[id].time = (new Date()).getTime();
         if (tab && tab.id) {
           app.tab.reload(tab);
@@ -94,7 +90,6 @@ function enable (obj, _tab) {
 app.popup.receive('enable', enable);
 
 function restore () {
-  console.error('restore is called');
   let entries = config.session.restore();
   app.tab.array().then(tabs => tabs.forEach(function (tab) {
     let entry = entries.filter(e => e.url === tab.url);
@@ -115,7 +110,7 @@ function restore () {
   }))
   // update status of the current tab
   .then(app.tab.active)
-  .then(tab => app.button.mode = (tab ? storage[tab.id] : {}).status);
+  .then(tab => app.button.mode = (tab ? storage[tab.id] || {} : {}).status);
 }
 app.timer.setTimeout(restore, 1000);
 

@@ -1,0 +1,2 @@
+var app = {};
+var config = {};

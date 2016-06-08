@@ -52,7 +52,6 @@ exports.button = (function () {
       button.label = val;
     },
     set mode (val) { // jshint ignore:line
-      console.error('mode', val);
       let path = './icons/' + (val ? '' : 'disabled/');
       button.icon = {
         '16': path + '16.png',
