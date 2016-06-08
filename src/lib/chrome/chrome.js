@@ -1,10 +1,6 @@
-/* globals webkitNotifications*/
 'use strict';
 
 var app = new EventEmitter();
-app.globals = {
-  browser: navigator.userAgent.indexOf('OPR') === -1 ? 'chrome' : 'opera'
-};
 
 app.once('load', function () {
   var script = document.createElement('script');
@@ -23,23 +19,21 @@ if (!Promise.defer) {
     return deferred;
   };
 }
-app.Promise = Promise;
+app.Promise = {Promise};
 
 app.EventEmitter = EventEmitter;
 
 app.storage = (function () {
-  var objs = {};
+  let objs = {};
   chrome.storage.local.get(null, function (o) {
     objs = o;
     app.emit('load');
   });
   return {
-    read: function (id) {
-      return (objs[id] || !isNaN(objs[id])) ? objs[id] + '' : objs[id];
-    },
+    read: id => objs[id],
     write: function (id, data) {
       objs[id] = data;
-      var tmp = {};
+      let tmp = {};
       tmp[id] = data;
       chrome.storage.local.set(tmp, function () {});
     }
@@ -47,7 +41,7 @@ app.storage = (function () {
 })();
 
 app.button = (function () {
-  var onCommand;
+  let onCommand;
   chrome.browserAction.onClicked.addListener(function () {
     if (onCommand) {
       onCommand();
@@ -57,7 +51,7 @@ app.button = (function () {
     onCommand: function (c) {
       onCommand = c;
     },
-    set mode (val) {
+    set mode (val) {  //jshint ignore:line
       var path = './icons/' + (val ? '' : 'disabled/');
       chrome.browserAction.setIcon({
         path: {
@@ -80,16 +74,12 @@ app.button = (function () {
 })();
 
 app.popup = {
-  send: function (id, data) {
-    chrome.extension.sendRequest({method: id, data: data});
-  },
-  receive: function (id, callback) {
-    chrome.extension.onRequest.addListener(function (request, sender) {
-      if (request.method === id && !sender.tab) {
-        callback(request.data);
-      }
-    });
-  }
+  send: (id, data) => chrome.extension.sendRequest({method: id, data: data}),
+  receive: (id, callback) => chrome.extension.onRequest.addListener(function (request, sender) {
+    if (request.method === id && !sender.tab) {
+      callback(request.data);
+    }
+  })
 };
 
 app.tab = {
@@ -105,7 +95,7 @@ app.tab = {
     }
   },
   list: function () {
-    var d = app.Promise.defer();
+    let d = app.Promise.defer();
     chrome.tabs.query({
       currentWindow: false
     }, function (tabs) {
@@ -114,7 +104,7 @@ app.tab = {
     return d.promise;
   },
   active: function () {
-    var d = app.Promise.defer();
+    let d = app.Promise.defer();
     chrome.tabs.query({
       active: true,
       currentWindow: true
@@ -123,11 +113,9 @@ app.tab = {
     });
     return d.promise;
   },
-  reload: function (tab) {
-    chrome.tabs.reload(tab.id);
-  },
+  reload: (tab) => chrome.tabs.reload(tab.id),
   array: function () {
-    var d = app.Promise.defer();
+    let d = app.Promise.defer();
     chrome.tabs.query({}, function (tabs) {
       d.resolve(tabs);
     });
@@ -145,18 +133,12 @@ app.tab = {
       });
     });
   },
-  onRefresh: function (c) {
-    chrome.tabs.onUpdated.addListener(function (id, changeInfo) {
-      if (changeInfo.status === 'loading') {
-        c({id: id});
-      }
-    });
-  },
-  onClose: function (c) {
-    chrome.tabs.onRemoved.addListener(function (id) {
-      c({id: id});
-    });
-  }
+  onRefresh: (c) => chrome.tabs.onUpdated.addListener(function (id, changeInfo) {
+    if (changeInfo.status === 'loading') {
+      c({id});
+    }
+  }),
+  onClose: (c) => chrome.tabs.onRemoved.addListener((id) => c({id}))
 };
 
 app.version = function () {
@@ -165,25 +147,25 @@ app.version = function () {
 
 app.timer = window;
 
-app.options = {
-  send: function (id, data) {
-    chrome.tabs.query({}, function (tabs) {
-      tabs.forEach(function (tab) {
-        if (tab.url.indexOf(chrome.extension.getURL('data/options/index.html') === 0)) {
-          chrome.tabs.sendMessage(tab.id, {method: id, data: data}, function () {});
-        }
-      });
-    });
-  },
-  receive: function (id, callback) {
-    chrome.runtime.onMessage.addListener(function (message, sender) {
-      if (
-        message.method === id &&
-        sender.tab &&
-        sender.tab.url.indexOf(chrome.extension.getURL('data/options/index.html') === 0)
-      ) {
-        callback.call(sender.tab, message.data);
+app.startup = (function () {
+  let loadReason, callback;
+  function check () {
+    if (loadReason === 'startup' || loadReason === 'install') {
+      if (callback) {
+        callback();
       }
-    });
+    }
   }
-};
+  chrome.runtime.onInstalled.addListener(function (details) {
+    loadReason = details.reason;
+    check();
+  });
+  chrome.runtime.onStartup.addListener(function () {
+    loadReason = 'startup';
+    check();
+  });
+  return function (c) {
+    callback = c;
+    check();
+  };
+})();

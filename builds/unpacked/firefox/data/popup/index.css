@@ -49,13 +49,14 @@ tr[mode=info] {
   width: 100%;
 }
 .fancy b {
+  color: #444;
   position: relative;
   background-color: #fff;
   z-index: 2;
   padding: 0 5px;
 }
 .fancy:before {
-  border-top: solid 1px #444;
+  border-top: dotted 1px #444;
   content: ' ';
   width: 100%;
   display: block;
