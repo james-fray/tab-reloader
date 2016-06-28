@@ -29,11 +29,8 @@ exports.button = (function () {
     id: self.name,
     label: 'Tab Reloader',
     icon: {
-      '16': './icons/disabled/16.png',
       '18': './icons/disabled/18.png',
-      '32': './icons/disabled/32.png',
-      '36': './icons/disabled/36.png',
-      '64': './icons/disabled/64.png'
+      '36': './icons/disabled/36.png'
     },
     onChange: function(state) {
       if (state.checked) {

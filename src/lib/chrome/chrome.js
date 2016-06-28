@@ -1,6 +1,7 @@
 'use strict';
 
 var app = new EventEmitter();
+var config = {};
 
 app.once('load', function () {
   var script = document.createElement('script');

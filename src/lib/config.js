@@ -1,11 +1,10 @@
 'use strict';
 
 var app = app || require('./firefox/firefox');
-var config = typeof exports !== 'undefined' ? exports : {};
+var config = config || exports;
 
 config.session = {
   store: function (obj) {
-    console.error('config.session.store');
     let session = app.storage.read('session') || '[]';
     session = JSON.parse(session);
     session = session.filter(o => o.url !== obj.url);
