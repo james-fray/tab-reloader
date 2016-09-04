@@ -25,6 +25,25 @@ function count () {
   return num;
 }
 
+function  repeat (obj) {
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+
+  let period = obj.period;
+  if (obj.variation) {
+    period = getRandomInt(period * (100 - obj.variation) / 100, period * (100 + obj.variation) / 100);
+    period = Math.max(period, 7000);
+  }
+  obj.vperiod = period;
+  obj.id  = app.timer.setTimeout(() => {
+    obj.callback();
+    repeat(obj);
+  }, period);
+}
+
 app.popup.receive('update', function () {
   app.tab.active().then(function (tab) {
     if (!tab) {
@@ -34,7 +53,7 @@ app.popup.receive('update', function () {
     storage[id] = storage[id] || {};
     let time = storage[id].time, dd, hh, mm, ss;
     if (time && storage[id].status) {
-      let period = toSecond(storage[id]);
+      let period = storage[id].vperiod || toSecond(storage[id]);
       let diff = period - ((new Date()).getTime() - time);
       dd = Math.floor(diff / (1000 * 60 * 60) / 24);
       diff = diff - dd * 24 * 60 * 60 * 1000;
@@ -56,9 +75,10 @@ function enable (obj, _tab) {
   app.Promise.resolve(_tab || app.tab.active()).then(function (tab) {
     let id = tab.id;
     storage[id] = storage[id] || {};
-    storage[id].id = app.timer.clearInterval(storage[id].id);
+    storage[id].id = app.timer.clearTimeout(storage[id].id);
     storage[id].status = !storage[id].status;
     storage[id].current = obj.current;
+    storage[id].variation = obj.variation;
     if (!_tab) {
       app.button.mode = storage[id].status;
     }
@@ -85,11 +105,11 @@ function enable (obj, _tab) {
           }
         }
         else {
-          app.timer.clearInterval(storage[id].id);
+          app.timer.clearTimeout(storage[id].id);
           delete storage[id];
         }
       };
-      storage[id].id = app.timer.setInterval(storage[id].callback, storage[id].period);
+      repeat(storage[id]);
     }
     storage[id].jobs = count();
     app.popup.send('update', storage[id]);
@@ -98,6 +118,7 @@ function enable (obj, _tab) {
         url: tab.url,
         status: storage[id].status,
         current: obj.current,
+        variation: obj.variation,
         period: {
           dd: obj.dd,
           hh: obj.hh,
@@ -119,7 +140,8 @@ function restore () {
         entry = entry[0];
         if (entry.status) {
           enable(Object.assign(entry.period, {
-            current: entry.current || false
+            current: entry.current || false,
+            variation: entry.variation || 0
           }), tab);
         }
         else {
@@ -128,7 +150,8 @@ function restore () {
             hh: entry.period.hh,
             mm: entry.period.mm,
             ss: entry.period.ss,
-            current: entry.current || false
+            current: entry.current || false,
+            variation: entry.variation || 0
           };
         }
       }
@@ -149,14 +172,14 @@ app.tab.onRefresh(function (tab) {
   let now = (new Date()).getTime();
   let diff = now - storage[id].time;
   if (diff > 10 * 1000) {
-    app.timer.clearInterval(storage[id].id);
+    app.timer.clearTimeout(storage[id].id);
     storage[id].time = now;
-    storage[id].id = app.timer.setInterval(storage[id].callback, storage[id].period);
+    repeat(storage[id]);
   }
 });
 app.tab.onClose(function (tab) {
   if (storage[tab.id] && storage[tab.id].id) {
-    app.timer.clearInterval(storage[tab.id].id);
+    app.timer.clearTimeout(storage[tab.id].id);
     delete storage[tab.id];
     count();
   }

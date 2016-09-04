@@ -35,7 +35,7 @@ exports.button = (function () {
     onChange: function(state) {
       if (state.checked) {
         exports.popup._obj.show({
-          width: 412,
+          width: 462,
           height: 280,
           position: button
         });

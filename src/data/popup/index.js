@@ -42,6 +42,12 @@ var dom = {
   set ss (val) {
     document.querySelector('[data-type=ss]').value = val;
   },
+  get vr () {
+    return document.querySelector('[data-type=vr]').value;
+  },
+  set vr (val) {
+    document.querySelector('[data-type=vr]').value = val;
+  },
   set msg (val) { // jshint ignore:line
     document.querySelector('[data-type=msg]').textContent = val;
   },
@@ -77,6 +83,7 @@ background.receive('update', function (obj) {
   dom.hh = obj.hh || 0;
   dom.mm = obj.mm || 5;
   dom.ss = obj.ss || 0;
+  dom.vr = obj.variation || 0;
   dom.msg = obj.msg;
   dom.jobs = obj.jobs || 0;
 });
@@ -90,6 +97,7 @@ document.addEventListener('click', function (e) {
       hh: dom.hh,
       mm: dom.mm,
       ss: dom.ss,
+      variation: +dom.vr,
       current: dom.current
     });
   }
