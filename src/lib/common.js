@@ -9,6 +9,16 @@ var toSecond  = obj => Math.max(10000, obj.dd * 1000 * 60 * 60 * 24 + obj.hh * 1
 var twoDigit  = num => ('00' + num).substr(-2);
 var session  = obj => config.session.store(obj);
 
+Object.values = Object.values || function (obj) {
+  let tmp = [];
+  for (let n in obj) {
+    tmp.push(obj[n]);
+  }
+  return tmp;
+};
+
+app.button.color = '#797979';
+
 function count () {
   let num = Object.values(storage).reduce((p, c) => p + (c.status ? 1 : 0), 0);
   app.button.badge = num ? num : '';
@@ -48,6 +58,7 @@ function enable (obj, _tab) {
     storage[id] = storage[id] || {};
     storage[id].id = app.timer.clearInterval(storage[id].id);
     storage[id].status = !storage[id].status;
+    storage[id].current = obj.current;
     if (!_tab) {
       app.button.mode = storage[id].status;
     }
@@ -62,7 +73,16 @@ function enable (obj, _tab) {
       storage[id].callback = function () {
         storage[id].time = (new Date()).getTime();
         if (tab && tab.id) {
-          app.tab.reload(tab);
+          if (storage[id].current) {
+            app.tab.active().then(function (t) {
+              if (!t || tab.id !== t.id) {
+                app.tab.reload(tab);
+              }
+            });
+          }
+          else {
+            app.tab.reload(tab);
+          }
         }
         else {
           app.timer.clearInterval(storage[id].id);
@@ -77,6 +97,7 @@ function enable (obj, _tab) {
       session({
         url: tab.url,
         status: storage[id].status,
+        current: obj.current,
         period: {
           dd: obj.dd,
           hh: obj.hh,
@@ -92,19 +113,24 @@ app.popup.receive('enable', enable);
 function restore () {
   let entries = config.session.restore();
   app.tab.array().then(tabs => tabs.forEach(function (tab) {
-    let entry = entries.filter(e => e.url === tab.url);
-    if (entry.length) {
-      entry = entry[0];
-      if (entry.status) {
-        enable(entry.period, tab);
-      }
-      else {
-        storage[tab.id] = {
-          dd: entry.period.dd,
-          hh: entry.period.hh,
-          mm: entry.period.mm,
-          ss: entry.period.ss
-        };
+    if (!storage[tab.id]) { // only restore if tab has not already been activated manually
+      let entry = entries.filter(e => e.url === tab.url);
+      if (entry.length) {
+        entry = entry[0];
+        if (entry.status) {
+          enable(Object.assign(entry.period, {
+            current: entry.current || false
+          }), tab);
+        }
+        else {
+          storage[tab.id] = {
+            dd: entry.period.dd,
+            hh: entry.period.hh,
+            mm: entry.period.mm,
+            ss: entry.period.ss,
+            current: entry.current || false
+          };
+        }
       }
     }
   }))
@@ -112,7 +138,7 @@ function restore () {
   .then(app.tab.active)
   .then(tab => app.button.mode = (tab ? storage[tab.id] || {} : {}).status);
 }
-app.timer.setTimeout(restore, 1000);
+app.timer.setTimeout(restore, 6000);
 
 app.tab.onActivate(tab => app.button.mode = (storage[tab.id] || {}).status);
 app.tab.onRefresh(function (tab) {

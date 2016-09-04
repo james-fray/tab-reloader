@@ -1,9 +1,9 @@
 {
-  "name": "Tab Reloader",
+  "name": "Tab Reloader (page reloader)",
   "short_name": "itreloader",
-  "description": "An easy-to-use tab reloader",
+  "description": "An easy-to-use tab/page reloader",
   "author": "James Fray",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "manifest_version": 2,
   "permissions": [
     "storage",

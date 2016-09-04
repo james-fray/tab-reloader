@@ -60,6 +60,9 @@ exports.button = (function () {
     },
     set badge (val) { // jshint ignore:line
       button.badge = val ? val : '';
+    },
+    set color (val) { // jshint ignore:line
+      button.badgeColor = val;
     }
   };
 })();

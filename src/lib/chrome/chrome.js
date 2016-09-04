@@ -74,6 +74,11 @@ app.button = (function () {
       chrome.browserAction.setBadgeText({
         text: (val ? val : '') + ''
       });
+    },
+    set color (val) { // jshint ignore: line
+      chrome.browserAction.setBadgeBackgroundColor({
+        color: val
+      });
     }
   };
 })();
