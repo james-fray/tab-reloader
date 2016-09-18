@@ -25,7 +25,7 @@ function count () {
   return num;
 }
 
-function  repeat (obj) {
+function repeat (obj) {
   function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -38,11 +38,17 @@ function  repeat (obj) {
     period = Math.max(period, 7000);
   }
   obj.vperiod = period;
-  obj.id  = app.timer.setTimeout(() => {
-    obj.callback();
-    repeat(obj);
-  }, period);
+  obj.id  = app.timer.setTimeout(obj.callback, period);
 }
+app.tab.onRefresh(function (tab) {
+  let id = tab.id;
+  if (!storage[id] || !storage[id].status) {
+    return;
+  }
+  app.timer.clearTimeout(storage[id].id);
+  storage[id].time = (new Date()).getTime();
+  repeat(storage[id]);
+});
 
 app.popup.receive('update', function () {
   app.tab.active().then(function (tab) {
@@ -97,6 +103,9 @@ function enable (obj, _tab) {
             app.tab.active().then(function (t) {
               if (!t || tab.id !== t.id) {
                 app.tab.reload(tab);
+              }
+              else {
+                repeat(storage[id]);
               }
             });
           }
@@ -164,26 +173,13 @@ function restore () {
 app.timer.setTimeout(restore, 6000);
 
 app.tab.onActivate(tab => app.button.mode = (storage[tab.id] || {}).status);
-app.tab.onRefresh(function (tab) {
-  let id = tab.id;
-  if (!storage[id] || !storage[id].id) {
-    return;
-  }
-  let now = (new Date()).getTime();
-  let diff = now - storage[id].time;
-  if (diff > 10 * 1000) {
-    app.timer.clearTimeout(storage[id].id);
-    storage[id].time = now;
-    repeat(storage[id]);
-  }
-});
 app.tab.onClose(function (tab) {
   if (storage[tab.id] && storage[tab.id].id) {
     app.timer.clearTimeout(storage[tab.id].id);
     delete storage[tab.id];
     count();
   }
-  app.button.mode = (storage[tab.id] || {}).status;
+  app.tab.active().then(tab => app.button.mode = (storage[tab.id] || {}).status);
 });
 
 /* welcome page */

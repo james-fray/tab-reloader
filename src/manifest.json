@@ -3,7 +3,7 @@
   "short_name": "itreloader",
   "description": "An easy-to-use tab/page reloader",
   "author": "James Fray",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "manifest_version": 2,
   "permissions": [
     "storage",

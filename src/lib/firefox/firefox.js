@@ -36,7 +36,7 @@ exports.button = (function () {
       if (state.checked) {
         exports.popup._obj.show({
           width: 462,
-          height: 280,
+          height: 300,
           position: button
         });
       }
@@ -118,7 +118,9 @@ exports.tab = {
   array: () => exports.tab.list(),
   active: () => resolve(tabs.activeTab),
   reload: (tab) => tab.reload(),
-  onActivate: (c) => tabs.on('activate', c),
+  onActivate: (c) => {
+    tabs.on('activate', c);
+  },
   onRefresh: (c) => tabs.on('ready', c),
   onClose: (c) => tabs.on('close', c)
 };
