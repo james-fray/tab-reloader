@@ -1,7 +1,7 @@
+/* global app */
 'use strict';
 
-var app = app || require('./firefox/firefox');
-var config = config || exports;
+var config = {};
 
 config.session = {
   store: function (obj) {
@@ -9,7 +9,9 @@ config.session = {
     session = JSON.parse(session);
     session = session.filter(o => o.url !== obj.url);
     session.push(obj);
-    session = session.filter(o => !(o.url.startsWith('chrome://') || o.url.startsWith('resource://') || o.url.startsWith('about:')));
+    session = session.filter(
+      o => !o.url.startsWith('chrome://') && !o.url.startsWith('resource://') && !o.url.startsWith('about:')
+    );
     // do not save more than 20 entries
     session = session.slice(-20);
     app.storage.write('session', JSON.stringify(session));

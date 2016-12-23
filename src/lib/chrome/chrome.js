@@ -1,32 +1,25 @@
 'use strict';
 
-var app = new EventEmitter();
-var config = {};
+var app = {};
 
-app.once('load', function () {
+app.callbacks = {};
+app.on = (id, callback) => {
+  app.callbacks[id] = app.callbacks[id] || [];
+  app.callbacks[id].push(callback);
+};
+app.emit = (id, data) => {
+  (app.callbacks[id] || []).forEach(c => c(data));
+};
+
+app.on('load', function () {
   var script = document.createElement('script');
   document.body.appendChild(script);
   script.src = './lib/common.js';
 });
 
-if (!Promise.defer) {
-  Promise.defer = function () {
-    let deferred = {};
-    let promise = new Promise(function (resolve, reject) {
-      deferred.resolve = resolve;
-      deferred.reject  = reject;
-    });
-    deferred.promise = promise;
-    return deferred;
-  };
-}
-app.Promise = Promise;
-
 Object.values = Object.values || function (obj) {
   return Object.keys(obj).map(n => obj[n]);
 };
-
-app.EventEmitter = EventEmitter;
 
 app.storage = (function () {
   let objs = {};
@@ -40,97 +33,78 @@ app.storage = (function () {
       objs[id] = data;
       let tmp = {};
       tmp[id] = data;
-      chrome.storage.local.set(tmp, function () {});
+      chrome.storage.local.set(tmp);
     }
   };
 })();
 
-app.button = (function () {
-  let onCommand;
-  chrome.browserAction.onClicked.addListener(function () {
-    if (onCommand) {
-      onCommand();
-    }
-  });
-  return {
-    onCommand: function (c) {
-      onCommand = c;
-    },
-    set mode (val) {  //jshint ignore:line
-      var path = './icons/' + (val ? '' : 'disabled/');
-      chrome.browserAction.setIcon({
-        path: {
-          '19': '../../data/' + path + '/19.png',
-          '38': '../../data/' + path + '/38.png'
-        }
-      });
-    },
-    set label (label) { // jshint ignore: line
-      chrome.browserAction.setTitle({
-        title: label
-      });
-    },
-    set badge (val) { // jshint ignore: line
-      chrome.browserAction.setBadgeText({
-        text: (val ? val : '') + ''
-      });
-    },
-    set color (val) { // jshint ignore: line
-      chrome.browserAction.setBadgeBackgroundColor({
-        color: val
-      });
-    }
-  };
-})();
+app.button = {
+  set mode (val) {  //jshint ignore:line
+    var path = 'icons/' + (val ? '' : 'disabled/');
+    chrome.browserAction.setIcon({
+      path: {
+        '16': './data/' + path + '16.png',
+        '18': './data/' + path + '18.png',
+        '19': './data/' + path + '19.png',
+        '32': './data/' + path + '32.png',
+        '36': './data/' + path + '36.png',
+        '38': './data/' + path + '38.png'
+      }
+    });
+    console.error({
+      path: {
+        '16': './data/' + path + '16.png',
+        '18': './data/' + path + '18.png',
+        '19': './data/' + path + '19.png',
+        '32': './data/' + path + '32.png',
+        '36': './data/' + path + '36.png',
+        '38': './data/' + path + '38.png'
+      }
+    });
+  },
+  set label (label) { // jshint ignore: line
+    chrome.browserAction.setTitle({
+      title: label
+    });
+  },
+  set badge (val) { // jshint ignore: line
+    chrome.browserAction.setBadgeText({
+      text: (val ? val : '') + ''
+    });
+  },
+  set color (val) { // jshint ignore: line
+    chrome.browserAction.setBadgeBackgroundColor({
+      color: val
+    });
+  }
+};
 
 app.popup = {
-  send: (id, data) => chrome.extension.sendRequest({method: id, data: data}),
-  receive: (id, callback) => chrome.extension.onRequest.addListener(function (request, sender) {
-    if (request.method === id && !sender.tab) {
+  send: (method, data) => chrome.runtime.sendMessage({method, data}),
+  receive: (id, callback) => chrome.runtime.onMessage.addListener(function (request) {
+    if (request.method === id) {
       callback(request.data);
     }
   })
 };
 
 app.tab = {
-  open: function (url, inBackground, inCurrent) {
-    if (inCurrent) {
-      chrome.tabs.update(null, {url: url});
-    }
-    else {
-      chrome.tabs.create({
-        url: url,
-        active: typeof inBackground === 'undefined' ? true : !inBackground
-      });
-    }
-  },
-  list: function () {
-    let d = app.Promise.defer();
+  open: (url) => chrome.tabs.create({url}),
+  list: () => new Promise ((resolve) => {
     chrome.tabs.query({
       currentWindow: false
-    }, function (tabs) {
-      d.resolve(tabs);
-    });
-    return d.promise;
-  },
-  active: function () {
-    let d = app.Promise.defer();
+    }, (tabs) => resolve(tabs));
+  }),
+  active: () => new Promise((resolve) => {
     chrome.tabs.query({
       active: true,
       currentWindow: true
-    }, function (tabs) {
-      d.resolve(tabs[0]);
-    });
-    return d.promise;
-  },
+    }, (tabs) => resolve(tabs[0]));
+  }),
   reload: (tab) => chrome.tabs.reload(tab.id),
-  array: function () {
-    let d = app.Promise.defer();
-    chrome.tabs.query({}, function (tabs) {
-      d.resolve(tabs);
-    });
-    return d.promise;
-  },
+  array: () => new Promise((resolve) => {
+    chrome.tabs.query({}, (tabs) => resolve(tabs));
+  }),
   onActivate: function (c) {
     chrome.tabs.onActivated.addListener(function (obj) {
       c({id: obj.tabId});
@@ -151,11 +125,7 @@ app.tab = {
   onClose: (c) => chrome.tabs.onRemoved.addListener((id) => c({id}))
 };
 
-app.version = function () {
-  return chrome[chrome.runtime && chrome.runtime.getManifest ? 'runtime' : 'extension'].getManifest().version;
-};
-
-app.timer = window;
+app.version = () => chrome.runtime.getManifest().version;
 
 app.startup = (function () {
   let loadReason, callback;
@@ -166,14 +136,20 @@ app.startup = (function () {
       }
     }
   }
-  chrome.runtime.onInstalled.addListener(function (details) {
-    loadReason = details.reason;
-    check();
-  });
-  chrome.runtime.onStartup.addListener(function () {
+  if (chrome.runtime.onInstalled && chrome.runtime.onStartup) {
+    chrome.runtime.onInstalled.addListener(function (details) {
+      loadReason = details.reason;
+      check();
+    });
+    chrome.runtime.onStartup.addListener(function () {
+      loadReason = 'startup';
+      check();
+    });
+  }
+  else {
     loadReason = 'startup';
     check();
-  });
+  }
   return function (c) {
     callback = c;
     check();

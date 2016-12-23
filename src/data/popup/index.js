@@ -1,5 +1,13 @@
-/* globals load, unload, background */
 'use strict';
+
+var background = {
+  send: (method, data) => chrome.runtime.sendMessage({method, data}),
+  receive: (id, callback) => chrome.runtime.onMessage.addListener((request) => {
+    if (request.method === id) {
+      callback(request.data);
+    }
+  })
+};
 
 var dom = {
   get enable () {
@@ -65,12 +73,10 @@ function uncheck () {
 }
 function check() {
   uncheck();
-  id = window.setInterval(function () {
-    background.send('update');
-  }, 1000);
+  id = window.setInterval(() => background.send('request-update'), 1000);
 }
 
-background.receive('update', function (obj) {
+background.receive('updated-info', function (obj) {
   dom.enable = obj.status;
   dom.current = obj.current;
   if (!obj.status) {
@@ -88,7 +94,7 @@ background.receive('update', function (obj) {
   dom.jobs = obj.jobs || 0;
 });
 
-document.addEventListener('click', function (e) {
+document.addEventListener('click', (e) => {
   let target = e.target;
   let type = target.dataset.type;
   if (type === 'enable') {
@@ -106,15 +112,14 @@ document.addEventListener('click', function (e) {
   }
 });
 
-document.addEventListener('change', function (e) {
-  var value = +e.target.value;
-  var min = +e.target.min;
-  var max = +e.target.max;
+document.addEventListener('change', (e) => {
+  let value = +e.target.value;
+  let min = +e.target.min;
+  let max = +e.target.max;
   e.target.value = Math.max(min, Math.min(max, value));
 });
 
-load(check);
-load(function () {
-  background.send('update');
+window.addEventListener('load', () => {
+  check();
+  background.send('request-update');
 });
-unload(uncheck);

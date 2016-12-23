@@ -3,23 +3,25 @@
   "short_name": "itreloader",
   "description": "An easy-to-use tab/page reloader",
   "author": "James Fray",
-  "version": "0.1.6",
+  "version": "0.1.8",
   "manifest_version": 2,
   "permissions": [
     "storage",
     "tabs"
   ],
-  "web_accessible_resources": [],
   "browser_action": {
     "default_icon": {
+      "16": "data/icons/disabled/16.png",
+      "18": "data/icons/disabled/18.png",
       "19": "data/icons/disabled/19.png",
+      "32": "data/icons/disabled/32.png",
+      "36": "data/icons/disabled/36.png",
       "38": "data/icons/disabled/38.png"
     },
     "default_popup": "data/popup/index.html"
   },
   "background": {
     "scripts": [
-      "./lib/chrome/EventEmitter.js",
       "./lib/chrome/chrome.js",
       "./lib/config.js"
     ]
@@ -29,5 +31,10 @@
     "16": "data/icons/16.png",
     "48": "data/icons/48.png",
     "128": "data/icons/128.png"
+  },
+  "applications": {
+    "gecko": {
+      "id": "jid0-bnmfwWw2w2w4e4edvcdDbnMhdVg@jetpack"
+    }
   }
 }

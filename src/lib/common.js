@@ -1,11 +1,12 @@
+/* globals app, config */
 'use strict';
-
-var app = app || require('./firefox/firefox');
-var config = config || require('./config');
 
 var storage = {};
 
-var toSecond  = obj => Math.max(10000, obj.dd * 1000 * 60 * 60 * 24 + obj.hh * 1000 * 60 * 60 + obj.mm * 1000 * 60 + obj.ss * 1000);
+var toSecond  = obj => Math.max(
+  10000,
+  obj.dd * 1000 * 60 * 60 * 24 + obj.hh * 1000 * 60 * 60 + obj.mm * 1000 * 60 + obj.ss * 1000
+);
 var twoDigit  = num => ('00' + num).substr(-2);
 var session  = obj => config.session.store(obj);
 
@@ -38,19 +39,20 @@ function repeat (obj) {
     period = Math.max(period, 7000);
   }
   obj.vperiod = period;
-  obj.id  = app.timer.setTimeout(obj.callback, period);
+  window.clearTimeout(obj.id);
+  obj.id  = window.setTimeout(obj.callback, period);
 }
 app.tab.onRefresh(function (tab) {
   let id = tab.id;
   if (!storage[id] || !storage[id].status) {
     return;
   }
-  app.timer.clearTimeout(storage[id].id);
+  window.clearTimeout(storage[id].id);
   storage[id].time = (new Date()).getTime();
   repeat(storage[id]);
 });
 
-app.popup.receive('update', function () {
+app.popup.receive('request-update', function () {
   app.tab.active().then(function (tab) {
     if (!tab) {
       return;
@@ -73,15 +75,15 @@ app.popup.receive('update', function () {
       storage[id].msg = 'Tab Reloader is disabled on this tab';
     }
     storage[id].jobs = count();
-    app.popup.send('update', storage[tab.id]);
+    app.popup.send('updated-info', storage[tab.id]);
   });
 });
 
 function enable (obj, _tab) {
-  app.Promise.resolve(_tab || app.tab.active()).then(function (tab) {
+  Promise.resolve(_tab || app.tab.active()).then(function (tab) {
     let id = tab.id;
     storage[id] = storage[id] || {};
-    storage[id].id = app.timer.clearTimeout(storage[id].id);
+    storage[id].id = window.clearTimeout(storage[id].id);
     storage[id].status = !storage[id].status;
     storage[id].current = obj.current;
     storage[id].variation = obj.variation;
@@ -104,24 +106,23 @@ function enable (obj, _tab) {
               if (!t || tab.id !== t.id) {
                 app.tab.reload(tab);
               }
-              else {
-                repeat(storage[id]);
-              }
             });
           }
           else {
             app.tab.reload(tab);
           }
+          // repeat although this might get overwritten after reload.
+          repeat(storage[id]);
         }
         else {
-          app.timer.clearTimeout(storage[id].id);
+          window.clearTimeout(storage[id].id);
           delete storage[id];
         }
       };
       repeat(storage[id]);
     }
     storage[id].jobs = count();
-    app.popup.send('update', storage[id]);
+    app.popup.send('updated-info', storage[id]);
     if (!_tab) {
       session({
         url: tab.url,
@@ -170,12 +171,12 @@ function restore () {
   .then(app.tab.active)
   .then(tab => app.button.mode = (tab ? storage[tab.id] || {} : {}).status);
 }
-app.timer.setTimeout(restore, 6000);
+window.setTimeout(restore, 6000);
 
 app.tab.onActivate(tab => app.button.mode = (storage[tab.id] || {}).status);
 app.tab.onClose(function (tab) {
   if (storage[tab.id] && storage[tab.id].id) {
-    app.timer.clearTimeout(storage[tab.id].id);
+    window.clearTimeout(storage[tab.id].id);
     delete storage[tab.id];
     count();
   }
@@ -186,7 +187,7 @@ app.tab.onClose(function (tab) {
 app.startup(function () {
   let version = config.welcome.version;
   if (app.version() !== version) {
-    app.timer.setTimeout(function () {
+    window.setTimeout(function () {
       app.tab.open(
         'http://add0n.com/tab-reloader.html?v=' + app.version() +
         (version ? '&p=' + version + '&type=upgrade' : '&type=install')
