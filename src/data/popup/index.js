@@ -1,110 +1,118 @@
 'use strict';
 
-var background = {
-  send: (method, data) => chrome.runtime.sendMessage({method, data}),
-  receive: (id, callback) => chrome.runtime.onMessage.addListener((request) => {
-    if (request.method === id) {
-      callback(request.data);
-    }
-  })
-};
-
 var dom = {
-  get enable () {
+  get enable() {
     return document.querySelector('[data-type=enable]');
   },
-  set enable (val) {
+  set enable(val) {
     var tmp = document.querySelector('[data-type=enable]');
     tmp.textContent = val ? 'Enabled' : 'Disabled';
     tmp.setAttribute('class', 'icon-toggle-' + (val ? 'on' : 'off'));
+    document.body.dataset.enabled = val;
   },
-  get current () {
+  get current() {
     return document.querySelector('[data-type=current]').classList.contains('icon-toggle-on');
   },
-  set current (val) {
+  set current(val) {
     var tmp = document.querySelector('[data-type=current]');
     tmp.textContent = val ? 'Enabled' : 'Disabled';
     tmp.setAttribute('class', 'icon-toggle-' + (val ? 'on' : 'off'));
   },
-  get dd () {
+  get dd() {
     return document.querySelector('[data-type=dd]').value;
   },
-  set dd (val) {
+  set dd(val) {
     document.querySelector('[data-type=dd]').value = val;
   },
-  get hh () {
+  get hh() {
     return document.querySelector('[data-type=hh]').value;
   },
-  set hh (val) {
+  set hh(val) {
     document.querySelector('[data-type=hh]').value = val;
   },
-  get mm () {
+  get mm() {
     return document.querySelector('[data-type=mm]').value;
   },
-  set mm (val) {
+  set mm(val) {
     document.querySelector('[data-type=mm]').value = val;
   },
-  get ss () {
+  get ss() {
     return document.querySelector('[data-type=ss]').value;
   },
-  set ss (val) {
+  set ss(val) {
     document.querySelector('[data-type=ss]').value = val;
   },
-  get vr () {
+  get vr() {
     return document.querySelector('[data-type=vr]').value;
   },
-  set vr (val) {
+  set vr(val) {
     document.querySelector('[data-type=vr]').value = val;
   },
-  set msg (val) { // jshint ignore:line
+  set msg(val) { // jshint ignore:line
     document.querySelector('[data-type=msg]').textContent = val;
   },
-  set jobs (val) { // jshint ignore:line
+  set jobs(val) { // jshint ignore:line
     document.querySelector('[data-type=jobs]').textContent = val;
   },
 };
 var id;
+var tab;
 
-function uncheck () {
-  if (id) {
-    window.clearInterval(id);
-    id = '';
-  }
-}
 function check() {
-  uncheck();
-  id = window.setInterval(() => background.send('request-update'), 1000);
+  window.clearInterval(id);
+  console.log('request update');
+  id = window.setInterval(() => chrome.runtime.sendMessage({
+    method: 'request-update',
+    id: tab.id
+  }), 1000);
 }
 
-background.receive('updated-info', function (obj) {
-  dom.enable = obj.status;
-  dom.current = obj.current;
-  if (!obj.status) {
-    uncheck();
+chrome.runtime.onMessage.addListener(request => {
+  const twoDigit = num => ('00' + num).substr(-2);
+  if (request.method === 'updated-info') {
+    const obj = request.data;
+    dom.enable = obj.status;
+    dom.current = obj.current;
+    if (!obj.status) {
+      id = window.clearInterval(id);
+    }
+    else if (!id) {
+      check();
+    }
+    Object.assign(dom, {
+      dd: obj.dd || 0,
+      hh: obj.hh || 0,
+      mm: obj.mm || 5,
+      ss: obj.ss || 0,
+      vr: obj.variation || 0,
+      jobs: obj.jobs || 0
+    });
+
+    if (obj.status) {
+      const {dd = 0, hh = 0, mm = 5, ss = 0} = obj.msg;
+      dom.msg = `Time left to refresh: ${twoDigit(dd)} : ${twoDigit(hh)} : ${twoDigit(mm)} : ${twoDigit(ss)}`;
+    }
+    else {
+      dom.msg = 'Tab Reloader is disabled on this tab';
+    }
   }
-  else if (!id) {
-    check();
-  }
-  dom.dd = obj.dd || 0;
-  dom.hh = obj.hh || 0;
-  dom.mm = obj.mm || 5;
-  dom.ss = obj.ss || 0;
-  dom.vr = obj.variation || 0;
-  dom.msg = obj.msg;
-  dom.jobs = obj.jobs || 0;
 });
 
-document.addEventListener('click', (e) => {
-  let target = e.target;
-  let type = target.dataset.type;
+document.addEventListener('click', e => {
+  const target = e.target;
+  const type = target.dataset.type;
   if (type === 'enable') {
-    background.send('enable', {
-      dd: dom.dd,
-      hh: dom.hh,
-      mm: dom.mm,
-      ss: dom.ss,
-      variation: +dom.vr,
-      current: dom.current
+    chrome.runtime.sendMessage({
+      method: 'enable',
+      tab,
+      data: {
+        dd: dom.dd,
+        hh: dom.hh,
+        mm: dom.mm,
+        ss: dom.ss,
+        variation: Number(dom.vr),
+        current: dom.current
+      }
     });
   }
   else if (type === 'current') {
@@ -112,14 +120,24 @@ document.addEventListener('click', (e) => {
   }
 });
 
-document.addEventListener('change', (e) => {
-  let value = +e.target.value;
-  let min = +e.target.min;
-  let max = +e.target.max;
-  e.target.value = Math.max(min, Math.min(max, value));
+document.addEventListener('change', ({target}) => {
+  const value = Number(target.value);
+  const min = Number(target.min);
+  const max = Number(target.max);
+  target.value = Math.max(min, Math.min(max, value));
 });
 
-window.addEventListener('load', () => {
-  check();
-  background.send('request-update');
+// init
+chrome.tabs.query({
+  active: true,
+  currentWindow: true
+}, tabs => {
+  if (tabs && tabs.length) {
+    tab = tabs[0];
+    chrome.runtime.sendMessage({
+      method: 'request-update',
+      id: tab.id
+    });
+    check();
+  }
 });

@@ -78,3 +78,13 @@ td[data-type=current]:before,
 td[data-type=enable]:before {
   padding-right: 5px;
 }
+
+body[data-enabled=true] [data-type='current'],
+body[data-enabled=true] [data-type='hh'],
+body[data-enabled=true] [data-type='mm'],
+body[data-enabled=true] [data-type='ss'],
+body[data-enabled=true] [data-type='vr'],
+body[data-enabled=true] [data-type='dd'] {
+  opacity: 0.5;
+  pointer-events: none;
+}

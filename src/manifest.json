@@ -3,11 +3,12 @@
   "short_name": "itreloader",
   "description": "An easy-to-use tab/page reloader",
   "author": "James Fray",
-  "version": "0.1.8",
+  "version": "0.2.0",
   "manifest_version": 2,
   "permissions": [
     "storage",
-    "tabs"
+    "tabs",
+    "webNavigation"
   ],
   "browser_action": {
     "default_icon": {
@@ -22,8 +23,9 @@
   },
   "background": {
     "scripts": [
-      "./lib/chrome/chrome.js",
-      "./lib/config.js"
+      "/lib/chrome/chrome.js",
+      "/lib/config.js",
+      "/lib/common.js"
     ]
   },
   "homepage_url": "http://add0n.com/tab-reloader.html",
