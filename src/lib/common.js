@@ -11,6 +11,11 @@ var prefs = {
 };
 chrome.storage.onChanged.addListener(ps => {
   Object.keys(ps).forEach(k => prefs[k] = ps[k].newValue);
+  if (ps.history && ps.history.newValue === false) {
+    chrome.storage.local.set({
+      'session': []
+    });
+  }
 });
 
 var storage = {};

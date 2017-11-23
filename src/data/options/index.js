@@ -30,7 +30,7 @@ document.getElementById('save').addEventListener('click', () => {
       badge,
       faqs: document.getElementById('faqs').checked,
       history: document.getElementById('history').checked,
-      json: JSON.parse(document.getElementById('json').value.trim()),
+      json: JSON.parse(document.getElementById('json').value.trim() || '[]'),
       dd: Math.max(Number(document.getElementById('dd').value), 0),
       hh: Math.min(Math.max(Number(document.getElementById('hh').value), 0), 23),
       mm: Math.min(Math.max(Number(document.getElementById('mm').value), 0), 59),
