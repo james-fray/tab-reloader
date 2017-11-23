@@ -18,6 +18,14 @@ var dom = {
     tmp.textContent = val ? 'Enabled' : 'Disabled';
     tmp.setAttribute('class', 'icon-toggle-' + (val ? 'on' : 'off'));
   },
+  get cache() {
+    return document.querySelector('[data-type=cache]').classList.contains('icon-toggle-on');
+  },
+  set cache(val) {
+    var tmp = document.querySelector('[data-type=cache]');
+    tmp.textContent = val ? 'Enabled' : 'Disabled';
+    tmp.setAttribute('class', 'icon-toggle-' + (val ? 'on' : 'off'));
+  },
   get dd() {
     return document.querySelector('[data-type=dd]').value;
   },
@@ -60,7 +68,6 @@ var tab;
 
 function check() {
   window.clearInterval(id);
-  console.log('request update');
   id = window.setInterval(() => chrome.runtime.sendMessage({
     method: 'request-update',
     id: tab.id
@@ -73,6 +80,7 @@ chrome.runtime.onMessage.addListener(request => {
     const obj = request.data;
     dom.enable = obj.status;
     dom.current = obj.current;
+    dom.cache = obj.cache;
     if (!obj.status) {
       id = window.clearInterval(id);
     }
@@ -111,12 +119,17 @@ document.addEventListener('click', e => {
         mm: dom.mm,
         ss: dom.ss,
         variation: Number(dom.vr),
-        current: dom.current
+        current: dom.current,
+        forced: e.shiftKey, // forced period
+        cache: dom.cache
       }
     });
   }
   else if (type === 'current') {
     dom.current = !dom.current;
+  }
+  else if (type === 'cache') {
+    dom.cache = !dom.cache;
   }
 });
 

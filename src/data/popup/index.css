@@ -3,7 +3,7 @@ body {
   margin: 0;
   background-color: #fff;
   width: 450px;
-  height: 300px;
+  height: 330px;
   overflow: hidden;
 }
 table, body, input {
@@ -67,6 +67,7 @@ tr[mode=info] {
 }
 
 td[data-type=current],
+td[data-type=cache],
 td[data-type=enable] {
   cursor: pointer;
   width: 75px;
@@ -75,11 +76,13 @@ td[data-type=enable] {
   -webkit-user-select: none;
 }
 td[data-type=current]:before,
+td[data-type=cache]:before,
 td[data-type=enable]:before {
   padding-right: 5px;
 }
 
 body[data-enabled=true] [data-type='current'],
+body[data-enabled=true] [data-type='cache'],
 body[data-enabled=true] [data-type='hh'],
 body[data-enabled=true] [data-type='mm'],
 body[data-enabled=true] [data-type='ss'],

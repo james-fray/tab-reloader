@@ -1,9 +1,9 @@
 {
-  "name": "Tab Reloader (page reloader)",
+  "name": "Tab Reloader (page auto refresh)",
   "short_name": "itreloader",
-  "description": "An easy-to-use tab/page reloader",
+  "description": "An easy-to-use tab reloader with custom reloading time settings for individual tabs",
   "author": "James Fray",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "manifest_version": 2,
   "permissions": [
     "storage",
@@ -24,7 +24,6 @@
   "background": {
     "scripts": [
       "/lib/chrome/chrome.js",
-      "/lib/config.js",
       "/lib/common.js"
     ]
   },
@@ -33,6 +32,10 @@
     "16": "data/icons/16.png",
     "48": "data/icons/48.png",
     "128": "data/icons/128.png"
+  },
+  "options_ui": {
+    "page": "data/options/index.html",
+    "chrome_style": true
   },
   "applications": {
     "gecko": {

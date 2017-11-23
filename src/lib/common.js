@@ -1,13 +1,26 @@
-/* globals app, config */
+/* globals app */
 'use strict';
 
 var storage = {};
 
 var toSecond = obj => Math.max(
-  10000,
+  obj.forced ? 1000 : 10000, // allow reloading up to a second!
   obj.dd * 1000 * 60 * 60 * 24 + obj.hh * 1000 * 60 * 60 + obj.mm * 1000 * 60 + obj.ss * 1000
 );
-var session = obj => config.session.store(obj);
+var session = obj => {
+  chrome.storage.local.get({
+    session: []
+  }, prefs => {
+    let session = Array.isArray(prefs.session) ? prefs.session : [];
+    // remove the old jobs for this session
+    session = session.filter(o => o.url !== obj.url);
+    session.push(obj);
+    session = session.filter(o => o.url.startsWith('http') || o.url.startsWith('ftp') || o.url.startsWith('file'));
+    session = session.slice(-20);
+    console.log(session);
+    chrome.storage.local.set({session});
+  });
+};
 
 Object.values = Object.values || function(obj) {
   const tmp = [];
@@ -32,6 +45,7 @@ function toPopup(id) {
     data: {
       status: obj.status,
       current: obj.current,
+      cache: obj.cache,
       dd: obj.dd,
       hh: obj.hh,
       mm: obj.mm,
@@ -66,6 +80,7 @@ chrome.webNavigation.onDOMContentLoaded.addListener(d => {
       return;
     }
     storage[id].time = (new Date()).getTime();
+    app.button.icon(storage[id].status, id);
     repeat(storage[id]);
   }
 });
@@ -90,11 +105,15 @@ function enable(obj, tab) {
         if (tab) {
           if (storage[id].current) {
             if (!tab.active) {
-              chrome.tabs.reload(tab.id);
+              chrome.tabs.reload(tab.id, {
+                bypassCache: storage[id].cache !== true
+              });
             }
           }
           else {
-            chrome.tabs.reload(tab.id);
+            chrome.tabs.reload(tab.id, {
+              bypassCache: storage[id].cache !== true
+            });
           }
           // repeat although this might get overwritten after reload.
           repeat(storage[id]);
@@ -113,7 +132,9 @@ function enable(obj, tab) {
     url: tab.url,
     status: storage[id].status,
     current: obj.current,
+    cache: obj.cache,
     variation: obj.variation,
+    forced: obj.forced,
     period: {
       dd: obj.dd,
       hh: obj.hh,
@@ -150,39 +171,6 @@ chrome.runtime.onMessage.addListener(request => {
   }
 });
 
-function restore() {
-  const entries = config.session.restore();
-  chrome.tabs.query({
-    url: '*://*/*'
-  }, tabs => {
-    tabs.forEach(tab => {
-      if (!storage[tab.id]) { // only restore if tab has not already been activated manually
-        let entry = entries.filter(e => e.url === tab.url);
-        if (entry.length) {
-          entry = entry[0];
-          if (entry.status) {
-            enable(Object.assign(entry.period, {
-              current: entry.current || false,
-              variation: entry.variation || 0
-            }), tab);
-          }
-          else {
-            storage[tab.id] = {
-              dd: entry.period.dd,
-              hh: entry.period.hh,
-              mm: entry.period.mm,
-              ss: entry.period.ss,
-              current: entry.current || false,
-              variation: entry.variation || 0
-            };
-          }
-          app.button.icon(true, tab.id);
-        }
-      }
-    });
-  });
-}
-
 chrome.tabs.onRemoved.addListener(id => {
   if (storage[id] && storage[id].id) {
     window.clearTimeout(storage[id].id);
@@ -191,21 +179,84 @@ chrome.tabs.onRemoved.addListener(id => {
   }
 });
 
-app.on('load', () => window.setTimeout(restore, 6000));
+// restore
+window.setTimeout(() => {
+  chrome.storage.local.get({
+    session: [],
+    json: []
+  }, prefs => {
+    if (Array.isArray(prefs.session)) {
+      const entries = prefs.session;
+      chrome.tabs.query({
+        url: '<all_urls>'
+      }, tabs => {
+        // automatic jobs
+        tabs.forEach(tab => {
+          const {hostname} = new URL(tab.url);
+          const entry = prefs.json.filter(j => j.hostname === hostname).pop();
+          if (entry) {
+            enable(Object.assign({
+              period: {
+                dd: 0,
+                hh: 0,
+                mm: 5,
+                ss: 0
+              },
+              current: false,
+              cache: false,
+              forced: false,
+              variation: 0
+            }, entry), tab);
+          }
+        });
+        // session jobs
+        tabs.forEach(tab => {
+          if (!storage[tab.id]) { // only restore if tab has not already been activated manually
+            let entry = entries.filter(e => e.url === tab.url);
+            if (entry.length) {
+              entry = entry[0];
+              if (entry.status) {
+                enable(Object.assign(entry.period, {
+                  current: entry.current || false,
+                  cache: entry.cache || false,
+                  forced: entry.forced || false,
+                  variation: entry.variation || 0
+                }), tab);
+              }
+              else {
+                storage[tab.id] = {
+                  dd: entry.period.dd,
+                  hh: entry.period.hh,
+                  mm: entry.period.mm,
+                  ss: entry.period.ss,
+                  current: entry.current || false,
+                  cache: entry.cache || false,
+                  forced: entry.forced || false,
+                  variation: entry.variation || 0
+                };
+              }
+              app.button.icon(entry.status, tab.id);
+            }
+          }
+        });
+      });
+    }
+  });
+}, 3000);
 
 // FAQs & Feedback
-app.on('load', () => {
+chrome.storage.local.get({
+  'version': null,
+  'faqs': navigator.userAgent.indexOf('Firefox') === -1
+}, prefs => {
   const version = chrome.runtime.getManifest().version;
-  const prefs = {
-    version: app.storage.read('version'),
-    faqs: app.storage.read('faqs')
-  };
 
   if (prefs.version ? (prefs.faqs && prefs.version !== version) : true) {
-    app.storage.write('version', version);
-    chrome.tabs.create({
-      url: 'http://add0n.com/tab-reloader.html?version=' + version +
-        '&type=' + (prefs.version ? ('upgrade&p=' + prefs.version) : 'install')
+    chrome.storage.local.set({version}, () => {
+      chrome.tabs.create({
+        url: 'http://add0n.com/tab-reloader.html?version=' + version +
+          '&type=' + (prefs.version ? ('upgrade&p=' + prefs.version) : 'install')
+      });
     });
   }
 });
