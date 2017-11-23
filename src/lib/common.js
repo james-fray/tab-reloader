@@ -9,15 +9,18 @@ var toSecond = obj => Math.max(
 );
 var session = obj => {
   chrome.storage.local.get({
-    session: []
+    session: [],
+    history: true
   }, prefs => {
+    if (prefs.histroy === false) {
+      return;
+    }
     let session = Array.isArray(prefs.session) ? prefs.session : [];
     // remove the old jobs for this session
     session = session.filter(o => o.url !== obj.url);
     session.push(obj);
     session = session.filter(o => o.url.startsWith('http') || o.url.startsWith('ftp') || o.url.startsWith('file'));
     session = session.slice(-20);
-    console.log(session);
     chrome.storage.local.set({session});
   });
 };
@@ -180,7 +183,7 @@ chrome.tabs.onRemoved.addListener(id => {
 });
 
 // restore
-window.setTimeout(() => {
+var restore = () => {
   chrome.storage.local.get({
     session: [],
     json: []
@@ -196,12 +199,10 @@ window.setTimeout(() => {
           const entry = prefs.json.filter(j => j.hostname === hostname).pop();
           if (entry) {
             enable(Object.assign({
-              period: {
-                dd: 0,
-                hh: 0,
-                mm: 5,
-                ss: 0
-              },
+              dd: 0,
+              hh: 0,
+              mm: 5,
+              ss: 0,
               current: false,
               cache: false,
               forced: false,
@@ -242,7 +243,42 @@ window.setTimeout(() => {
       });
     }
   });
-}, 3000);
+};
+window.setTimeout(restore, 3000);
+
+chrome.contextMenus.create({
+  title: 'Reload all tabs',
+  id: 'reload-all',
+  contexts: ['browser_action']
+});
+chrome.contextMenus.create({
+  title: 'Reload all tabs in the current window',
+  id: 'reload-window',
+  contexts: ['browser_action']
+});
+chrome.contextMenus.create({
+  title: 'Restore old reloading jobs',
+  id: 'restore',
+  contexts: ['browser_action']
+});
+
+chrome.contextMenus.onClicked.addListener(info => {
+  if (info.menuItemId === 'reload-all') {
+    chrome.tabs.query({}, tabs => tabs.forEach(tab => chrome.tabs.reload(tab.id, {
+      bypassCache: true
+    })));
+  }
+  else if (info.menuItemId === 'reload-window') {
+    chrome.tabs.query({
+      currentWindow: true
+    }, tabs => tabs.forEach(tab => chrome.tabs.reload(tab.id, {
+      bypassCache: true
+    })));
+  }
+  else if (info.menuItemId === 'restore') {
+    restore();
+  }
+});
 
 // FAQs & Feedback
 chrome.storage.local.get({
