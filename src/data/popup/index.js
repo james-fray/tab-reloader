@@ -1,5 +1,12 @@
 'use strict';
 
+var prefs = {
+  'dd': 0,
+  'hh': 0,
+  'mm': 5,
+  'ss': 0
+};
+
 var dom = {
   get enable() {
     return document.querySelector('[data-type=enable]');
@@ -88,10 +95,10 @@ chrome.runtime.onMessage.addListener(request => {
       check();
     }
     Object.assign(dom, {
-      dd: obj.dd || 0,
-      hh: obj.hh || 0,
-      mm: obj.mm || 5,
-      ss: obj.ss || 0,
+      dd: obj.dd || prefs.dd,
+      hh: obj.hh || prefs.hh,
+      mm: obj.mm || prefs.mm,
+      ss: obj.ss || prefs.ss,
       vr: obj.variation || 0,
       jobs: obj.jobs || 0
     });
@@ -141,16 +148,20 @@ document.addEventListener('change', ({target}) => {
 });
 
 // init
-chrome.tabs.query({
-  active: true,
-  currentWindow: true
-}, tabs => {
-  if (tabs && tabs.length) {
-    tab = tabs[0];
-    chrome.runtime.sendMessage({
-      method: 'request-update',
-      id: tab.id
-    });
-    check();
-  }
+chrome.storage.local.get(prefs, ps => {
+  Object.assign(prefs, ps);
+
+  chrome.tabs.query({
+    active: true,
+    currentWindow: true
+  }, tabs => {
+    if (tabs && tabs.length) {
+      tab = tabs[0];
+      chrome.runtime.sendMessage({
+        method: 'request-update',
+        id: tab.id
+      });
+      check();
+    }
+  });
 });

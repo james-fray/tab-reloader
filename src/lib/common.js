@@ -1,6 +1,18 @@
 /* globals app */
 'use strict';
 
+var prefs = {
+  'badge': true,
+  'session': [],
+  'json': [],
+  'history': true,
+  'version': null,
+  'faqs': navigator.userAgent.indexOf('Firefox') === -1
+};
+chrome.storage.onChanged.addListener(ps => {
+  Object.keys(ps).forEach(k => prefs[k] = ps[k].newValue);
+});
+
 var storage = {};
 
 var toSecond = obj => Math.max(
@@ -8,21 +20,16 @@ var toSecond = obj => Math.max(
   obj.dd * 1000 * 60 * 60 * 24 + obj.hh * 1000 * 60 * 60 + obj.mm * 1000 * 60 + obj.ss * 1000
 );
 var session = obj => {
-  chrome.storage.local.get({
-    session: [],
-    history: true
-  }, prefs => {
-    if (prefs.histroy === false) {
-      return;
-    }
-    let session = Array.isArray(prefs.session) ? prefs.session : [];
-    // remove the old jobs for this session
-    session = session.filter(o => o.url !== obj.url);
-    session.push(obj);
-    session = session.filter(o => o.url.startsWith('http') || o.url.startsWith('ftp') || o.url.startsWith('file'));
-    session = session.slice(-20);
-    chrome.storage.local.set({session});
-  });
+  if (prefs.history === false) {
+    return;
+  }
+  let session = Array.isArray(prefs.session) ? prefs.session : [];
+  // remove the old jobs for this session
+  session = session.filter(o => o.url !== obj.url);
+  session.push(obj);
+  session = session.filter(o => o.url.startsWith('http') || o.url.startsWith('ftp') || o.url.startsWith('file'));
+  session = session.slice(-20);
+  chrome.storage.local.set({session});
 };
 
 Object.values = Object.values || function(obj) {
@@ -37,7 +44,9 @@ app.button.color = '#797979';
 
 function count() {
   const num = Object.values(storage).reduce((p, c) => p + (c.status ? 1 : 0), 0);
-  app.button.badge = num ? num : '';
+  if (prefs.badge) {
+    app.button.badge = num ? num : '';
+  }
   return num;
 }
 
@@ -147,7 +156,10 @@ function enable(obj, tab) {
   });
 }
 chrome.runtime.onMessage.addListener(request => {
-  if (request.method === 'enable') {
+  if (request.method === 'count') {
+    count();
+  }
+  else if (request.method === 'enable') {
     enable(request.data, request.tab);
   }
   else if (request.method === 'request-update') {
@@ -184,65 +196,60 @@ chrome.tabs.onRemoved.addListener(id => {
 
 // restore
 var restore = () => {
-  chrome.storage.local.get({
-    session: [],
-    json: []
-  }, prefs => {
-    if (Array.isArray(prefs.session)) {
-      const entries = prefs.session;
-      chrome.tabs.query({
-        url: '<all_urls>'
-      }, tabs => {
-        // automatic jobs
-        tabs.forEach(tab => {
-          const {hostname} = new URL(tab.url);
-          const entry = prefs.json.filter(j => j.hostname === hostname).pop();
-          if (entry) {
-            enable(Object.assign({
-              dd: 0,
-              hh: 0,
-              mm: 5,
-              ss: 0,
-              current: false,
-              cache: false,
-              forced: false,
-              variation: 0
-            }, entry), tab);
-          }
-        });
-        // session jobs
-        tabs.forEach(tab => {
-          if (!storage[tab.id]) { // only restore if tab has not already been activated manually
-            let entry = entries.filter(e => e.url === tab.url);
-            if (entry.length) {
-              entry = entry[0];
-              if (entry.status) {
-                enable(Object.assign(entry.period, {
-                  current: entry.current || false,
-                  cache: entry.cache || false,
-                  forced: entry.forced || false,
-                  variation: entry.variation || 0
-                }), tab);
-              }
-              else {
-                storage[tab.id] = {
-                  dd: entry.period.dd,
-                  hh: entry.period.hh,
-                  mm: entry.period.mm,
-                  ss: entry.period.ss,
-                  current: entry.current || false,
-                  cache: entry.cache || false,
-                  forced: entry.forced || false,
-                  variation: entry.variation || 0
-                };
-              }
-              app.button.icon(entry.status, tab.id);
-            }
-          }
-        });
+  if (Array.isArray(prefs.session)) {
+    const entries = prefs.session;
+    chrome.tabs.query({
+      url: '<all_urls>'
+    }, tabs => {
+      // automatic jobs
+      tabs.forEach(tab => {
+        const {hostname} = new URL(tab.url);
+        const entry = prefs.json.filter(j => j.hostname === hostname).pop();
+        if (entry) {
+          enable(Object.assign({
+            dd: 0,
+            hh: 0,
+            mm: 5,
+            ss: 0,
+            current: false,
+            cache: false,
+            forced: false,
+            variation: 0
+          }, entry), tab);
+        }
       });
-    }
-  });
+      // session jobs
+      tabs.forEach(tab => {
+        if (!storage[tab.id]) { // only restore if tab has not already been activated manually
+          let entry = entries.filter(e => e.url === tab.url);
+          if (entry.length) {
+            entry = entry[0];
+            if (entry.status) {
+              enable(Object.assign(entry.period, {
+                current: entry.current || false,
+                cache: entry.cache || false,
+                forced: entry.forced || false,
+                variation: entry.variation || 0
+              }), tab);
+            }
+            else {
+              storage[tab.id] = {
+                dd: entry.period.dd,
+                hh: entry.period.hh,
+                mm: entry.period.mm,
+                ss: entry.period.ss,
+                current: entry.current || false,
+                cache: entry.cache || false,
+                forced: entry.forced || false,
+                variation: entry.variation || 0
+              };
+            }
+            app.button.icon(entry.status, tab.id);
+          }
+        }
+      });
+    });
+  }
 };
 window.setTimeout(restore, 3000);
 
@@ -281,17 +288,19 @@ chrome.contextMenus.onClicked.addListener(info => {
 });
 
 // FAQs & Feedback
-chrome.storage.local.get({
-  'version': null,
-  'faqs': navigator.userAgent.indexOf('Firefox') === -1
-}, prefs => {
+chrome.storage.local.get(prefs, ps => {
+  Object.assign(prefs, ps);
+
   const version = chrome.runtime.getManifest().version;
 
   if (prefs.version ? (prefs.faqs && prefs.version !== version) : true) {
+    const p = Boolean(prefs.version);
+    const pVersion = prefs.version;
     chrome.storage.local.set({version}, () => {
       chrome.tabs.create({
         url: 'http://add0n.com/tab-reloader.html?version=' + version +
-          '&type=' + (prefs.version ? ('upgrade&p=' + prefs.version) : 'install')
+          '&type=' + (p ? ('upgrade&p=' + pVersion) : 'install'),
+        active: p === false
       });
     });
   }

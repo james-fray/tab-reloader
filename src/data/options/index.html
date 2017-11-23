@@ -9,6 +9,9 @@
     textarea {
       width: 100%;
     }
+    input[type=number] {
+      width: 45px;
+    }
   </style>
 </head>
 
@@ -21,6 +24,16 @@
     <tr>
       <td><input type="checkbox" id="history"></td>
       <td><label for="history">Automatically restore reloading jobs after a browser restart</label></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Default reloading period is
+        <br>
+        <input type="number" placeholder="dd" id="dd" min="0">
+        <input type="number" placeholder="hh" id="hh" min="0" max="23">
+        <input type="number" placeholder="mm" id="mm" min="0" max="59">
+        <input type="number" placeholder="ss" id="ss" min="0" max="59">
+      </td>
     </tr>
     <tr>
       <td><input type="checkbox" id="faqs"></td>
