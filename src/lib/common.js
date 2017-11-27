@@ -1,13 +1,17 @@
 /* globals app */
 'use strict';
 
+var isFirefox = navigator.userAgent.indexOf('Firefox') !== -1;
+
 var prefs = {
   'badge': true,
   'session': [],
   'json': [],
   'history': true,
   'version': null,
-  'faqs': navigator.userAgent.indexOf('Firefox') === -1
+  'faqs': isFirefox === false,
+  'context.active': false,
+  'context.cache': false
 };
 chrome.storage.onChanged.addListener(ps => {
   Object.keys(ps).forEach(k => prefs[k] = ps[k].newValue);
@@ -260,12 +264,12 @@ window.setTimeout(restore, 3000);
 
 chrome.contextMenus.create({
   title: 'Reload all tabs',
-  id: 'reload-all',
+  id: 'reload.all',
   contexts: ['browser_action']
 });
 chrome.contextMenus.create({
   title: 'Reload all tabs in the current window',
-  id: 'reload-window',
+  id: 'reload.window',
   contexts: ['browser_action']
 });
 chrome.contextMenus.create({
@@ -273,22 +277,129 @@ chrome.contextMenus.create({
   id: 'restore',
   contexts: ['browser_action']
 });
+var contextmenus = () => {
+  if ('TAB' in chrome.contextMenus.ContextType) {
+    chrome.contextMenus.create({
+      title: 'Dont\'t reload',
+      id: 'no.reload',
+      contexts: ['tab']
+    });
+    chrome.contextMenus.create({
+      title: 'Every 10 secs',
+      id: 'reload.0.0.10',
+      contexts: ['tab']
+    });
+    chrome.contextMenus.create({
+      title: 'Every 30 secs',
+      id: 'reload.0.0.30',
+      contexts: ['tab']
+    });
+    chrome.contextMenus.create({
+      title: 'Every minute',
+      id: 'reload.0.1.0',
+      contexts: ['tab']
+    });
+    chrome.contextMenus.create({
+      title: 'Every 5 minutes',
+      id: 'reload.0.5.0',
+      contexts: ['tab']
+    });
+    chrome.contextMenus.create({
+      title: 'Every 15 minutes',
+      id: 'reload.0.15.0',
+      contexts: ['tab']
+    });
+    chrome.contextMenus.create({
+      title: 'Every hour',
+      id: 'reload.1.0.0',
+      contexts: ['tab']
+    });
+    chrome.contextMenus.create({
+      contexts: ['tab'],
+      type: 'separator'
+    });
+    chrome.contextMenus.create({
+      title: 'Use cache while reloading',
+      id: 'context.cache',
+      contexts: ['tab'],
+      type: 'checkbox',
+      checked: prefs['context.cache']
+    });
+    chrome.contextMenus.create({
+      title: 'Do not reload if tab is active',
+      id: 'context.active',
+      contexts: ['tab'],
+      type: 'checkbox',
+      checked: prefs['context.active']
+    });
+    chrome.contextMenus.create({
+      contexts: ['tab'],
+      type: 'separator'
+    });
+    chrome.contextMenus.create({
+      title: 'Reload tab',
+      id: 'reload.now',
+      contexts: ['tab']
+    });
+    chrome.contextMenus.create({
+      title: 'Reload all tabs',
+      id: 'reload.all.c',
+      contexts: ['tab']
+    });
+    chrome.contextMenus.create({
+      title: 'Reload all tabs in the current window',
+      id: 'reload.window.c',
+      contexts: ['tab']
+    });
+  }
+};
 
-chrome.contextMenus.onClicked.addListener(info => {
-  if (info.menuItemId === 'reload-all') {
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === 'reload.all' || info.menuItemId === 'reload.all.c') {
     chrome.tabs.query({}, tabs => tabs.forEach(tab => chrome.tabs.reload(tab.id, {
       bypassCache: true
     })));
   }
-  else if (info.menuItemId === 'reload-window') {
+  else if (info.menuItemId === 'reload.window' || info.menuItemId === 'reload.window.c') {
     chrome.tabs.query({
       currentWindow: true
     }, tabs => tabs.forEach(tab => chrome.tabs.reload(tab.id, {
       bypassCache: true
     })));
   }
+  else if (info.menuItemId === 'reload.now') {
+    chrome.tabs.reload(tab.id, {
+      bypassCache: true
+    });
+  }
   else if (info.menuItemId === 'restore') {
     restore();
+  }
+  else if (info.menuItemId === 'no.reload') {
+    if (storage[tab.id] && storage[tab.id].status) {
+      enable({}, tab);
+    }
+  }
+  else if (info.menuItemId.startsWith('reload.')) {
+    if (storage[tab.id] && storage[tab.id].status) {
+      enable({}, tab);
+    }
+    const [hh, mm, ss] = info.menuItemId.replace('reload.', '').split('.').map(s => Number(s));
+    enable({
+      dd: 0,
+      hh,
+      mm,
+      ss,
+      current: prefs['context.active'],
+      cache: prefs['context.cache'],
+      forced: false,
+      variation: 0
+    }, tab);
+  }
+  else if (info.menuItemId.startsWith('context.')) {
+    chrome.storage.local.set({
+      [info.menuItemId]: info.checked
+    });
   }
 });
 
@@ -309,6 +420,8 @@ chrome.storage.local.get(prefs, ps => {
       });
     });
   }
+
+  contextmenus();
 });
 
 {

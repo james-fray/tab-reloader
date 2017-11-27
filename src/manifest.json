@@ -3,7 +3,7 @@
   "short_name": "itreloader",
   "description": "An easy-to-use tab reloader with custom reloading time settings for individual tabs",
   "author": "James Fray",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "manifest_version": 2,
   "permissions": [
     "storage",

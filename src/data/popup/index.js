@@ -95,10 +95,10 @@ chrome.runtime.onMessage.addListener(request => {
       check();
     }
     Object.assign(dom, {
-      dd: obj.dd || prefs.dd,
-      hh: obj.hh || prefs.hh,
-      mm: obj.mm || prefs.mm,
-      ss: obj.ss || prefs.ss,
+      dd: isNaN(obj.dd) ? prefs.dd : obj.dd,
+      hh: isNaN(obj.hh) ? prefs.hh : obj.hh,
+      mm: isNaN(obj.mm) ? prefs.mm : obj.mm,
+      ss: isNaN(obj.ss) ? prefs.ss : obj.ss,
       vr: obj.variation || 0,
       jobs: obj.jobs || 0
     });

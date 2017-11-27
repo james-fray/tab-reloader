@@ -1,6 +1,6 @@
 'use strict';
 
-var restore = () => chrome.storage.local.get({
+var config = {
   badge: true,
   faqs: true,
   history: true,
@@ -9,7 +9,9 @@ var restore = () => chrome.storage.local.get({
   'hh': 0,
   'mm': 5,
   'ss': 0
-}, prefs => {
+};
+
+var restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('badge').checked = prefs.badge;
   document.getElementById('faqs').checked = prefs.faqs;
   document.getElementById('history').checked = prefs.history;
@@ -56,15 +58,4 @@ document.getElementById('save').addEventListener('click', () => {
   }
   window.setTimeout(() => info.textContent = '', 3000);
 });
-document.getElementById('reset').addEventListener('click', () => {
-  chrome.storage.local.set({
-    'badge': true,
-    'faqs': true,
-    'history': true,
-    'json': [],
-    'dd': 0,
-    'hh': 0,
-    'mm': 5,
-    'ss': 0
-  }, restore);
-});
+document.getElementById('reset').addEventListener('click', () => chrome.storage.local.set(config, restore));
