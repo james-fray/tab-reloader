@@ -9,9 +9,10 @@ var prefs = {
   'json': [],
   'history': true,
   'version': null,
+  'last-update': 0,
   'faqs': isFirefox === false,
   'context.active': false,
-  'context.cache': false
+  'context.cache': false,
 };
 chrome.storage.onChanged.addListener(ps => {
   Object.keys(ps).forEach(k => prefs[k] = ps[k].newValue);
@@ -67,6 +68,7 @@ function toPopup(id) {
       status: obj.status,
       current: obj.current,
       cache: obj.cache,
+      form: obj.form,
       dd: obj.dd,
       hh: obj.hh,
       mm: obj.mm,
@@ -106,6 +108,19 @@ chrome.webNavigation.onDOMContentLoaded.addListener(d => {
   }
 });
 
+function reload(tabId, obj) {
+  if (obj.form) {
+    chrome.tabs.get(tabId, tab => chrome.tabs.update(tabId, {
+      url: tab.url.split('#')[0].split('?')[0]
+    }));
+  }
+  else {
+    chrome.tabs.reload(tabId, {
+      bypassCache: obj.cache !== true
+    });
+  }
+}
+
 function enable(obj, tab) {
   const id = tab.id;
   storage[id] = storage[id] || {};
@@ -126,15 +141,11 @@ function enable(obj, tab) {
         if (tab) {
           if (storage[id].current) {
             if (!tab.active) {
-              chrome.tabs.reload(tab.id, {
-                bypassCache: storage[id].cache !== true
-              });
+              reload(tab.id, storage[id]);
             }
           }
           else {
-            chrome.tabs.reload(tab.id, {
-              bypassCache: storage[id].cache !== true
-            });
+            reload(tab.id, storage[id]);
           }
           // repeat although this might get overwritten after reload.
           repeat(storage[id]);
@@ -154,6 +165,7 @@ function enable(obj, tab) {
     status: storage[id].status,
     current: obj.current,
     cache: obj.cache,
+    form: obj.form,
     variation: obj.variation,
     forced: obj.forced,
     period: {
@@ -222,6 +234,7 @@ var restore = () => {
             ss: 0,
             current: false,
             cache: false,
+            form: false,
             forced: false,
             variation: 0
           }, entry), tab);
@@ -237,6 +250,7 @@ var restore = () => {
               enable(Object.assign(entry.period, {
                 current: entry.current || false,
                 cache: entry.cache || false,
+                form: entry.form || false,
                 forced: entry.forced || false,
                 variation: entry.variation || 0
               }), tab);
@@ -249,6 +263,7 @@ var restore = () => {
                 ss: entry.period.ss,
                 current: entry.current || false,
                 cache: entry.cache || false,
+                form: entry.form || false,
                 forced: entry.forced || false,
                 variation: entry.variation || 0
               };
@@ -356,19 +371,19 @@ var contextmenus = () => {
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === 'reload.all' || info.menuItemId === 'reload.all.c') {
-    chrome.tabs.query({}, tabs => tabs.forEach(tab => chrome.tabs.reload(tab.id, {
+    chrome.tabs.query({}, tabs => tabs.forEach(tab => reload(tab.id, {
       bypassCache: true
     })));
   }
   else if (info.menuItemId === 'reload.window' || info.menuItemId === 'reload.window.c') {
     chrome.tabs.query({
       currentWindow: true
-    }, tabs => tabs.forEach(tab => chrome.tabs.reload(tab.id, {
+    }, tabs => tabs.forEach(tab => reload(tab.id, {
       bypassCache: true
     })));
   }
   else if (info.menuItemId === 'reload.now') {
-    chrome.tabs.reload(tab.id, {
+    reload(tab.id, {
       bypassCache: true
     });
   }
@@ -392,6 +407,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
       ss,
       current: prefs['context.active'],
       cache: prefs['context.cache'],
+      form: false,
       forced: false,
       variation: 0
     }, tab);
@@ -403,28 +419,36 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   }
 });
 
-// FAQs & Feedback
+// FAQs & Feedback & init
 chrome.storage.local.get(prefs, ps => {
   Object.assign(prefs, ps);
 
   const version = chrome.runtime.getManifest().version;
 
   if (prefs.version ? (prefs.faqs && prefs.version !== version) : true) {
-    const p = Boolean(prefs.version);
-    const pVersion = prefs.version;
-    chrome.storage.local.set({version}, () => {
-      chrome.tabs.create({
-        url: 'http://add0n.com/tab-reloader.html?version=' + version +
-          '&type=' + (p ? ('upgrade&p=' + pVersion) : 'install'),
-        active: p === false
-      });
+    const now = Date.now();
+    const doUpdate = (now - prefs['last-update']) / 1000 / 60 / 60 / 24 > 30;
+    const pversion = prefs.version;
+    chrome.storage.local.set({
+      version,
+      'last-update': doUpdate ? Date.now() : prefs['last-update']
+    }, () => {
+      // do not display the FAQs page if last-update occurred less than 30 days ago.
+      if (doUpdate) {
+        const p = Boolean(pversion);
+        chrome.tabs.create({
+          url: chrome.runtime.getManifest().homepage_url + '?version=' + version +
+            '&type=' + (p ? ('upgrade&p=' + pversion) : 'install'),
+          active: p === false
+        });
+      }
     });
   }
-
-  contextmenus();
 });
 
 {
   const {name, version} = chrome.runtime.getManifest();
-  chrome.runtime.setUninstallURL('http://add0n.com/feedback.html?name=' + name + '&version=' + version);
+  chrome.runtime.setUninstallURL(
+    chrome.runtime.getManifest().homepage_url + '?rd=feedback&name=' + name + '&version=' + version
+  );
 }

@@ -68,6 +68,7 @@ tr[mode=info] {
 
 td[data-type=current],
 td[data-type=cache],
+td[data-type=form],
 td[data-type=enable] {
   cursor: pointer;
   width: 75px;
@@ -77,12 +78,14 @@ td[data-type=enable] {
 }
 td[data-type=current]:before,
 td[data-type=cache]:before,
+td[data-type=form]:before,
 td[data-type=enable]:before {
   padding-right: 5px;
 }
 
 body[data-enabled=true] [data-type='current'],
 body[data-enabled=true] [data-type='cache'],
+body[data-enabled=true] [data-type='form'],
 body[data-enabled=true] [data-type='hh'],
 body[data-enabled=true] [data-type='mm'],
 body[data-enabled=true] [data-type='ss'],

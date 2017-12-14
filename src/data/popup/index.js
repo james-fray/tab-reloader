@@ -33,6 +33,14 @@ var dom = {
     tmp.textContent = val ? 'Enabled' : 'Disabled';
     tmp.setAttribute('class', 'icon-toggle-' + (val ? 'on' : 'off'));
   },
+  get form() {
+    return document.querySelector('[data-type=form]').classList.contains('icon-toggle-on');
+  },
+  set form(val) {
+    var tmp = document.querySelector('[data-type=form]');
+    tmp.textContent = val ? 'Enabled' : 'Disabled';
+    tmp.setAttribute('class', 'icon-toggle-' + (val ? 'on' : 'off'));
+  },
   get dd() {
     return document.querySelector('[data-type=dd]').value;
   },
@@ -88,6 +96,7 @@ chrome.runtime.onMessage.addListener(request => {
     dom.enable = obj.status;
     dom.current = obj.current;
     dom.cache = obj.cache;
+    dom.form = obj.form;
     if (!obj.status) {
       id = window.clearInterval(id);
     }
@@ -128,7 +137,8 @@ document.addEventListener('click', e => {
         variation: Number(dom.vr),
         current: dom.current,
         forced: e.shiftKey, // forced period
-        cache: dom.cache
+        cache: dom.cache,
+        form: dom.form,
       }
     });
   }
@@ -137,6 +147,9 @@ document.addEventListener('click', e => {
   }
   else if (type === 'cache') {
     dom.cache = !dom.cache;
+  }
+  else if (type === 'form') {
+    dom.form = !dom.form;
   }
 });
 
