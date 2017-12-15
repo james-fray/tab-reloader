@@ -423,6 +423,8 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 chrome.storage.local.get(prefs, ps => {
   Object.assign(prefs, ps);
 
+  contextmenus();
+
   const version = chrome.runtime.getManifest().version;
 
   if (prefs.version ? (prefs.faqs && prefs.version !== version) : true) {
