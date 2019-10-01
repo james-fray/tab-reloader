@@ -1,18 +1,18 @@
 'use strict';
 
-var prefs = {
+const prefs = {
   'dd': 0,
   'hh': 0,
   'mm': 5,
   'ss': 0
 };
 
-var dom = {
+const dom = {
   get enable() {
     return document.querySelector('[data-type=enable]');
   },
   set enable(val) {
-    var tmp = document.querySelector('[data-type=enable]');
+    const tmp = document.querySelector('[data-type=enable]');
     tmp.textContent = val ? 'Enabled' : 'Disabled';
     tmp.setAttribute('class', 'icon-toggle-' + (val ? 'on' : 'off'));
     document.body.dataset.enabled = val;
@@ -21,7 +21,7 @@ var dom = {
     return document.querySelector('[data-type=current]').classList.contains('icon-toggle-on');
   },
   set current(val) {
-    var tmp = document.querySelector('[data-type=current]');
+    const tmp = document.querySelector('[data-type=current]');
     tmp.textContent = val ? 'Enabled' : 'Disabled';
     tmp.setAttribute('class', 'icon-toggle-' + (val ? 'on' : 'off'));
   },
@@ -29,7 +29,7 @@ var dom = {
     return document.querySelector('[data-type=cache]').classList.contains('icon-toggle-on');
   },
   set cache(val) {
-    var tmp = document.querySelector('[data-type=cache]');
+    const tmp = document.querySelector('[data-type=cache]');
     tmp.textContent = val ? 'Enabled' : 'Disabled';
     tmp.setAttribute('class', 'icon-toggle-' + (val ? 'on' : 'off'));
   },
@@ -37,7 +37,7 @@ var dom = {
     return document.querySelector('[data-type=form]').classList.contains('icon-toggle-on');
   },
   set form(val) {
-    var tmp = document.querySelector('[data-type=form]');
+    const tmp = document.querySelector('[data-type=form]');
     tmp.textContent = val ? 'Enabled' : 'Disabled';
     tmp.setAttribute('class', 'icon-toggle-' + (val ? 'on' : 'off'));
   },
@@ -76,10 +76,10 @@ var dom = {
   },
   set jobs(val) { // jshint ignore:line
     document.querySelector('[data-type=jobs]').textContent = val;
-  },
+  }
 };
-var id;
-var tab;
+let id;
+let tab;
 
 function check() {
   window.clearInterval(id);
@@ -138,7 +138,7 @@ document.addEventListener('click', e => {
         current: dom.current,
         forced: e.shiftKey, // forced period
         cache: dom.cache,
-        form: dom.form,
+        form: dom.form
       }
     });
   }

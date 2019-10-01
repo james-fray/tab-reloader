@@ -2,9 +2,10 @@
 <html>
 <head>
   <title>Options Page :: Tab Reloader</title>
+  <meta charset="utf-8">
   <style>
     body {
-      padding: 10px;
+      min-width: 500px;
     }
     textarea {
       width: 100%;
@@ -22,17 +23,24 @@
       <td><label for="badge">Display the total number of active jobs in the badge area</label></td>
     </tr>
     <tr>
+      <td></td>
+      <td><label for="color">Badge color is:</label>
+        <div style="float: right;"><input type="color" id="color"></div>
+      </td>
+    </tr>
+    <tr>
       <td><input type="checkbox" id="history"></td>
       <td><label for="history">Automatically restore reloading jobs after a browser restart</label></td>
     </tr>
     <tr>
       <td></td>
-      <td>Default reloading period is
-        <br>
-        <input type="number" placeholder="dd" id="dd" min="0">
-        <input type="number" placeholder="hh" id="hh" min="0" max="23">
-        <input type="number" placeholder="mm" id="mm" min="0" max="59">
-        <input type="number" placeholder="ss" id="ss" min="0" max="59">
+      <td>Default reloading period is:
+        <div style="float: right;">
+          <input type="number" placeholder="dd" id="dd" min="0">
+          <input type="number" placeholder="hh" id="hh" min="0" max="23">
+          <input type="number" placeholder="mm" id="mm" min="0" max="59">
+          <input type="number" placeholder="ss" id="ss" min="0" max="59">
+        </div>
       </td>
     </tr>
     <tr>
@@ -40,23 +48,28 @@
       <td><label for="faqs">Open FAQs page on updates</label></td>
     </tr>
     <tr>
-      <td colspan="2" style="padding-top: 20px">Custom Jobs:</td>
+      <td colspan="2" style="padding-top: 20px">Custom Jobs (<a href="#" id="example">Inset a Sample</a>):</td>
+    </tr>
+    <tr>
+      <td colspan="2">Keywords: dd: Days, hh: Hours, mm: Minutes, ss: Seconds, variation: Variation, current: Active Tab, cache: Use Cache, form: Form Submission</td>
     </tr>
     <tr>
       <td colspan="2"><textarea rows="6" id="json"></textarea></td>
     </tr>
     <tr>
-      <td colspan="2" style="color: #bbb">JSON list of hostnames to set automatic refresh after each start-up. Example: [{"hostname": "www.google.com", "dd": 0, "hh": 0, "mm": 1, "ss": 0}, {"hostname": "www.bing.com", "dd": 0, "hh": 0, "mm": 1, "ss": 30}]</td>
+      <td colspan="2" style="color: #888">JSON list of hostnames to set automatic refresh after each start-up</td>
     </tr>
   </table>
 
-  <div>
+  <div id="explore"></div>
+  <p>
     <button id="clear" title="Clear session restore (clear memory of reloading jobs)">Clear</button>
     <button id="reset" title="Reset settings to the defaults">Reset</button>
-    <button id="save" title="Save settings">Save</button>
+    <button id="support" title="Support Development">Support Development</button> - <button id="save" title="Save settings">Save</button>
     <span id="info"></span>
-  </div>
+  </p>
 
   <script src="index.js"></script>
+  <script async src="matched.js"></script>
 </body>
 </html>

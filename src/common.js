@@ -1,19 +1,48 @@
-/* globals app */
 'use strict';
 
-var isFirefox = navigator.userAgent.indexOf('Firefox') !== -1;
+const app = {};
+app.button = {
+  icon(mode, tabId) {
+    const path = 'icons/' + (mode ? '' : 'disabled/');
+    chrome.browserAction.setIcon({
+      tabId,
+      path: {
+        '16': '/data/' + path + '16.png',
+        '18': '/data/' + path + '18.png',
+        '19': '/data/' + path + '19.png',
+        '32': '/data/' + path + '32.png',
+        '36': '/data/' + path + '36.png',
+        '38': '/data/' + path + '38.png'
+      }
+    });
+  },
+  set label(label) {
+    chrome.browserAction.setTitle({
+      title: label
+    });
+  },
+  set badge(val) {
+    chrome.browserAction.setBadgeText({
+      text: String(val ? val : '')
+    });
+  },
+  set color(val) {
+    chrome.browserAction.setBadgeBackgroundColor({
+      color: val
+    });
+  }
+};
 
-var prefs = {
+const prefs = {
   'badge': true,
+  'color': '#797979',
   'session': [],
   'json': [],
   'history': true,
-  'version': null,
-  'last-update': 0,
-  'faqs': isFirefox === false,
   'context.active': false,
-  'context.cache': false,
+  'context.cache': false
 };
+
 chrome.storage.onChanged.addListener(ps => {
   Object.keys(ps).forEach(k => prefs[k] = ps[k].newValue);
   if (ps.history && ps.history.newValue === false) {
@@ -21,15 +50,18 @@ chrome.storage.onChanged.addListener(ps => {
       'session': []
     });
   }
+  if (ps.color) {
+    app.button.color = ps.color.newValue;
+  }
 });
 
-var storage = {};
+const storage = {};
 
-var toSecond = obj => Math.max(
+const toSecond = obj => Math.max(
   obj.forced ? 1000 : 10000, // allow reloading up to a second!
   obj.dd * 1000 * 60 * 60 * 24 + obj.hh * 1000 * 60 * 60 + obj.mm * 1000 * 60 + obj.ss * 1000
 );
-var session = obj => {
+const session = obj => {
   if (prefs.history === false) {
     return;
   }
@@ -41,16 +73,6 @@ var session = obj => {
   session = session.slice(-20);
   chrome.storage.local.set({session});
 };
-
-Object.values = Object.values || function(obj) {
-  const tmp = [];
-  for (const n in obj) {
-    tmp.push(obj[n]);
-  }
-  return tmp;
-};
-
-app.button.color = '#797979';
 
 function count() {
   const num = Object.values(storage).reduce((p, c) => p + (c.status ? 1 : 0), 0);
@@ -96,6 +118,7 @@ function repeat(obj) {
   window.clearTimeout(obj.id);
   obj.id = window.setTimeout(obj.callback, period);
 }
+
 chrome.webNavigation.onDOMContentLoaded.addListener(d => {
   if (d.frameId === 0) {
     const id = d.tabId;
@@ -187,7 +210,10 @@ chrome.runtime.onMessage.addListener(request => {
     const id = request.id;
     storage[id] = storage[id] || {};
     const time = storage[id].time;
-    let dd, hh, mm, ss;
+    let dd;
+    let hh;
+    let mm;
+    let ss;
     if (time && storage[id].status) {
       const period = storage[id].vperiod || toSecond(storage[id]);
       let diff = period - ((new Date()).getTime() - time);
@@ -216,7 +242,7 @@ chrome.tabs.onRemoved.addListener(id => {
 });
 
 // restore
-var restore = () => {
+const restore = () => {
   if (Array.isArray(prefs.session)) {
     const entries = prefs.session;
     chrome.tabs.query({
@@ -292,7 +318,7 @@ chrome.contextMenus.create({
   id: 'restore',
   contexts: ['browser_action']
 });
-var contextmenus = () => {
+const contextmenus = () => {
   if ('TAB' in chrome.contextMenus.ContextType) {
     chrome.contextMenus.create({
       title: 'Dont\'t reload',
@@ -419,38 +445,35 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   }
 });
 
-// FAQs & Feedback & init
+// init
 chrome.storage.local.get(prefs, ps => {
   Object.assign(prefs, ps);
-
+  app.button.color = ps.color;
   contextmenus();
-
-  const version = chrome.runtime.getManifest().version;
-
-  if (prefs.version ? (prefs.faqs && prefs.version !== version) : true) {
-    const now = Date.now();
-    const doUpdate = (now - prefs['last-update']) / 1000 / 60 / 60 / 24 > 30;
-    const pversion = prefs.version;
-    chrome.storage.local.set({
-      version,
-      'last-update': doUpdate ? Date.now() : prefs['last-update']
-    }, () => {
-      // do not display the FAQs page if last-update occurred less than 30 days ago.
-      if (doUpdate) {
-        const p = Boolean(pversion);
-        chrome.tabs.create({
-          url: chrome.runtime.getManifest().homepage_url + '?version=' + version +
-            '&type=' + (p ? ('upgrade&p=' + pversion) : 'install'),
-          active: p === false
-        });
+});
+// FAQs & Feedback
+{
+  const {onInstalled, setUninstallURL, getManifest} = chrome.runtime;
+  const {name, version} = getManifest();
+  const page = getManifest().homepage_url;
+  onInstalled.addListener(({reason, previousVersion}) => {
+    chrome.storage.local.get({
+      'faqs': true,
+      'last-update': 0
+    }, prefs => {
+      if (reason === 'install' || (prefs.faqs && reason === 'update')) {
+        const doUpdate = (Date.now() - prefs['last-update']) / 1000 / 60 / 60 / 24 > 45;
+        if (doUpdate && previousVersion !== version) {
+          chrome.tabs.create({
+            url: page + '?version=' + version +
+              (previousVersion ? '&p=' + previousVersion : '') +
+              '&type=' + reason,
+            active: reason === 'install'
+          });
+          chrome.storage.local.set({'last-update': Date.now()});
+        }
       }
     });
-  }
-});
-
-{
-  const {name, version} = chrome.runtime.getManifest();
-  chrome.runtime.setUninstallURL(
-    chrome.runtime.getManifest().homepage_url + '?rd=feedback&name=' + name + '&version=' + version
-  );
+  });
+  setUninstallURL(page + '?rd=feedback&name=' + encodeURIComponent(name) + '&version=' + version);
 }

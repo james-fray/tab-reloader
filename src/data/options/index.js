@@ -1,18 +1,20 @@
 'use strict';
 
-var config = {
-  badge: true,
-  faqs: true,
-  history: true,
-  json: [],
+const config = {
+  'badge': true,
+  'color': '#797979',
+  'faqs': true,
+  'history': true,
+  'json': [],
   'dd': 0,
   'hh': 0,
   'mm': 5,
   'ss': 0
 };
 
-var restore = () => chrome.storage.local.get(config, prefs => {
+const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('badge').checked = prefs.badge;
+  document.getElementById('color').value = prefs.color;
   document.getElementById('faqs').checked = prefs.faqs;
   document.getElementById('history').checked = prefs.history;
   document.getElementById('json').value = JSON.stringify(prefs.json, null, '  ');
@@ -30,6 +32,7 @@ document.getElementById('save').addEventListener('click', () => {
   try {
     chrome.storage.local.set({
       badge,
+      color: document.getElementById('color').value,
       faqs: document.getElementById('faqs').checked,
       history: document.getElementById('history').checked,
       json: JSON.parse(document.getElementById('json').value.trim() || '[]'),
@@ -58,4 +61,26 @@ document.getElementById('save').addEventListener('click', () => {
   }
   window.setTimeout(() => info.textContent = '', 3000);
 });
+// reset
 document.getElementById('reset').addEventListener('click', () => chrome.storage.local.set(config, restore));
+// support
+document.getElementById('support').addEventListener('click', () => chrome.tabs.create({
+  url: chrome.runtime.getManifest().homepage_url + '?rd=donate'
+}));
+
+document.getElementById('example').addEventListener('click', () => {
+  document.getElementById('json').value = JSON.stringify([{
+    'hostname': 'www.google.com',
+    'dd': 0,
+    'hh': 0,
+    'mm': 1,
+    'ss': 0
+  }, {
+    'hostname':
+    'www.bing.com',
+    'dd': 0,
+    'hh': 0,
+    'mm': 1,
+    'ss': 30
+  }], null, 2);
+});
