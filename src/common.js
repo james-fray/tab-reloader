@@ -33,14 +33,20 @@ app.button = {
   }
 };
 
+const match = (str, rule) => {
+  const escapeRegex = str => str.replace(/([.*+?^=!:${}()|[\]/\\])/g, '\\$1');
+  return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
+};
+
 const prefs = {
   'badge': true,
-  'color': '#797979',
+  'color': '#5e5e5e',
   'session': [],
   'json': [],
   'history': true,
   'context.active': false,
-  'context.cache': false
+  'context.cache': false,
+  'dynamic.json': false
 };
 
 chrome.storage.onChanged.addListener(ps => {
@@ -123,6 +129,23 @@ chrome.webNavigation.onDOMContentLoaded.addListener(d => {
   if (d.frameId === 0) {
     const id = d.tabId;
     if (!storage[id] || !storage[id].status) {
+      if (prefs['dynamic.json']) {
+        const {hostname} = new URL(d.url);
+        const entry = prefs.json.filter(j => match(hostname, j.hostname)).pop();
+        if (entry) {
+          enable(Object.assign({
+            dd: 0,
+            hh: 0,
+            mm: 5,
+            ss: 0,
+            current: false,
+            cache: false,
+            form: false,
+            forced: false,
+            variation: 0
+          }, entry), {id, url: d.url});
+        }
+      }
       return;
     }
     storage[id].time = (new Date()).getTime();
@@ -251,7 +274,7 @@ const restore = () => {
       // automatic jobs
       tabs.forEach(tab => {
         const {hostname} = new URL(tab.url);
-        const entry = prefs.json.filter(j => j.hostname === hostname).pop();
+        const entry = prefs.json.filter(j => match(hostname, j.hostname)).pop();
         if (entry) {
           enable(Object.assign({
             dd: 0,

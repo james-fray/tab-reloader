@@ -51,13 +51,20 @@
       <td colspan="2" style="padding-top: 20px">Custom Jobs (<a href="#" id="example">Inset a Sample</a>):</td>
     </tr>
     <tr>
-      <td colspan="2">Keywords: dd: Days, hh: Hours, mm: Minutes, ss: Seconds, variation: Variation, current: Active Tab, cache: Use Cache, form: Form Submission</td>
+      <td colspan="2">Keywords: hostname: Hostname (e.g.: www.google.com, *.google.com),dd: Days, hh: Hours, mm: Minutes, ss: Seconds, variation: Variation, current: Active Tab, cache: Use Cache, form: Form Submission</td>
     </tr>
     <tr>
       <td colspan="2"><textarea rows="6" id="json"></textarea></td>
     </tr>
     <tr>
-      <td colspan="2" style="color: #888">JSON list of hostnames to set automatic refresh after each start-up</td>
+      <td colspan="2" style="color: #888">JSON list of hostnames to set an automatic refresh after each start-up. You can manually ask the extension to set the JSON rules from "Restore old reloading jobs" context menu over the browser action button.</td>
+    </tr>
+    <tr>
+      <td><input type="checkbox" id="dynamic.json"></td>
+      <td><label for="dynamic.json">Always check to install reloading jobs from the JSON object when a new page loads</label></td>
+    </tr>
+    <tr>
+      <td colspan="2" style="color: #888">If this option is checked and the new page's hostname matches a key in the JSON object, a new reloading job will automatically be set for the current tab.</td>
     </tr>
   </table>
 

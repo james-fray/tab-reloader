@@ -2,14 +2,15 @@
 
 const config = {
   'badge': true,
-  'color': '#797979',
+  'color': '#5e5e5e',
   'faqs': true,
   'history': true,
   'json': [],
   'dd': 0,
   'hh': 0,
   'mm': 5,
-  'ss': 0
+  'ss': 0,
+  'dynamic.json': false
 };
 
 const restore = () => chrome.storage.local.get(config, prefs => {
@@ -22,6 +23,7 @@ const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('hh').value = prefs.hh;
   document.getElementById('mm').value = prefs.mm;
   document.getElementById('ss').value = prefs.ss;
+  document.getElementById('dynamic.json').checked = prefs['dynamic.json'];
 });
 restore();
 
@@ -32,14 +34,15 @@ document.getElementById('save').addEventListener('click', () => {
   try {
     chrome.storage.local.set({
       badge,
-      color: document.getElementById('color').value,
-      faqs: document.getElementById('faqs').checked,
-      history: document.getElementById('history').checked,
-      json: JSON.parse(document.getElementById('json').value.trim() || '[]'),
-      dd: Math.max(Number(document.getElementById('dd').value), 0),
-      hh: Math.min(Math.max(Number(document.getElementById('hh').value), 0), 23),
-      mm: Math.min(Math.max(Number(document.getElementById('mm').value), 0), 59),
-      ss: Math.min(Math.max(Number(document.getElementById('ss').value), 0), 59)
+      'color': document.getElementById('color').value,
+      'faqs': document.getElementById('faqs').checked,
+      'history': document.getElementById('history').checked,
+      'json': JSON.parse(document.getElementById('json').value.trim() || '[]'),
+      'dd': Math.max(Number(document.getElementById('dd').value), 0),
+      'hh': Math.min(Math.max(Number(document.getElementById('hh').value), 0), 23),
+      'mm': Math.min(Math.max(Number(document.getElementById('mm').value), 0), 59),
+      'ss': Math.min(Math.max(Number(document.getElementById('ss').value), 0), 59),
+      'dynamic.json': document.getElementById('dynamic.json').checked
     }, () => {
       info.textContent = 'Options saved';
       restore();
@@ -70,7 +73,7 @@ document.getElementById('support').addEventListener('click', () => chrome.tabs.c
 // example
 document.getElementById('example').addEventListener('click', () => {
   document.getElementById('json').value = JSON.stringify([{
-    'hostname': 'www.google.com',
+    'hostname': '*.google.com',
     'dd': 0,
     'hh': 0,
     'mm': 1,
