@@ -67,7 +67,7 @@ document.getElementById('reset').addEventListener('click', () => chrome.storage.
 document.getElementById('support').addEventListener('click', () => chrome.tabs.create({
   url: chrome.runtime.getManifest().homepage_url + '?rd=donate'
 }));
-
+// example
 document.getElementById('example').addEventListener('click', () => {
   document.getElementById('json').value = JSON.stringify([{
     'hostname': 'www.google.com',
@@ -83,4 +83,50 @@ document.getElementById('example').addEventListener('click', () => {
     'mm': 1,
     'ss': 30
   }], null, 2);
+});
+// export
+document.getElementById('export').addEventListener('click', () => {
+  chrome.storage.local.get(null, prefs => {
+    const text = JSON.stringify(prefs, null, 2);
+    const blob = new Blob([text], {type: 'application/json'});
+    const objectURL = URL.createObjectURL(blob);
+    Object.assign(document.createElement('a'), {
+      href: objectURL,
+      type: 'application/json',
+      download: 'tab-reloader-preferences.json'
+    }).dispatchEvent(new MouseEvent('click'));
+    setTimeout(() => URL.revokeObjectURL(objectURL));
+  });
+});
+// import
+document.getElementById('import').addEventListener('click', () => {
+  const fileInput = document.createElement('input');
+  fileInput.style.display = 'none';
+  fileInput.type = 'file';
+  fileInput.accept = '.json';
+  fileInput.acceptCharset = 'utf-8';
+
+  document.body.appendChild(fileInput);
+  fileInput.initialValue = fileInput.value;
+  fileInput.onchange = readFile;
+  fileInput.click();
+
+  function readFile() {
+    if (fileInput.value !== fileInput.initialValue) {
+      const file = fileInput.files[0];
+      if (file.size > 100e6) {
+        console.warn('100MB backup? I don\'t believe you.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = event => {
+        fileInput.remove();
+        const json = JSON.parse(event.target.result);
+        chrome.storage.local.clear(() => {
+          chrome.storage.local.set(json, () => chrome.runtime.reload());
+        });
+      };
+      reader.readAsText(file, 'utf-8');
+    }
+  }
 });

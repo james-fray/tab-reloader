@@ -321,7 +321,7 @@ chrome.contextMenus.create({
 const contextmenus = () => {
   if ('TAB' in chrome.contextMenus.ContextType) {
     chrome.contextMenus.create({
-      title: 'Dont\'t reload',
+      title: 'Don\'t reload',
       id: 'no.reload',
       contexts: ['tab']
     });
