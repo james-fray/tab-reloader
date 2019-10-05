@@ -108,6 +108,35 @@ function toPopup(id) {
   });
 }
 
+function timeout(id = 'timer-' + Math.random(), period, callback) {
+  // console.log(id, period);
+  if (period < 2 * 60 * 1000) {
+    window.clearTimeout(id);
+    return window.setTimeout(callback, period);
+  }
+  else {
+    timeout.cache[id] = callback;
+    chrome.alarms.clear(id, () => chrome.alarms.create(id, {
+      when: Date.now() + period
+    }));
+    return id;
+  }
+}
+timeout.stop = id => {
+  if (timeout.cache[id]) {
+    chrome.alarms.clear(id, () => {});
+  }
+  else {
+    window.clearTimeout(id);
+  }
+};
+timeout.cache = {};
+chrome.alarms.onAlarm.addListener(({name}) => {
+  if (timeout.cache[name]) {
+    timeout.cache[name]();
+  }
+});
+
 function repeat(obj) {
   function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -121,8 +150,7 @@ function repeat(obj) {
     period = Math.max(period, 7000);
   }
   obj.vperiod = period;
-  window.clearTimeout(obj.id);
-  obj.id = window.setTimeout(obj.callback, period);
+  obj.id = timeout(obj.id, period, obj.callback);
 }
 
 chrome.webNavigation.onDOMContentLoaded.addListener(d => {
@@ -171,7 +199,7 @@ function enable(obj, tab) {
   const id = tab.id;
   storage[id] = storage[id] || {};
   Object.assign(storage[id], obj, {
-    id: window.clearTimeout(storage[id].id),
+    id: timeout.stop(storage[id].id),
     status: !storage[id].status,
     time: (new Date()).getTime(),
     msg: ''
@@ -197,7 +225,7 @@ function enable(obj, tab) {
           repeat(storage[id]);
         }
         else {
-          window.clearTimeout(storage[id].id);
+          timeout.stop(storage[id].id);
           delete storage[id];
         }
       });
@@ -258,7 +286,7 @@ chrome.runtime.onMessage.addListener(request => {
 
 chrome.tabs.onRemoved.addListener(id => {
   if (storage[id] && storage[id].id) {
-    window.clearTimeout(storage[id].id);
+    timeout.stop(storage[id].id);
     delete storage[id];
     count();
   }
@@ -324,7 +352,6 @@ const restore = () => {
     });
   }
 };
-window.setTimeout(restore, 3000);
 
 chrome.contextMenus.create({
   title: 'Reload all tabs',
@@ -469,10 +496,13 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 // init
-chrome.storage.local.get(prefs, ps => {
-  Object.assign(prefs, ps);
-  app.button.color = ps.color;
-  contextmenus();
+chrome.alarms.clearAll(() => {
+  chrome.storage.local.get(prefs, ps => {
+    Object.assign(prefs, ps);
+    app.button.color = ps.color;
+    contextmenus();
+  });
+  window.setTimeout(restore, 3000);
 });
 // FAQs & Feedback
 {
