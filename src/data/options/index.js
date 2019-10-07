@@ -19,6 +19,7 @@ document.getElementById('time').textContent = (new Date()).toLocaleString();
 
 const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('badge').checked = prefs.badge;
+  document.getElementById('log').checked = prefs.log;
   document.getElementById('color').value = prefs.color;
   document.getElementById('faqs').checked = prefs.faqs;
   document.getElementById('history').checked = prefs.history;
@@ -41,6 +42,7 @@ document.getElementById('save').addEventListener('click', () => {
       badge,
       'color': document.getElementById('color').value,
       'faqs': document.getElementById('faqs').checked,
+      'log': document.getElementById('log').checked,
       'history': document.getElementById('history').checked,
       'json': JSON.parse(document.getElementById('json').value.trim() || '[]'),
       'dd': Math.max(Number(document.getElementById('dd').value), 0),
