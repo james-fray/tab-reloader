@@ -10,8 +10,12 @@ const config = {
   'hh': 0,
   'mm': 5,
   'ss': 0,
-  'dynamic.json': false
+  'dynamic.json': false,
+  'policy': {},
+  'log': false
 };
+
+document.getElementById('time').textContent = (new Date()).toLocaleString();
 
 const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('badge').checked = prefs.badge;
@@ -24,6 +28,7 @@ const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('mm').value = prefs.mm;
   document.getElementById('ss').value = prefs.ss;
   document.getElementById('dynamic.json').checked = prefs['dynamic.json'];
+  document.getElementById('policy').value = JSON.stringify(prefs.policy, null, '  ');
 });
 restore();
 
@@ -42,7 +47,8 @@ document.getElementById('save').addEventListener('click', () => {
       'hh': Math.min(Math.max(Number(document.getElementById('hh').value), 0), 23),
       'mm': Math.min(Math.max(Number(document.getElementById('mm').value), 0), 59),
       'ss': Math.min(Math.max(Number(document.getElementById('ss').value), 0), 59),
-      'dynamic.json': document.getElementById('dynamic.json').checked
+      'dynamic.json': document.getElementById('dynamic.json').checked,
+      'policy': JSON.parse(document.getElementById('policy').value.trim() || '{}')
     }, () => {
       info.textContent = 'Options saved';
       restore();
@@ -69,6 +75,10 @@ document.getElementById('reset').addEventListener('click', () => chrome.storage.
 // support
 document.getElementById('support').addEventListener('click', () => chrome.tabs.create({
   url: chrome.runtime.getManifest().homepage_url + '?rd=donate'
+}));
+// open FAQs page
+document.getElementById('ofq').addEventListener('click', () => chrome.tabs.create({
+  url: chrome.runtime.getManifest().homepage_url
 }));
 // example
 document.getElementById('example').addEventListener('click', () => {

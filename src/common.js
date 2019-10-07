@@ -46,7 +46,8 @@ const prefs = {
   'history': true,
   'context.active': false,
   'context.cache': false,
-  'dynamic.json': false
+  'dynamic.json': false,
+  'policy': {}
 };
 
 chrome.storage.onChanged.addListener(ps => {
@@ -60,6 +61,8 @@ chrome.storage.onChanged.addListener(ps => {
     app.button.color = ps.color.newValue;
   }
 });
+
+const log = (...args) => prefs.log && console.log(...args);
 
 const storage = {};
 
@@ -153,7 +156,7 @@ function repeat(obj) {
   obj.id = timeout(obj.id, period, obj.callback);
 }
 
-chrome.webNavigation.onDOMContentLoaded.addListener(d => {
+const onDOMContentLoaded = d => {
   if (d.frameId === 0) {
     const id = d.tabId;
     if (!storage[id] || !storage[id].status) {
@@ -180,19 +183,51 @@ chrome.webNavigation.onDOMContentLoaded.addListener(d => {
     app.button.icon(storage[id].status, id);
     repeat(storage[id]);
   }
-});
+};
+chrome.webNavigation.onDOMContentLoaded.addListener(onDOMContentLoaded);
 
 function reload(tabId, obj) {
-  if (obj.form) {
-    chrome.tabs.get(tabId, tab => chrome.tabs.update(tabId, {
-      url: tab.url.split('#')[0].split('?')[0]
-    }));
-  }
-  else {
-    chrome.tabs.reload(tabId, {
-      bypassCache: obj.cache !== true
-    });
-  }
+  chrome.tabs.get(tabId, tab => {
+    // policy check
+    const {hostname} = new URL(tab.url);
+    const entry = Object.entries(prefs.policy).filter(([h]) => match(hostname, h)).map(([k, v]) => v).pop();
+    if (entry) {
+      const skip = () => window.setTimeout(() => onDOMContentLoaded({
+        frameId: 0,
+        tabId: tab.id,
+        url: tab.url
+      }), 100);
+      try {
+        if (entry && entry.url) {
+          const a = new RegExp(entry.url);
+          if (a.test(tab.url) === false) {
+            log('reloading job is skipped due to URL policy violation');
+            return skip();
+          }
+        }
+        if (entry && entry.date) {
+          const a = new RegExp(entry.date);
+          if (a.test((new Date()).toLocaleString()) === false) {
+            log('reloading job is skipped due to DATE policy violation');
+            return skip();
+          }
+        }
+      }
+      catch (e) {
+        console.error('policy checking failed', e);
+      }
+    }
+    if (obj.form) {
+      chrome.tabs.update(tabId, {
+        url: tab.url.split('#')[0].split('?')[0]
+      });
+    }
+    else {
+      chrome.tabs.reload(tabId, {
+        bypassCache: obj.cache !== true
+      });
+    }
+  });
 }
 
 function enable(obj, tab) {

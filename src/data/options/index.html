@@ -66,12 +66,22 @@
     <tr>
       <td colspan="2" style="color: #888">If this option is checked and the new page's hostname matches a key in the JSON object, a new reloading job will automatically be set for the current tab.</td>
     </tr>
+    <tr>
+      <td colspan="2" style="padding-top: 20px">Reloading Policy:</td>
+    </tr>
+    <tr>
+      <td colspan="2">An object to control whether a reloading job should take place for the current tab at the current time or not. With this object you can, for instance, exclude a URL from a domain to not get reloaded even if other URLs of the domain should get reloaded or even limit the reloading job to a time-span. Read the FAQs page for more info. Sample time string for this matching is "<code id="time"></code>"</td>
+    </tr>
+    <tr>
+      <td colspan="2"><textarea rows="6" id="policy"></textarea></td>
+    </tr>
   </table>
 
   <div id="explore"></div>
   <p>
     <button id="export" title="Export all settings to a JSON file">Export</button>
     <button id="import" title="Import settings from a JSON file (this will overwrite current settings)">Import</button>
+    <button id="ofq">Open FAQs page</button>
   </p>
   <p>
     <button id="clear" title="Clear session restore (clear memory of reloading jobs)">Clear</button>
