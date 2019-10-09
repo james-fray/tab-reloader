@@ -47,7 +47,9 @@ const prefs = {
   'context.active': false,
   'context.cache': false,
   'dynamic.json': false,
-  'policy': {}
+  'policy': {},
+  'use-native': true,
+  'log': false
 };
 
 chrome.storage.onChanged.addListener(ps => {
@@ -108,29 +110,35 @@ function toPopup(id) {
       msg: obj.msg,
       jobs: obj.jobs
     }
-  });
+  }, () => chrome.runtime.lastError);
 }
 
-function timeout(id = 'timer-' + Math.random(), period, callback) {
-  // console.log(id, period);
-  if (period < 2 * 60 * 1000) {
-    window.clearTimeout(id);
+/* due to having variation, the timeout id might change between number and string based on what the previous call is*/
+function timeout(id = '', period, callback) {
+  window.clearTimeout(id);
+  if (typeof id === 'string') {
+    chrome.alarms.clear(id, () => {});
+  }
+  delete timeout.cache[id];
+  if (period < 2 * 60 * 1000 || prefs['use-native'] === false) {
+    log('use setTimeout', id, period);
     return window.setTimeout(callback, period);
   }
   else {
+    id = 'timer-' + Math.random();
+    log('use chrome.alarms', id, period);
     timeout.cache[id] = callback;
-    chrome.alarms.clear(id, () => chrome.alarms.create(id, {
+    chrome.alarms.create(id, {
       when: Date.now() + period
-    }));
-    return id;
+    });
+    return id; // in case the id is the number from previous timeout call
   }
 }
 timeout.stop = id => {
+  window.clearTimeout(id);
   if (timeout.cache[id]) {
+    log('clearing a native', id);
     chrome.alarms.clear(id, () => {});
-  }
-  else {
-    window.clearTimeout(id);
   }
 };
 timeout.cache = {};
@@ -179,7 +187,7 @@ const onDOMContentLoaded = d => {
       }
       return;
     }
-    storage[id].time = (new Date()).getTime();
+    storage[id].time = Date.now();
     app.button.icon(storage[id].status, id);
     repeat(storage[id]);
   }
@@ -190,7 +198,7 @@ function reload(tabId, obj) {
   chrome.tabs.get(tabId, tab => {
     // policy check
     const {hostname} = new URL(tab.url);
-    const entry = Object.entries(prefs.policy).filter(([h]) => match(hostname, h)).map(([k, v]) => v).pop();
+    const entry = Object.entries(prefs.policy).filter(([h]) => match(hostname, h)).map(a => a[1]).pop();
     if (entry) {
       const skip = () => window.setTimeout(() => onDOMContentLoaded({
         frameId: 0,
@@ -236,7 +244,7 @@ function enable(obj, tab) {
   Object.assign(storage[id], obj, {
     id: timeout.stop(storage[id].id),
     status: !storage[id].status,
-    time: (new Date()).getTime(),
+    time: Date.now(),
     msg: ''
   });
 
@@ -245,7 +253,7 @@ function enable(obj, tab) {
   if (storage[id].status) {
     storage[id].period = toSecond(obj);
     storage[id].callback = (function(id) {
-      storage[id].time = (new Date()).getTime();
+      storage[id].time = Date.now();
       chrome.tabs.get(id, tab => {
         if (tab) {
           if (storage[id].current) {
@@ -302,7 +310,12 @@ chrome.runtime.onMessage.addListener(request => {
     let ss;
     if (time && storage[id].status) {
       const period = storage[id].vperiod || toSecond(storage[id]);
-      let diff = period - ((new Date()).getTime() - time);
+      let diff = period - (Date.now() - time);
+      diff -= 5 * period;
+      // make sure we display positive number to the user
+      if (diff < 0) {
+        diff = (diff % period) + period;
+      }
       dd = Math.floor(diff / (1000 * 60 * 60) / 24);
       diff -= dd * 24 * 60 * 60 * 1000;
       hh = Math.floor(diff / (1000 * 60 * 60));
