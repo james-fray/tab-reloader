@@ -83,11 +83,12 @@ const dom = {
     document.querySelector('[data-type=msg]').textContent = val;
   },
   set jobs(jobs) { // jshint ignore:line
-    document.querySelector('[data-type=jobs]').textContent = jobs.length;
+    document.body.dataset.jobs = document.querySelector('[data-type=jobs]').textContent =
+      jobs.length;
     const ol = document.querySelector('#jobs ol');
     for (const job of jobs) {
       const li = document.createElement('li');
-      li.textContent = job.title + job.title + job.title + job.title +job.title;
+      li.textContent = job.title;
       li.dataset.id = job.id;
       ol.appendChild(li);
     }

@@ -1,7 +1,6 @@
 body {
   padding: 5px;
   margin: 0;
-  background-color: #fff;
   width: 450px;
   overflow: hidden;
 }
@@ -98,10 +97,13 @@ body[data-enabled=true] [data-type='dd'] {
   pointer-events: none;
 }
 
-#jobs {
+#jobs > div {
   max-height: 80px;
   overflow: auto;
   margin-bottom: 10px;
+}
+body[data-jobs="0"] #jobs {
+  display: none;
 }
 #jobs ol {
   padding: 0 5px;

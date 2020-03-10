@@ -180,7 +180,7 @@ const onDOMContentLoaded = d => {
     if (!storage[id] || !storage[id].status) {
       if (prefs['dynamic.json']) {
         const {hostname} = new URL(d.url);
-        const entry = prefs.json.filter(j => match(hostname, j.hostname)).pop();
+        const entry = prefs.json.filter(j => j.hostname ? match(hostname, j.hostname) : j.url === d.url).pop();
         if (entry) {
           enable(Object.assign({
             dd: 0,
@@ -379,7 +379,7 @@ const restore = () => {
       // automatic jobs
       tabs.forEach(tab => {
         const {hostname} = new URL(tab.url);
-        const entry = prefs.json.filter(j => match(hostname, j.hostname)).pop();
+        const entry = prefs.json.filter(j => j.hostname ? match(hostname, j.hostname) : j.url === tab.url).pop();
 
         if (entry) {
           enable(Object.assign({

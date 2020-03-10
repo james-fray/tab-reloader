@@ -59,13 +59,13 @@
       <td colspan="2" style="padding-top: 20px">Custom Jobs (<a href="#" id="example">Inset a Sample</a>):</td>
     </tr>
     <tr>
-      <td colspan="2">Keywords: hostname: Hostname (e.g.: www.google.com, *.google.com),dd: Days, hh: Hours, mm: Minutes, ss: Seconds, variation: Variation, current: Active Tab, cache: Use Cache, form: Form Submission</td>
+      <td colspan="2">Keywords: <code>hostname</code>: Hostname (e.g.: www.google.com, *.google.com), <code>dd</code>: Days, <code>hh</code>: Hours, <code>mm</code>: Minutes, <code>ss</code>: Seconds, <code>variation</code>: Variation, <code>current</code>: Active Tab, <code>cache</code>: Use Cache, <code>form</code>: Form Submission</td>
     </tr>
     <tr>
       <td colspan="2"><textarea rows="6" id="json"></textarea></td>
     </tr>
     <tr>
-      <td colspan="2" style="color: #888">JSON list of hostnames to set an automatic refresh after each start-up. You can manually ask the extension to set the JSON rules from "Restore old reloading jobs" context menu over the browser action button.</td>
+      <td colspan="2" style="color: #888">JSON list of hostnames to set an automatic refresh after each start-up. You can manually ask the extension to set the JSON rules from "Restore old reloading jobs" context menu over the browser action button. If you need URL matching instead of hostname matching, remove the "hostname" key and append "url" key instead.</td>
     </tr>
     <tr>
       <td><input type="checkbox" id="dynamic.json"></td>
