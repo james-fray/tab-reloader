@@ -33,6 +33,14 @@ const dom = {
     tmp.textContent = val ? 'Enabled' : 'Disabled';
     tmp.setAttribute('class', 'icon-toggle-' + (val ? 'on' : 'off'));
   },
+  get ste() { // scroll-to-end
+    return document.querySelector('[data-type=scoll-to-end]').classList.contains('icon-toggle-on');
+  },
+  set ste(val) {
+    const tmp = document.querySelector('[data-type=scoll-to-end]');
+    tmp.textContent = val ? 'Enabled' : 'Disabled';
+    tmp.setAttribute('class', 'icon-toggle-' + (val ? 'on' : 'off'));
+  },
   get form() {
     return document.querySelector('[data-type=form]').classList.contains('icon-toggle-on');
   },
@@ -97,6 +105,7 @@ chrome.runtime.onMessage.addListener(request => {
     dom.current = obj.current;
     dom.cache = obj.cache;
     dom.form = obj.form;
+    dom.ste = obj.ste;
     if (!obj.status) {
       id = window.clearInterval(id);
     }
@@ -138,7 +147,8 @@ document.addEventListener('click', e => {
         current: dom.current,
         forced: e.shiftKey, // forced period
         cache: dom.cache,
-        form: dom.form
+        form: dom.form,
+        ste: dom.ste
       }
     });
   }
@@ -150,6 +160,24 @@ document.addEventListener('click', e => {
   }
   else if (type === 'form') {
     dom.form = !dom.form;
+  }
+  else if (type === 'scoll-to-end') {
+    if (dom.ste === false) {
+      chrome.permissions.request({
+        permissions: ['tabs'],
+        origins: [tab.url]
+      }, granted => {
+        if (granted) {
+          dom.ste = true;
+        }
+        else {
+          dom.ste = false;
+        }
+      });
+    }
+    else {
+      dom.ste = true;
+    }
   }
 });
 

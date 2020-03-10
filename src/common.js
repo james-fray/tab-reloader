@@ -102,6 +102,7 @@ function toPopup(id) {
       current: obj.current,
       cache: obj.cache,
       form: obj.form,
+      ste: obj.ste,
       dd: obj.dd,
       hh: obj.hh,
       mm: obj.mm,
@@ -190,6 +191,24 @@ const onDOMContentLoaded = d => {
     storage[id].time = Date.now();
     app.button.icon(storage[id].status, id);
     repeat(storage[id]);
+    if (storage[id].ste) {
+      chrome.tabs.executeScript(id, {
+        code: `{
+          window.stop();
+          const scroll = () => {
+            const e = (document.scrollingElement || document.body);
+            e.scrollTop = e.scrollHeight;
+            console.log('scrolling', e.scrollHeight);
+          }
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', scroll);
+          }
+          else {
+            scroll();
+          }
+        }`
+      });
+    }
   }
 };
 chrome.webNavigation.onDOMContentLoaded.addListener(onDOMContentLoaded);
@@ -283,6 +302,7 @@ function enable(obj, tab) {
     current: obj.current,
     cache: obj.cache,
     form: obj.form,
+    ste: obj.ste,
     variation: obj.variation,
     forced: obj.forced,
     period: {
@@ -351,6 +371,7 @@ const restore = () => {
       tabs.forEach(tab => {
         const {hostname} = new URL(tab.url);
         const entry = prefs.json.filter(j => match(hostname, j.hostname)).pop();
+
         if (entry) {
           enable(Object.assign({
             dd: 0,
@@ -361,6 +382,7 @@ const restore = () => {
             cache: false,
             form: false,
             forced: false,
+            ste: false,
             variation: 0
           }, entry), tab);
         }
@@ -371,11 +393,13 @@ const restore = () => {
           let entry = entries.filter(e => e.url === tab.url);
           if (entry.length) {
             entry = entry[0];
+            console.log(entry, entries);
             if (entry.status) {
               enable(Object.assign(entry.period, {
                 current: entry.current || false,
                 cache: entry.cache || false,
                 form: entry.form || false,
+                ste: entry.ste || false,
                 forced: entry.forced || false,
                 variation: entry.variation || 0
               }), tab);
@@ -389,6 +413,7 @@ const restore = () => {
                 current: entry.current || false,
                 cache: entry.cache || false,
                 form: entry.form || false,
+                ste: entry.ste || false,
                 forced: entry.forced || false,
                 variation: entry.variation || 0
               };

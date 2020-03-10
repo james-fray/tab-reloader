@@ -11,6 +11,9 @@
     "webNavigation",
     "contextMenus"
   ],
+  "optional_permissions": [
+    "<all_urls>"
+  ],
   "browser_action": {
     "default_icon": {
       "16": "data/icons/disabled/16.png",
