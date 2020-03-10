@@ -72,8 +72,9 @@ const toSecond = obj => Math.max(
   obj.forced ? 1000 : 10000, // allow reloading up to a second!
   obj.dd * 1000 * 60 * 60 * 24 + obj.hh * 1000 * 60 * 60 + obj.mm * 1000 * 60 + obj.ss * 1000
 );
-const session = obj => {
-  if (prefs.history === false) {
+const session = (obj, store = true) => {
+  if (prefs.history === false || store === false) {
+    log('session storing is skipped', obj);
     return;
   }
   let session = Array.isArray(prefs.session) ? prefs.session : [];
@@ -93,25 +94,33 @@ function count() {
   return num;
 }
 
-function toPopup(id) {
+function toPopup(id, extra) {
   const obj = storage[id];
-  chrome.runtime.sendMessage({
+  const data = {
     method: 'updated-info',
     data: {
       status: obj.status,
-      current: obj.current,
-      cache: obj.cache,
-      form: obj.form,
-      ste: obj.ste,
       dd: obj.dd,
       hh: obj.hh,
       mm: obj.mm,
       ss: obj.ss,
-      variation: obj.variation,
-      msg: obj.msg,
-      jobs: obj.jobs
+      msg: obj.msg
     }
-  }, () => chrome.runtime.lastError);
+  };
+  if (extra) {
+    Object.assign(data.data, {
+      variation: obj.variation,
+      current: obj.current,
+      cache: obj.cache,
+      form: obj.form,
+      ste: obj.ste,
+      jobs: Object.entries(storage).filter(([id, o]) => o.status).map(([id, o]) => ({
+        title: o['_title'],
+        id
+      }))
+    });
+  }
+  chrome.runtime.sendMessage(data, () => chrome.runtime.lastError);
 }
 
 /* due to having variation, the timeout id might change between number and string based on what the previous call is*/
@@ -198,7 +207,6 @@ const onDOMContentLoaded = d => {
           const scroll = () => {
             const e = (document.scrollingElement || document.body);
             e.scrollTop = e.scrollHeight;
-            console.log('scrolling', e.scrollHeight);
           }
           if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', scroll);
@@ -257,14 +265,15 @@ function reload(tabId, obj) {
   });
 }
 
-function enable(obj, tab) {
+function enable(obj, tab, store = true) {
   const id = tab.id;
   storage[id] = storage[id] || {};
   Object.assign(storage[id], obj, {
-    id: timeout.stop(storage[id].id),
-    status: !storage[id].status,
-    time: Date.now(),
-    msg: ''
+    'id': timeout.stop(storage[id].id),
+    'status': !storage[id].status,
+    'time': Date.now(),
+    'msg': '',
+    '_title': tab.title
   });
 
   app.button.icon(storage[id].status, id);
@@ -283,6 +292,7 @@ function enable(obj, tab) {
           else {
             reload(tab.id, storage[id]);
           }
+          storage[id]['_title'] = tab.title;
           // repeat although this might get overwritten after reload.
           repeat(storage[id]);
         }
@@ -294,7 +304,7 @@ function enable(obj, tab) {
     }).bind(this, tab.id);
     repeat(storage[id]);
   }
-  storage[id].jobs = count();
+  count();
   toPopup(id);
   session({
     url: tab.url,
@@ -311,7 +321,7 @@ function enable(obj, tab) {
       mm: obj.mm,
       ss: obj.ss
     }
-  });
+  }, store);
 }
 chrome.runtime.onMessage.addListener(request => {
   if (request.method === 'count') {
@@ -347,8 +357,7 @@ chrome.runtime.onMessage.addListener(request => {
     else {
       storage[id].msg = '';
     }
-    storage[id].jobs = count();
-    toPopup(id);
+    toPopup(id, request.extra);
   }
 });
 
@@ -384,7 +393,7 @@ const restore = () => {
             forced: false,
             ste: false,
             variation: 0
-          }, entry), tab);
+          }, entry), tab, false);
         }
       });
       // session jobs
@@ -393,29 +402,30 @@ const restore = () => {
           let entry = entries.filter(e => e.url === tab.url);
           if (entry.length) {
             entry = entry[0];
-            console.log(entry, entries);
             if (entry.status) {
               enable(Object.assign(entry.period, {
-                current: entry.current || false,
-                cache: entry.cache || false,
-                form: entry.form || false,
-                ste: entry.ste || false,
-                forced: entry.forced || false,
-                variation: entry.variation || 0
-              }), tab);
+                'current': entry.current || false,
+                'cache': entry.cache || false,
+                'form': entry.form || false,
+                'ste': entry.ste || false,
+                'forced': entry.forced || false,
+                'variation': entry.variation || 0,
+                '_title': tab.title
+              }), tab, false);
             }
             else {
               storage[tab.id] = {
-                dd: entry.period.dd,
-                hh: entry.period.hh,
-                mm: entry.period.mm,
-                ss: entry.period.ss,
-                current: entry.current || false,
-                cache: entry.cache || false,
-                form: entry.form || false,
-                ste: entry.ste || false,
-                forced: entry.forced || false,
-                variation: entry.variation || 0
+                'dd': entry.period.dd,
+                'hh': entry.period.hh,
+                'mm': entry.period.mm,
+                'ss': entry.period.ss,
+                'current': entry.current || false,
+                'cache': entry.cache || false,
+                'form': entry.form || false,
+                'ste': entry.ste || false,
+                'forced': entry.forced || false,
+                'variation': entry.variation || 0,
+                '_title': tab.title
               };
             }
             app.button.icon(entry.status, tab.id);
@@ -572,11 +582,20 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     });
   }
   else if (info.menuItemId === 'stop.all') {
-    for (const [id, o] of Object.entries(storage)) {
-      chrome.tabs.get(Number(id), tab => {
-        enable(o, tab);
-      });
-    }
+    const entries = Object.entries(storage).filter(([id, o]) => o.status);
+    entries.forEach(async (e, i) => {
+      const [id, o] = e;
+      await new Promise(resolve => chrome.tabs.get(Number(id), tab => {
+        if (i === entries.length - 1) {
+          prefs.session.forEach(o => o.status = false);
+          enable(o, tab, true);
+        }
+        else {
+          enable(o, tab, false);
+        }
+        resolve();
+      }));
+    });
   }
 });
 

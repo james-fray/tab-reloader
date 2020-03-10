@@ -34,7 +34,7 @@
         <td><input data-type='hh' type="number" min="0" max="23"></td>
         <td><input data-type='mm' type="number" min="0" max="59"></td>
         <td><input data-type='ss' type="number" min="0" max="59"></td>
-        <td><input data-type='vr' type="number" min="0" max="99"></td>
+        <td><input data-type='vr' type="number" min="0" max="99" value="0"></td>
       </tr>
       <tr align="middle" mode="info">
         <td>Days</td>
@@ -45,18 +45,22 @@
       </tr>
     </table>
     <p class="fancy"><span><b>Status</b></span></p>
-    <div>
+    <div style="padding-left: 5px">
       <b>[Current Tab]</b>: <span data-type='msg'></span>
       <br>
       <b>[All Jobs]</b>: Currently, Tab Reloader is active on <b data-type='jobs'>0</b> tabs
     </div>
     <p class="fancy"><span><b>Notes</b></span></p>
-    <div class="note">
-      &#8605; To adjust settings, first disable the timer (if it is enabled)
+    <div class="note" style="padding-left: 5px">
+      To adjust settings, first disable the timer (if it is enabled)
       <br>
-      &#8605; Minimum acceptable period for countdown is 10 seconds.
+      Minimum acceptable period for countdown is 10 seconds.
       <br>
-      &#8605; Set variation in percent to randomize time.
+      Set variation in percent to randomize time.
+    </div>
+    <p class="fancy"><span><b>Active Jobs</b></span></p>
+    <div id="jobs">
+      <ol></ol>
     </div>
   </body>
     <script src="index.js"></script>

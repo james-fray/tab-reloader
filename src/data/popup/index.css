@@ -97,3 +97,23 @@ body[data-enabled=true] [data-type='dd'] {
   opacity: 0.5;
   pointer-events: none;
 }
+
+#jobs {
+  max-height: 80px;
+  overflow: auto;
+  margin-bottom: 10px;
+}
+#jobs ol {
+  padding: 0 5px;
+  margin: 0;
+  list-style: none;
+}
+#jobs li {
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+#jobs li:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}

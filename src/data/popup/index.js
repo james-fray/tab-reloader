@@ -82,8 +82,15 @@ const dom = {
   set msg(val) { // jshint ignore:line
     document.querySelector('[data-type=msg]').textContent = val;
   },
-  set jobs(val) { // jshint ignore:line
-    document.querySelector('[data-type=jobs]').textContent = val;
+  set jobs(jobs) { // jshint ignore:line
+    document.querySelector('[data-type=jobs]').textContent = jobs.length;
+    const ol = document.querySelector('#jobs ol');
+    for (const job of jobs) {
+      const li = document.createElement('li');
+      li.textContent = job.title + job.title + job.title + job.title +job.title;
+      li.dataset.id = job.id;
+      ol.appendChild(li);
+    }
   }
 };
 let id;
@@ -101,24 +108,39 @@ chrome.runtime.onMessage.addListener(request => {
   const twoDigit = num => ('00' + num).substr(-2);
   if (request.method === 'updated-info') {
     const obj = request.data;
+
+    if ('current' in obj) {
+      dom.current = obj.current;
+    }
+    if ('cache' in obj) {
+      dom.cache = obj.cache;
+    }
+    if ('form' in obj) {
+      dom.form = obj.form;
+    }
+    if ('ste' in obj) {
+      dom.ste = obj.ste;
+    }
+    if ('variation' in obj) {
+      dom.vr = obj.variation || 0;
+    }
+    if ('jobs' in obj) {
+      dom.jobs = obj.jobs;
+    }
+
     dom.enable = obj.status;
-    dom.current = obj.current;
-    dom.cache = obj.cache;
-    dom.form = obj.form;
-    dom.ste = obj.ste;
     if (!obj.status) {
       id = window.clearInterval(id);
     }
     else if (!id) {
       check();
     }
+
     Object.assign(dom, {
       dd: isNaN(obj.dd) ? prefs.dd : obj.dd,
       hh: isNaN(obj.hh) ? prefs.hh : obj.hh,
       mm: isNaN(obj.mm) ? prefs.mm : obj.mm,
-      ss: isNaN(obj.ss) ? prefs.ss : obj.ss,
-      vr: obj.variation || 0,
-      jobs: obj.jobs || 0
+      ss: isNaN(obj.ss) ? prefs.ss : obj.ss
     });
 
     if (obj.status) {
@@ -200,9 +222,23 @@ chrome.storage.local.get(prefs, ps => {
       tab = tabs[0];
       chrome.runtime.sendMessage({
         method: 'request-update',
-        id: tab.id
+        id: tab.id,
+        extra: true
       });
       check();
     }
   });
+});
+
+// jobs
+document.querySelector('#jobs ol').addEventListener('click', e => {
+  const id = e.target.dataset.id;
+  if (id) {
+    chrome.tabs.update(Number(id), {
+      active: true
+    });
+    chrome.tabs.get(Number(id), tab => chrome.windows.update(tab.windowId, {
+      focused: true
+    }));
+  }
 });
