@@ -148,3 +148,19 @@ document.getElementById('import').addEventListener('click', () => {
     }
   }
 });
+// toggle
+document.getElementById('keywords').addEventListener('click', () => {
+  document.querySelector('[for=keywords]').classList.toggle('hide');
+});
+document.getElementById('desc-1').addEventListener('click', () => {
+  document.querySelector('[for="desc-1"]').classList.toggle('hide');
+});
+document.getElementById('desc-2').addEventListener('click', () => {
+  document.querySelector('[for="desc-2"]').classList.toggle('hide');
+});
+document.getElementById('desc-3').addEventListener('click', () => {
+  document.querySelector('[for="desc-3"]').classList.toggle('hide');
+});
+document.getElementById('desc-4').addEventListener('click', () => {
+  document.querySelector('[for="desc-4"]').classList.toggle('hide');
+});
