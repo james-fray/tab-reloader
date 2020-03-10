@@ -412,6 +412,11 @@ chrome.contextMenus.create({
   contexts: ['browser_action']
 });
 chrome.contextMenus.create({
+  title: 'Stop all active reloading jobs',
+  id: 'stop.all',
+  contexts: ['browser_action']
+});
+chrome.contextMenus.create({
   title: 'Restore old reloading jobs',
   id: 'restore',
   contexts: ['browser_action']
@@ -540,6 +545,13 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     chrome.storage.local.set({
       [info.menuItemId]: info.checked
     });
+  }
+  else if (info.menuItemId === 'stop.all') {
+    for (const [id, o] of Object.entries(storage)) {
+      chrome.tabs.get(Number(id), tab => {
+        enable(o, tab);
+      });
+    }
   }
 });
 
