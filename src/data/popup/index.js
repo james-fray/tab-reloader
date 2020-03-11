@@ -143,7 +143,6 @@ chrome.runtime.onMessage.addListener(request => {
       mm: isNaN(obj.mm) ? prefs.mm : obj.mm,
       ss: isNaN(obj.ss) ? prefs.ss : obj.ss
     });
-
     if (obj.status) {
       const {dd = 0, hh = 0, mm = 5, ss = 0} = obj.msg;
       dom.msg = `Time left to refresh: ${twoDigit(dd)} : ${twoDigit(hh)} : ${twoDigit(mm)} : ${twoDigit(ss)}`;

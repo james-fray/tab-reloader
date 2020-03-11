@@ -1,9 +1,12 @@
 body {
-  padding: 5px;
-  margin: 0;
-  width: 450px;
   overflow: hidden;
+  margin: 5px;
+  width: 500px;
 }
+@media (pointer: none), (pointer: coarse) {
+  width: unset;
+}
+
 table,
 body,
 input {
@@ -22,11 +25,6 @@ h1 {
   font-size: 100%;
 }
 
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
 input[type=number] {
   padding: 10px;
   background-color: #444;
@@ -38,6 +36,12 @@ input[type=number] {
   text-align: center;
   box-shadow: 0 0 2px #444;
 }
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 tr[mode=info] {
   font-size: 80%;
 }
@@ -97,13 +101,13 @@ body[data-enabled=true] [data-type='dd'] {
   pointer-events: none;
 }
 
+body[data-jobs="0"] #jobs {
+  display: none;
+}
 #jobs > div {
   max-height: 80px;
   overflow: auto;
   margin-bottom: 10px;
-}
-body[data-jobs="0"] #jobs {
-  display: none;
 }
 #jobs ol {
   padding: 0 5px;

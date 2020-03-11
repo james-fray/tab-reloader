@@ -2,10 +2,17 @@
 <html>
 <head>
   <title>Options Page :: Tab Reloader</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
   <style>
     body {
       min-width: 500px;
+      margin: 10px;
+    }
+    @media (pointer: none), (pointer: coarse) {
+      body {
+        min-width: unset;
+      }
     }
     @supports (-moz-appearance: none){
       body {
@@ -23,6 +30,9 @@
         text-shadow: rgb(240, 240, 240) 0 1px 0;
         border: solid 1px rgba(0, 0, 0, 0.25);
       }
+    }
+    table {
+      width: 100%
     }
     textarea {
       width: 100%;
@@ -63,7 +73,7 @@
 </head>
 
 <body>
-  <table width=100%>
+  <table>
     <tr>
       <td><input type="checkbox" id="badge"></td>
       <td><label for="badge">Display the total number of active jobs in the badge area</label></td>
