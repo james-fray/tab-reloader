@@ -4,163 +4,86 @@
   <title>Options Page :: Tab Reloader</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
-  <style>
-    body {
-      min-width: 500px;
-      margin: 10px;
-    }
-    @media (pointer: none), (pointer: coarse) {
-      body {
-        min-width: unset;
-      }
-    }
-    @supports (-moz-appearance: none){
-      body {
-        padding: 0 10px;
-      }
-      h1 {
-        font-size: 18px;
-        font-weight: normal;
-      }
-      button {
-        height: 24px;
-        color: rgb(68, 68, 68);
-        background-image: linear-gradient(rgb(237, 237, 237), rgb(237, 237, 237) 38%, rgb(222, 222, 222));
-        box-shadow: rgba(0, 0, 0, 0.08) 0 1px 0, rgba(255, 255, 255, 0.75) 0 1px 2px inset;
-        text-shadow: rgb(240, 240, 240) 0 1px 0;
-        border: solid 1px rgba(0, 0, 0, 0.25);
-      }
-    }
-    table {
-      width: 100%
-    }
-    textarea {
-      width: 100%;
-    }
-    input[type=number] {
-      width: 45px;
-    }
-    h1 {
-      display: inline-block;
-    }
-    td:first-child {
-      vertical-align: top;
-      padding-right: 5px;
-    }
-    td {
-      padding: 2px 0;
-    }
-    .desc {
-      background-color: #e8e8e8;
-    }
-    div.desc,
-    .desc td {
-      padding: 5px;
-    }
-    .hide {
-      display: none;
-    }
-    #example,
-    #keywords,
-    #desc-1,
-    #desc-2,
-    #desc-3,
-    #desc-4 {
-      color: #004296;
-      cursor: pointer;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 
 <body>
-  <table>
-    <tr>
-      <td><input type="checkbox" id="badge"></td>
-      <td><label for="badge">Display the total number of active jobs in the badge area</label></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td><label for="color">Badge color is:</label>
-        <div style="float: right;"><input type="color" id="color"></div>
-      </td>
-    </tr>
-    <tr>
-      <td><input type="checkbox" id="history"></td>
-      <td><label for="history">Automatically restore reloading jobs on a browser restart after:</label></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td>
-        <div style="float: right;">
-          Days: <input type="number" placeholder="dd" id="dd" min="0">
-          Hours: <input type="number" placeholder="hh" id="hh" min="0" max="23">
-          Minutes: <input type="number" placeholder="mm" id="mm" min="0" max="59">
-          Seconds: <input type="number" placeholder="ss" id="ss" min="0" max="59">
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td><input type="checkbox" id="use-native"></td>
-      <td><label for="use-native">Use the native <code>chrome.alarms</code> method to schedule reloading jobs instead of <code>setTimeout</code></label></td>
-    </tr>
-    <tr>
-      <td colspan="2"><h1>Custom Jobs</h1> (<span id="example">Inset a Sample</span>, <span id="keywords">Supported Keywords</span>, <span id="desc-1">Toggle Description</span>)</td>
-    </tr>
-    <tr for="keywords" class="desc hide">
-      <td colspan="2">Keywords:
-        <ul>
-          <li><code>hostname</code>: Exact hostname (e.g.: <code>hostname: 'www.google.com'</code>) or wildcard hostname (<code>hostname: '*.google.com'</code>)</li>
-          <li><code>dd</code>: Reload after <code>dd</code> days (a number between 0 to 10) (e.g.: <code>dd: 2</code>)</li>
-          <li><code>hh</code>: Reload after <code>hh</code> hours (a number between 0 to 23)</li>
-          <li><code>mm</code>: Reload after <code>mm</code> minutes (a number between 0 to 59)</li>
-          <li><code>ss</code>: Reload after <code>ss</code> seconds (a number between 0 to 59)</li>
-          <li><code>variation</code>: Use a random variation (a number between 0 to 99) (e.g.: <code>variation: 10</code>)</li>
-          <li><code>current</code>: If true, active tab will not be reloaded (e.g.: <code>current: true</code>)</li>
-          <li><code>cache</code>: If true, soft reloading is used (similar to F5). If false, hard reloading is used (similar to Shift + F5)</li>
-          <li><code>form</code>: If true, form submission warning is bypassed (e.g.: <code>form: true</code>)</td></li>
-        </ul>
-    </tr>
-    <tr>
-      <td colspan="2"><textarea rows="6" id="json"></textarea></td>
-    </tr>
-    <tr for="desc-1" class="desc hide">
-      <td colspan="2">JSON list of hostnames to set an automatic refresh after each start-up. You can manually ask the extension to set the JSON rules from "Restore old reloading jobs" context menu over the browser action button. If you need URL matching instead of hostname matching, remove the "hostname" key and append "url" key instead.</td>
-    </tr>
-    <tr>
-      <td><input type="checkbox" id="dynamic.json"></td>
-      <td><label for="dynamic.json">Always check to install reloading jobs from the JSON object when a new page loads (<span id="desc-2">Toggle Description</span>)</label></td>
-    </tr>
-    <tr for="desc-2" class="desc hide">
-      <td colspan="2">If this option is checked and the new page's hostname matches a key in the JSON object, a new reloading job will automatically be set for the current tab.</td>
-    </tr>
-    <tr>
-      <td colspan="2"><h1>Reloading Policy</h1> (<span id="desc-3">Toggle Description</span>)</td>
-    </tr>
-    <tr for="desc-3" class="desc hide">
-      <td colspan="2">An object to control whether a reloading job should take place for the current tab at the current time or not. With this object you can, for instance, exclude a URL from a domain to not get reloaded even if other URLs of the domain should get reloaded or even limit the reloading job to a time-span. Read the FAQs page for more info. Your browser's sample time format is "<code id="time"></code>"</td>
-    </tr>
-    <tr>
-      <td colspan="2"><textarea rows="6" id="policy"></textarea></td>
-    </tr>
-    <tr>
-      <td colspan="2"><h1>Misc</h1></td>
-    </tr>
-    <tr>
-      <td><input type="checkbox" id="faqs"></td>
-      <td><label for="faqs">Open FAQs page on updates</label></td>
-    </tr>
-    <tr>
-      <td><input type="checkbox" id="log"></td>
-      <td><label for="log">Display logs in the browser console</label></td>
-    </tr>
-  </table>
+  <div class="grid-1">
+    <input type="checkbox" id="badge">
+    <label for="badge">Display the total number of active jobs in the badge area</label>
+  </div>
+  <div class="grid-2">
+    <input type="checkbox" id="history">
+    <label for="history">Automatically restore reloading jobs on a browser restart after (in seconds):</label>
+    <input type="number" id="history_timeout">
 
+  </div>
+  <div class="grid-1">
+    <input type="checkbox" id="use-native">
+    <label for="use-native">Use the native <code>chrome.alarms</code> method to schedule reloading jobs instead of <code>setTimeout</code></label>
+  </div>
+  <div class="grid-3">
+    <span></span>
+    <label for="color">Badge color is:</label>
+    <input type="color" id="color">
+  </div>
+  <div class="grid-4">
+    <span></span>
+      Default reloading time:
+      <div style="grid-column-start: 2;">
+        Days: <input type="number" placeholder="dd" id="dd" min="0">
+        Hours: <input type="number" placeholder="hh" id="hh" min="0" max="23">
+        Minutes: <input type="number" placeholder="mm" id="mm" min="0" max="59">
+        Seconds: <input type="number" placeholder="ss" id="ss" min="0" max="59">
+      </div>
+  </div>
+  <div>
+    <h1>Custom Jobs</h1> (<span id="example">Inset a Sample</span>, <span id="keywords">Supported Keywords</span>, <span id="desc-1">Toggle Description</span>)
+  </div>
+  <div for="keywords" class="desc hide" style="margin-bottom: 10px">
+    <span><code>hostname</code>: Exact hostname (e.g.: <code>hostname: 'www.google.com'</code>) or wildcard hostname (<code>hostname: '*.google.com'</code>)</span>
+    <br>
+    <span><code>dd</code>: Reload after <code>dd</code> days (a number between 0 to 10) (e.g.: <code>dd: 2</code>)</span>
+    <br>
+    <span><code>hh</code>: Reload after <code>hh</code> hours (a number between 0 to 23)</span>
+    <br>
+    <span><code>mm</code>: Reload after <code>mm</code> minutes (a number between 0 to 59)</span>
+    <br>
+    <span><code>ss</code>: Reload after <code>ss</code> seconds (a number between 0 to 59)</span>
+    <br>
+    <span><code>variation</code>: Use a random variation (a number between 0 to 99) (e.g.: <code>variation: 10</code>)</span>
+    <br>
+    <span><code>current</code>: If true, active tab will not be reloaded (e.g.: <code>current: true</code>)</span>
+    <br>
+    <span><code>cache</code>: If true, soft reloading is used (similar to F5). If false, hard reloading is used (similar to Shift + F5)</span>
+    <br>
+    <span><code>form</code>: If true, form submission warning is bypassed (e.g.: <code>form: true</code>)</td></span>
+    <br>
+  </div>
+  <textarea rows="6" id="json"></textarea>
+  <div for="desc-1" class="desc hide" style="margin: 5px 0">
+    <td colspan="2">JSON list of hostnames to set an automatic refresh after each start-up. You can manually ask the extension to set the JSON rules from "Restore old reloading jobs" context menu over the browser action button. If you need URL matching instead of hostname matching, remove the "hostname" key and append "url" key instead.</td>
+  </div>
+  <div class="grid-1">
+    <input type="checkbox" id="dynamic.json">
+    <label for="dynamic.json">Always check to install reloading jobs from the JSON object when a new page loads (<span id="desc-2">Toggle Description</span>)</label>
+  </div>
+  <div for="desc-2" class="desc hide"  style="margin-top: 5px">If this option is checked and the new page's hostname matches a key in the JSON object, a new reloading job will automatically be set for the current tab.</div>
+  <div><h1>Reloading Policy</h1> (<span id="desc-3">Toggle Description</span>)</div>
+  <div for="desc-3" class="desc hide"  style="margin-bottom: 10px">An object to control whether a reloading job should take place for the current tab at the current time or not. With this object you can, for instance, exclude a URL from a domain to not get reloaded even if other URLs of the domain should get reloaded or even limit the reloading job to a time-span. Read the FAQs page for more info. Your browser's sample time format is "<code id="time"></code>"</div>
+  <textarea rows="6" id="policy"></textarea>
+  <h1>Misc</h1>
+  <div class="grid-1">
+    <input type="checkbox" id="faqs">
+    <label for="faqs">Open FAQs page on updates</label>
+    <input type="checkbox" id="log">
+    <label for="log">Display logs in the browser console</label>
+  </div>
   <div id="explore"></div>
-
   <div>
     <h1>Tools</h1> (<span id="desc-4">Toggle Description</span>)
   </div>
-  <div for="desc-4" class="desc hide">
+  <div for="desc-4" class="desc hide" style="margin-bottom: 10px">
     Clear: Clear session restore object (clear memory of current reloading jobs)
     <br>
     Export: Export all settings to a JSON file and download it to the default download directory
@@ -169,16 +92,16 @@
     <br>
     Reset: Reset settings to the factory values
   </div>
-  <p>
+  <div style="margin-bottom: 5px">
     <button id="export">Export</button>
     <button id="import">Import</button> - <button id="clear">Clear</button>
     <button id="reset">Reset</button>
-  </p>
-  <p>
+  </div>
+  <div>
     <button id="ofq">Open FAQs page</button>
     <button id="support" title="Support Development">Support Development</button> - <button id="save" title="Save settings">Save</button>
     <span id="info"></span>
-  </p>
+  </div>
 
   <script src="index.js"></script>
   <script async src="matched.js"></script>

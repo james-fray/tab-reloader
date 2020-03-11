@@ -6,6 +6,7 @@ const config = {
   'faqs': true,
   'use-native': true,
   'history': true,
+  'history.timeout': 5000,
   'json': [],
   'dd': 0,
   'hh': 0,
@@ -25,6 +26,7 @@ const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('use-native').checked = prefs['use-native'];
   document.getElementById('faqs').checked = prefs.faqs;
   document.getElementById('history').checked = prefs.history;
+  document.getElementById('history_timeout').value = parseInt(prefs['history.timeout'] / 1000);
   document.getElementById('json').value = JSON.stringify(prefs.json, null, '  ');
   document.getElementById('dd').value = prefs.dd;
   document.getElementById('hh').value = prefs.hh;
@@ -47,6 +49,7 @@ document.getElementById('save').addEventListener('click', () => {
       'use-native': document.getElementById('use-native').checked,
       'log': document.getElementById('log').checked,
       'history': document.getElementById('history').checked,
+      'history.timeout': Math.max(2, Number(document.getElementById('history_timeout').value)) * 1000,
       'json': JSON.parse(document.getElementById('json').value.trim() || '[]'),
       'dd': Math.max(Number(document.getElementById('dd').value), 0),
       'hh': Math.min(Math.max(Number(document.getElementById('hh').value), 0), 23),

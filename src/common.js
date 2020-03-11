@@ -44,6 +44,7 @@ const prefs = {
   'session': [],
   'json': [],
   'history': true,
+  'history.timeout': 5000,
   'context.active': false,
   'context.cache': false,
   'dynamic.json': false,
@@ -606,7 +607,7 @@ chrome.alarms.clearAll(() => {
     app.button.color = ps.color;
     contextmenus();
   });
-  window.setTimeout(restore, 3000);
+  window.setTimeout(restore, prefs['history.timeout']);
 });
 
 /* FAQs & Feedback */

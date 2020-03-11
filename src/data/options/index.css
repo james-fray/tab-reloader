@@ -1,0 +1,88 @@
+body {
+  min-width: 500px;
+  margin: 10px;
+}
+@media (pointer: none), (pointer: coarse) {
+  body {
+    min-width: unset;
+  }
+}
+@supports (-moz-appearance: none) {
+  body {
+    padding: 0 10px;
+  }
+  h1 {
+    font-size: 18px;
+    font-weight: normal;
+  }
+  button {
+    height: 24px;
+    color: rgb(68, 68, 68);
+    background-image: linear-gradient(rgb(237, 237, 237), rgb(237, 237, 237) 38%, rgb(222, 222, 222));
+    box-shadow: rgba(0, 0, 0, 0.08) 0 1px 0, rgba(255, 255, 255, 0.75) 0 1px 2px inset;
+    text-shadow: rgb(240, 240, 240) 0 1px 0;
+    border: solid 1px rgba(0, 0, 0, 0.25);
+  }
+}
+textarea {
+  width: 100%;
+}
+input[type=number] {
+  width: 45px;
+}
+h1 {
+  display: inline-block;
+}
+td {
+  padding: 2px 0;
+}
+td:first-child {
+  vertical-align: top;
+  padding-right: 5px;
+}
+
+.desc {
+  background-color: #e8e8e8;
+}
+div.desc,
+.desc td {
+  padding: 5px;
+}
+.hide {
+  display: none;
+}
+
+#example,
+#keywords,
+#desc-1,
+#desc-2,
+#desc-3,
+#desc-4 {
+  color: #004296;
+  cursor: pointer;
+}
+
+.grid-1,
+.grid-2,
+.grid-3,
+.grid-4 {
+  display: grid;
+  align-items: center;
+}
+.grid-1 {
+  grid-template-columns: 32px 1fr;
+}
+.grid-2 {
+  grid-template-columns: 32px 1fr 60px;
+}
+.grid-3 {
+  grid-template-columns: 32px 1fr 60px;
+}
+.grid-4 {
+  grid-template-columns: 32px 1fr;
+  grid-row-gap: 5px;
+}
+#color,
+#history_timeout {
+  justify-self: end;
+}
