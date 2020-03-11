@@ -2,7 +2,7 @@
   "name": "Tab Reloader (page auto refresh)",
   "description": "An easy-to-use tab reloader with custom reloading time settings for individual tabs",
   "author": "James Fray",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "manifest_version": 2,
   "permissions": [
     "storage",

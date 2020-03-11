@@ -601,13 +601,13 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 // init
-chrome.alarms.clearAll(() => {
-  chrome.storage.local.get(prefs, ps => {
+window.addEventListener('DOMContentLoaded', () => {
+  chrome.alarms.clearAll(() => chrome.storage.local.get(prefs, ps => {
     Object.assign(prefs, ps);
     app.button.color = ps.color;
     contextmenus();
-  });
-  window.setTimeout(restore, prefs['history.timeout']);
+    window.setTimeout(restore, prefs['history.timeout']);
+  }));
 });
 
 /* FAQs & Feedback */
