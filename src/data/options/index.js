@@ -167,3 +167,11 @@ document.getElementById('desc-3').addEventListener('click', () => {
 document.getElementById('desc-4').addEventListener('click', () => {
   document.querySelector('[for="desc-4"]').classList.toggle('hide');
 });
+// permission
+document.getElementById('permission').addEventListener('click', () => chrome.permissions.request({
+  origins: ['<all_urls>']
+}, granted => {
+  const info = document.getElementById('info');
+  info.textContent = 'Host permission is ' + (granted ? 'granted' : 'denied');
+  window.setTimeout(() => info.textContent = '', 3000);
+}));

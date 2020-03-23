@@ -231,11 +231,11 @@ const onDOMContentLoaded = d => {
             const script = document.createElement('script');
             script.textContent = code;
             document.documentElement.appendChild(script);
-            script.remove();
-            script.addEventListener('toggle-requested', chrome.runtime.sendMessage({
+            script.addEventListener('toggle-requested', () => chrome.runtime.sendMessage({
               method: 'toggle-requested',
               id: ${id}
             }));
+            script.remove();
           });
         `
       });
