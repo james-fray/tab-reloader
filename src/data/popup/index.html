@@ -27,6 +27,15 @@
         <td>Scroll to the end after reload:</td>
         <td class="icon-toggle-off" align="right" data-type='scoll-to-end'>Disabled</td>
       </tr>
+      <tr>
+        <td>Run JS code after reload:</td>
+        <td align="right"><input type="button" value="Permit Code Execution" id="permit"></td>
+      </tr>
+      <tr>
+        <td colspan="2" title="Make sure the extension has access to this hostname by pressing 'Permit Code Execution'">
+          <textarea rows="4" placeholder="e.g.: console.log(Date.now();"></textarea>
+        </td>
+      </tr>
     </table>
     <p class="fancy"><span><b>Adjust Reloading Time</b></span></p>
     <table>
@@ -34,8 +43,8 @@
         <td><input data-type='dd' type="number" min="0" max="10"></td>
         <td><input data-type='hh' type="number" min="0" max="23"></td>
         <td><input data-type='mm' type="number" min="0" max="59"></td>
-        <td><input data-type='ss' type="number" min="0" max="59"></td>
-        <td><input data-type='vr' type="number" min="0" max="99" value="0"></td>
+        <td><input data-type='ss' type="number" min="0" max="59" title="Minimum acceptable period for countdown is 10 seconds."></td>
+        <td><input data-type='vr' type="number" min="0" max="99" value="0" title="Set variation in percent to randomize reloading time"></td>
       </tr>
       <tr align="middle" mode="info">
         <td>Days</td>
@@ -50,14 +59,6 @@
       <b>[Current Tab]</b>: <span data-type='msg'></span>
       <br>
       <b>[All Jobs]</b>: Currently, Tab Reloader is active on <b data-type='jobs'>0</b> tabs
-    </div>
-    <p class="fancy"><span><b>Notes</b></span></p>
-    <div class="note" style="padding-left: 5px">
-      To adjust settings, first disable the timer (if it is enabled)
-      <br>
-      Minimum acceptable period for countdown is 10 seconds.
-      <br>
-      Set variation in percent to randomize time.
     </div>
     <div id="jobs">
       <p class="fancy"><span><b>Active Jobs</b></span></p>

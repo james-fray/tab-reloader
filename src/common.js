@@ -114,6 +114,7 @@ function toPopup(id, extra) {
       current: obj.current,
       cache: obj.cache,
       form: obj.form,
+      code: obj.code,
       ste: obj.ste,
       jobs: Object.entries(storage).filter(([id, o]) => o.status).map(([id, o]) => ({
         title: o['_title'],
@@ -191,6 +192,7 @@ const onDOMContentLoaded = d => {
             current: false,
             cache: false,
             form: false,
+            code: '',
             forced: false,
             variation: 0
           }, entry), {id, url: d.url});
@@ -216,6 +218,26 @@ const onDOMContentLoaded = d => {
             scroll();
           }
         }`
+      });
+    }
+    // the user passes this custom script to get executed after each reload
+    if (storage[id].code) {
+      chrome.tabs.executeScript(id, {
+        code: `
+          chrome.runtime.sendMessage({
+            method: 'get-user-code',
+            id: ${id}
+          }, code => {
+            const script = document.createElement('script');
+            script.textContent = code;
+            document.documentElement.appendChild(script);
+            script.remove();
+            script.addEventListener('toggle-requested', chrome.runtime.sendMessage({
+              method: 'toggle-requested',
+              id: ${id}
+            }));
+          });
+        `
       });
     }
   }
@@ -313,6 +335,7 @@ function enable(obj, tab, store = true) {
     current: obj.current,
     cache: obj.cache,
     form: obj.form,
+    code: obj.code,
     ste: obj.ste,
     variation: obj.variation,
     forced: obj.forced,
@@ -324,7 +347,7 @@ function enable(obj, tab, store = true) {
     }
   }, store);
 }
-chrome.runtime.onMessage.addListener(request => {
+chrome.runtime.onMessage.addListener((request, sender, response) => {
   if (request.method === 'count') {
     count();
   }
@@ -360,6 +383,13 @@ chrome.runtime.onMessage.addListener(request => {
     }
     toPopup(id, request.extra);
   }
+  else if (request.method === 'get-user-code') {
+    response(storage[request.id].code);
+    return true;
+  }
+  else if (request.method === 'toggle-requested') {
+    enable(storage[request.id], sender.tab, true);
+  }
 });
 
 chrome.tabs.onRemoved.addListener(id => {
@@ -391,6 +421,7 @@ const restore = () => {
             current: false,
             cache: false,
             form: false,
+            code: '',
             forced: false,
             ste: false,
             variation: 0
@@ -408,6 +439,7 @@ const restore = () => {
                 'current': entry.current || false,
                 'cache': entry.cache || false,
                 'form': entry.form || false,
+                'code': entry.code || '',
                 'ste': entry.ste || false,
                 'forced': entry.forced || false,
                 'variation': entry.variation || 0,
@@ -423,6 +455,7 @@ const restore = () => {
                 'current': entry.current || false,
                 'cache': entry.cache || false,
                 'form': entry.form || false,
+                'code': entry.code || '',
                 'ste': entry.ste || false,
                 'forced': entry.forced || false,
                 'variation': entry.variation || 0,
@@ -573,6 +606,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
       current: prefs['context.active'],
       cache: prefs['context.cache'],
       form: false,
+      code: '',
       forced: false,
       variation: 0
     }, tab);

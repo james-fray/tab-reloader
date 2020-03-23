@@ -41,6 +41,12 @@ const dom = {
     tmp.textContent = val ? 'Enabled' : 'Disabled';
     tmp.setAttribute('class', 'icon-toggle-' + (val ? 'on' : 'off'));
   },
+  get code() {
+    return document.querySelector('textarea').value;
+  },
+  set code(val) {
+    document.querySelector('textarea').value = val;
+  },
   get form() {
     return document.querySelector('[data-type=form]').classList.contains('icon-toggle-on');
   },
@@ -119,6 +125,9 @@ chrome.runtime.onMessage.addListener(request => {
     if ('form' in obj) {
       dom.form = obj.form;
     }
+    if ('code' in obj) {
+      dom.code = obj.code;
+    }
     if ('ste' in obj) {
       dom.ste = obj.ste;
     }
@@ -170,6 +179,7 @@ document.addEventListener('click', e => {
         forced: e.shiftKey, // forced period
         cache: dom.cache,
         form: dom.form,
+        code: dom.code,
         ste: dom.ste
       }
     });
@@ -198,17 +208,44 @@ document.addEventListener('click', e => {
       });
     }
     else {
-      dom.ste = true;
+      dom.ste = false;
     }
   }
 });
 
 document.addEventListener('change', ({target}) => {
-  const value = Number(target.value);
-  const min = Number(target.min);
-  const max = Number(target.max);
-  target.value = Math.max(min, Math.min(max, value));
+  if (target.type === 'number') {
+    const value = Number(target.value);
+    const min = Number(target.min);
+    const max = Number(target.max);
+    target.value = Math.max(min, Math.min(max, value));
+  }
 });
+
+// permit
+{
+  const input = document.getElementById('permit');
+  const textarea = document.querySelector('textarea');
+
+  const check = () => chrome.permissions.contains({
+    permissions: ['tabs'],
+    origins: [tab.url]
+  }, granted => {
+    input.disabled = granted;
+    textarea.disabled = granted === false;
+  });
+  input.check = check;
+  input.addEventListener('click', () => {
+    chrome.permissions.request({
+      permissions: ['tabs'],
+      origins: [tab.url]
+    }, granted => {
+      if (granted) {
+        check();
+      }
+    });
+  });
+}
 
 // init
 chrome.storage.local.get(prefs, ps => {
@@ -226,6 +263,7 @@ chrome.storage.local.get(prefs, ps => {
         extra: true
       });
       check();
+      document.getElementById('permit').check();
     }
   });
 });
@@ -242,3 +280,5 @@ document.querySelector('#jobs ol').addEventListener('click', e => {
     }));
   }
 });
+
+
