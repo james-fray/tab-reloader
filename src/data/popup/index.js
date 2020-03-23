@@ -45,7 +45,7 @@ const dom = {
     return document.querySelector('textarea').value;
   },
   set code(val) {
-    document.querySelector('textarea').value = val;
+    document.querySelector('textarea').value = val || '';
   },
   get form() {
     return document.querySelector('[data-type=form]').classList.contains('icon-toggle-on');
@@ -196,7 +196,6 @@ document.addEventListener('click', e => {
   else if (type === 'scoll-to-end') {
     if (dom.ste === false) {
       chrome.permissions.request({
-        permissions: ['tabs'],
         origins: [tab.url]
       }, granted => {
         if (granted) {
@@ -228,7 +227,6 @@ document.addEventListener('change', ({target}) => {
   const textarea = document.querySelector('textarea');
 
   const check = () => chrome.permissions.contains({
-    permissions: ['tabs'],
     origins: [tab.url]
   }, granted => {
     input.disabled = granted;
@@ -237,7 +235,6 @@ document.addEventListener('change', ({target}) => {
   input.check = check;
   input.addEventListener('click', () => {
     chrome.permissions.request({
-      permissions: ['tabs'],
       origins: [tab.url]
     }, granted => {
       if (granted) {
