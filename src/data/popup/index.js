@@ -226,17 +226,32 @@ document.addEventListener('change', ({target}) => {
   const input = document.getElementById('permit');
   const textarea = document.querySelector('textarea');
 
-  const check = () => chrome.permissions.contains({
-    origins: [tab.url]
-  }, granted => {
-    input.disabled = granted;
-    textarea.disabled = granted === false;
-  });
+  const check = () => {
+    const next = granted => {
+      input.disabled = granted;
+      textarea.disabled = granted === false;
+    };
+    try {
+      chrome.permissions.contains({
+        origins: [tab.url]
+      }, granted => {
+        next(chrome.runtime.lastError ? false : granted);
+      });
+    }
+    catch (e) {
+      next(false);
+    }
+  };
+
   input.check = check;
   input.addEventListener('click', () => {
     chrome.permissions.request({
       origins: [tab.url]
     }, granted => {
+      const lastError = chrome.runtime.lastError;
+      if (lastError) {
+        alert('Code Execution Denied:\n\n' + lastError.message);
+      }
       if (granted) {
         check();
       }

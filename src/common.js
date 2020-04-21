@@ -471,19 +471,42 @@ const restore = () => {
 };
 
 chrome.contextMenus.create({
-  title: 'Reload all tabs',
+  title: 'Reload tabs',
+  id: 'reload',
+  contexts: ['browser_action']
+});
+chrome.contextMenus.create({
+  title: 'All tabs',
   id: 'reload.all',
-  contexts: ['browser_action']
+  contexts: ['browser_action'],
+  parentId: 'reload'
 });
 chrome.contextMenus.create({
-  title: 'Reload all tabs in the current window',
+  title: 'All tabs in the current window',
   id: 'reload.window',
+  contexts: ['browser_action'],
+  parentId: 'reload'
+});
+chrome.contextMenus.create({
+  title: 'Toggle active reloading jobs',
+  id: 'toggle',
   contexts: ['browser_action']
 });
 chrome.contextMenus.create({
-  title: 'Stop all active reloading jobs',
+  title: 'Stop all',
   id: 'stop.all',
-  contexts: ['browser_action']
+  contexts: ['browser_action'],
+  parentId: 'toggle'
+});
+chrome.contextMenus.create({
+  title: 'Resume all',
+  id: 'resume.all',
+  contexts: ['browser_action'],
+  parentId: 'toggle'
+});
+chrome.contextMenus.create({
+  contexts: ['browser_action'],
+  type: 'separator'
 });
 chrome.contextMenus.create({
   title: 'Restore old reloading jobs',
@@ -632,6 +655,28 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
       }));
     });
   }
+  else if (info.menuItemId === 'resume.all') {
+    const entries = Object.entries(storage).filter(([id, o]) => o.status !== true);
+    const urls = [];
+    entries.forEach(async (e, i) => {
+      const [id, o] = e;
+      await new Promise(resolve => chrome.tabs.get(Number(id), tab => {
+        if (i === entries.length - 1) {
+          prefs.session.forEach(o => {
+            if (urls.indexOf(o.url) !== -1) {
+              o.status = true;
+            }
+          });
+          enable(o, tab, true);
+        }
+        else {
+          urls.push(tab.url);
+          enable(o, tab, false);
+        }
+        resolve();
+      }));
+    });
+  }
 });
 
 // init
@@ -646,28 +691,26 @@ window.addEventListener('DOMContentLoaded', () => {
 
 /* FAQs & Feedback */
 {
-  const {onInstalled, setUninstallURL, getManifest} = chrome.runtime;
-  const {name, version} = getManifest();
-  const page = getManifest().homepage_url;
+  const {management, runtime: {onInstalled, setUninstallURL, getManifest}, storage, tabs} = chrome;
   if (navigator.webdriver !== true) {
+    const page = getManifest().homepage_url;
+    const {name, version} = getManifest();
     onInstalled.addListener(({reason, previousVersion}) => {
-      chrome.storage.local.get({
+      management.getSelf(({installType}) => installType === 'normal' && storage.local.get({
         'faqs': true,
         'last-update': 0
       }, prefs => {
         if (reason === 'install' || (prefs.faqs && reason === 'update')) {
           const doUpdate = (Date.now() - prefs['last-update']) / 1000 / 60 / 60 / 24 > 45;
           if (doUpdate && previousVersion !== version) {
-            chrome.tabs.create({
-              url: page + '?version=' + version +
-                (previousVersion ? '&p=' + previousVersion : '') +
-                '&type=' + reason,
+            tabs.create({
+              url: page + '?version=' + version + (previousVersion ? '&p=' + previousVersion : '') + '&type=' + reason,
               active: reason === 'install'
             });
-            chrome.storage.local.set({'last-update': Date.now()});
+            storage.local.set({'last-update': Date.now()});
           }
         }
-      });
+      }));
     });
     setUninstallURL(page + '?rd=feedback&name=' + encodeURIComponent(name) + '&version=' + version);
   }

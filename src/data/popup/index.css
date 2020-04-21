@@ -106,7 +106,6 @@ td[data-type=enable]::before {
 }
 
 input[disabled],
-textarea[disabled],
 body[data-enabled=true] textarea,
 body[data-enabled=true] [data-type='current'],
 body[data-enabled=true] [data-type='cache'],
@@ -119,6 +118,9 @@ body[data-enabled=true] [data-type='vr'],
 body[data-enabled=true] [data-type='dd'] {
   opacity: 0.5;
   pointer-events: none;
+}
+textarea[disabled] {
+  display: none;
 }
 
 body[data-jobs="0"] #jobs {
