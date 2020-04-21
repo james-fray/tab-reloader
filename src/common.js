@@ -430,7 +430,7 @@ const restore = () => {
       });
       // session jobs
       tabs.forEach(tab => {
-        if (!storage[tab.id]) { // only restore if tab has not already been activated manually
+        if (!storage[tab.id] || !('dd' in storage[tab.id])) { // only restore if tab has not already been activated manually
           let entry = entries.filter(e => e.url === tab.url);
           if (entry.length) {
             entry = entry[0];
