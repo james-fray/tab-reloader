@@ -155,6 +155,9 @@ document.getElementById('import').addEventListener('click', () => {
 document.getElementById('keywords').addEventListener('click', () => {
   document.querySelector('[for=keywords]').classList.toggle('hide');
 });
+document.getElementById('events').addEventListener('click', () => {
+  document.querySelector('[for=events]').classList.toggle('hide');
+});
 document.getElementById('desc-1').addEventListener('click', () => {
   document.querySelector('[for="desc-1"]').classList.toggle('hide');
 });

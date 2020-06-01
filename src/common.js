@@ -527,7 +527,7 @@ chrome.contextMenus.create({
   parentId: 'toggle'
 });
 chrome.contextMenus.create({
-  title: 'Resume Previously active jobs',
+  title: 'Resume previously active jobs',
   id: 'resume.all.cond',
   contexts: ['browser_action'],
   parentId: 'toggle'

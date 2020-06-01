@@ -38,7 +38,7 @@
       </div>
   </div>
   <div>
-    <h1>Custom Jobs</h1> (<span id="example">Inset a Sample</span>, <span id="keywords">Supported Keywords</span>, <span id="desc-1">Toggle Description</span>)
+    <h1>Custom Jobs</h1> (<span id="example">Inset a Sample</span>, <span id="keywords">Supported Keywords</span>, <span id="events">Supported Events</span>, <span id="desc-1">Toggle Description</span>)
   </div>
   <div for="keywords" class="desc hide" style="margin-bottom: 10px">
     <span><code>hostname</code>: Exact hostname (e.g.: <code>hostname: 'www.google.com'</code>) or wildcard hostname (<code>hostname: '*.google.com'</code>)</span>
@@ -61,6 +61,13 @@
     <br>
     <span><code>code</code>: JavaScript code to be executed after each reload (e.g.: <code>code: "console.log('ok');"</code>)</td></span>
     <br>
+  </div>
+  <div for="events" class="desc hide" style="margin-bottom: 10px">
+    <span><code>toggle-requested</code>: Toggles the enable state of a job. This is useful to stop reloading when a condition met.</span>
+    <br>
+    <span><code>activate-tab</code>: Brings the tab and the window that dispatches this event. This is useful to bring the user's attention when a condition met.</span>
+    <br>
+    <span><code>play-sound</code>: Plays a sound that is provided by the "detail" object of the custom event. This function can be used to play a sound even if a tab is not active.</span>
   </div>
   <textarea rows="6" id="json"></textarea>
   <div for="desc-1" class="desc hide" style="margin: 5px 0">

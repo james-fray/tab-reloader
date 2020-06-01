@@ -54,10 +54,12 @@ div.desc,
 
 #example,
 #keywords,
+#events,
 #desc-1,
 #desc-2,
 #desc-3,
 #desc-4 {
+  user-select: none;
   color: #004296;
   cursor: pointer;
 }
