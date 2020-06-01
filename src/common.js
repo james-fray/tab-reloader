@@ -195,7 +195,7 @@ const onDOMContentLoaded = d => {
             code: '',
             forced: false,
             variation: 0
-          }, entry), {id, url: d.url});
+          }, entry), {id, url: d.url}, true, 'repeat');
         }
       }
       return;
@@ -233,6 +233,15 @@ const onDOMContentLoaded = d => {
             document.documentElement.appendChild(script);
             script.addEventListener('toggle-requested', () => chrome.runtime.sendMessage({
               method: 'toggle-requested',
+              id: ${id}
+            }));
+            script.addEventListener('play-sound', e => chrome.runtime.sendMessage({
+              method: 'play-sound',
+              id: ${id},
+              src: e.detail
+            }));
+            script.addEventListener('activate-tab', e => chrome.runtime.sendMessage({
+              method: 'activate-tab',
               id: ${id}
             }));
             script.remove();
@@ -288,7 +297,7 @@ function reload(tabId, obj) {
   });
 }
 
-function enable(obj, tab, store = true) {
+function enable(obj, tab, store = true, origin) {
   const id = tab.id;
   storage[id] = storage[id] || {};
   Object.assign(storage[id], obj, {
@@ -296,7 +305,8 @@ function enable(obj, tab, store = true) {
     'status': !storage[id].status,
     'time': Date.now(),
     'msg': '',
-    '_title': tab.title
+    '_title': tab.title,
+    origin
   });
 
   app.button.icon(storage[id].status, id);
@@ -352,7 +362,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     count();
   }
   else if (request.method === 'enable') {
-    enable(request.data, request.tab);
+    enable(request.data, request.tab, true, 'manual');
   }
   else if (request.method === 'request-update') {
     const id = request.id;
@@ -388,7 +398,19 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     return true;
   }
   else if (request.method === 'toggle-requested') {
-    enable(storage[request.id], sender.tab, true);
+    enable(storage[request.id], sender.tab, true, 'manual');
+  }
+  else if (request.method === 'play-sound') {
+    const a = new Audio(request.src);
+    a.play();
+  }
+  else if (request.method === 'activate-tab') {
+    chrome.tabs.update(sender.tab.id, {
+      active: true
+    });
+    chrome.windows.update(sender.tab.windowId, {
+      focused: true
+    });
   }
 });
 
@@ -425,7 +447,7 @@ const restore = () => {
             forced: false,
             ste: false,
             variation: 0
-          }, entry), tab, false);
+          }, entry), tab, false, 'auto.job');
         }
       });
       // session jobs
@@ -444,7 +466,7 @@ const restore = () => {
                 'forced': entry.forced || false,
                 'variation': entry.variation || 0,
                 '_title': tab.title
-              }), tab, false);
+              }), tab, false, 'restore');
             }
             else {
               storage[tab.id] = {
@@ -501,6 +523,12 @@ chrome.contextMenus.create({
 chrome.contextMenus.create({
   title: 'Resume all',
   id: 'resume.all',
+  contexts: ['browser_action'],
+  parentId: 'toggle'
+});
+chrome.contextMenus.create({
+  title: 'Resume Previously active jobs',
+  id: 'resume.all.cond',
   contexts: ['browser_action'],
   parentId: 'toggle'
 });
@@ -613,12 +641,12 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   }
   else if (info.menuItemId === 'no.reload') {
     if (storage[tab.id] && storage[tab.id].status) {
-      enable({}, tab);
+      enable({}, tab, true, 'manual');
     }
   }
   else if (info.menuItemId.startsWith('reload.')) {
     if (storage[tab.id] && storage[tab.id].status) {
-      enable({}, tab);
+      enable({}, tab, true, 'manual');
     }
     const [hh, mm, ss] = info.menuItemId.replace('reload.', '').split('.').map(s => Number(s));
     enable({
@@ -632,7 +660,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
       code: '',
       forced: false,
       variation: 0
-    }, tab);
+    }, tab, true, 'manual');
   }
   else if (info.menuItemId.startsWith('context.')) {
     chrome.storage.local.set({
@@ -646,17 +674,24 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
       await new Promise(resolve => chrome.tabs.get(Number(id), tab => {
         if (i === entries.length - 1) {
           prefs.session.forEach(o => o.status = false);
-          enable(o, tab, true);
+          enable(o, tab, true, 'batch');
         }
         else {
-          enable(o, tab, false);
+          enable(o, tab, false, 'batch');
         }
         resolve();
       }));
     });
   }
-  else if (info.menuItemId === 'resume.all') {
-    const entries = Object.entries(storage).filter(([id, o]) => o.status !== true);
+  else if (info.menuItemId === 'resume.all' || info.menuItemId === 'resume.all.cond') {
+    const entries = Object.entries(storage)
+      .filter(([id, o]) => o.status !== true)
+      .filter(([id, o]) => {
+        if (info.menuItemId === 'resume.all.cond') {
+          return ['batch', 'auto.job', 'restore'].indexOf(o.origin) !== -1;
+        }
+        return true;
+      });
     const urls = [];
     entries.forEach(async (e, i) => {
       const [id, o] = e;
@@ -667,11 +702,11 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
               o.status = true;
             }
           });
-          enable(o, tab, true);
+          enable(o, tab, true, 'batch');
         }
         else {
           urls.push(tab.url);
-          enable(o, tab, false);
+          enable(o, tab, false, 'batch');
         }
         resolve();
       }));
