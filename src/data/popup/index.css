@@ -145,3 +145,6 @@ body[data-jobs="0"] #jobs {
 #jobs li:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
+#permit {
+  border: solid 2px #c4c4c4;
+}

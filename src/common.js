@@ -160,14 +160,14 @@ chrome.alarms.onAlarm.addListener(({name}) => {
   }
 });
 
-function repeat(obj) {
+function repeat(obj, delay = 0) {
   function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
   }
 
-  let period = obj.period;
+  let period = Math.max(1, obj.period + delay);
   if (obj.variation) {
     period = getRandomInt(period * (100 - obj.variation) / 100, period * (100 + obj.variation) / 100);
     period = Math.max(period, 7000);
@@ -242,6 +242,11 @@ const onDOMContentLoaded = d => {
             }));
             script.addEventListener('activate-tab', e => chrome.runtime.sendMessage({
               method: 'activate-tab',
+              id: ${id}
+            }));
+            script.addEventListener('delay-for', e => chrome.runtime.sendMessage({
+              method: 'delay-for',
+              delay: Number(e.detail),
               id: ${id}
             }));
             script.remove();
@@ -411,6 +416,10 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     chrome.windows.update(sender.tab.windowId, {
       focused: true
     });
+  }
+  else if (request.method === 'delay-for') {
+    const o = storage[request.id];
+    repeat(o, request.delay);
   }
 });
 
