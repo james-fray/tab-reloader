@@ -10,7 +10,7 @@
 }
 body {
   overflow: hidden;
-  margin: 5px;
+  margin: 0 5px 10px 5px;
   width: 500px;
 }
 @media (pointer: none), (pointer: coarse) {
@@ -29,6 +29,11 @@ input {
 
 table {
   width: 100%;
+  border-collapse: collapse;
+}
+th,
+td {
+  padding-top: 5px;
 }
 
 h1 {
@@ -58,9 +63,12 @@ tr[mode=info] {
   font-size: 80%;
 }
 textarea {
-  margin-top: 5px;
   width: 100%;
   box-sizing: border-box;
+  resize: vertical;
+}
+textarea::placeholder {
+  color: #c1c1c1;
 }
 
 .fancy {
@@ -115,7 +123,8 @@ body[data-enabled=true] [data-type='hh'],
 body[data-enabled=true] [data-type='mm'],
 body[data-enabled=true] [data-type='ss'],
 body[data-enabled=true] [data-type='vr'],
-body[data-enabled=true] [data-type='dd'] {
+body[data-enabled=true] [data-type='dd'],
+body[data-enabled=true] .presets span {
   opacity: 0.5;
   pointer-events: none;
 }
@@ -146,5 +155,29 @@ body[data-jobs="0"] #jobs {
   background-color: rgba(0, 0, 0, 0.1);
 }
 #permit {
-  border: solid 2px #c4c4c4;
+  background-color: #e6e6e6;
+  border: none;
+  cursor: pointer;
+}
+#permit:disabled {
+  visibility: hidden;
+}
+
+.presets {
+  display: grid;
+  grid-template-columns: min-content repeat(6, 1fr);
+  justify-items: center;
+  align-items: center;
+}
+.presets span {
+  background-color: #e6e6e6;
+  padding: 2px 5px;
+  cursor: pointer;
+}
+.attn {
+  font-size: 140%;
+  line-height: 42px;
+}
+.attn td {
+  border-bottom: solid 1px #e6e6e6;
 }

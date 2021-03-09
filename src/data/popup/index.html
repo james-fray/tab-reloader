@@ -7,8 +7,8 @@
   </head>
   <body data-jobs="0">
     <table>
-      <tr title="Minimum acceptable period is 10 seconds. Use Shift + Left-Click to reduce this to 1 second (not recommanded)">
-        <td><b>Enable Reloader for this tab:</b></td>
+      <tr title="Minimum acceptable period is 10 seconds. Use Shift + Left-Click to reduce this to 1 second (not recommanded)" class="attn">
+        <td>Enable Reloader for this tab:</td>
         <td class="icon-toggle-off" align="right" data-type='enable'>Disabled</td>
       </tr>
       <tr>
@@ -28,12 +28,12 @@
         <td class="icon-toggle-off" align="right" data-type='scoll-to-end'>Disabled</td>
       </tr>
       <tr>
-        <td>Run the following JavaScript code after each reload:</td>
+        <td>Run JS code after each reload:</td>
         <td align="right"><input type="button" value="Permit Code Execution" id="permit"></td>
       </tr>
       <tr>
         <td colspan="2" title="Make sure the extension has access to this hostname by pressing 'Permit Code Execution'">
-          <textarea rows="4" placeholder="e.g.: console.log(Date.now());"></textarea>
+          <textarea rows="4" placeholder="Example:&#10;&#10;console.log('Reloaded', Date.now());"></textarea>
         </td>
       </tr>
     </table>
@@ -54,6 +54,15 @@
         <td>Variation (%)</td>
       </tr>
     </table>
+    <p class="presets">
+      Presets:
+      <span data-hh="0" data-mm="0" data-ss="30">00:00:30</span>
+      <span data-hh="0" data-mm="5" data-ss="0">00:05:00</span>
+      <span data-hh="0" data-mm="15" data-ss="0">00:15:00</span>
+      <span data-hh="0" data-mm="30" data-ss="0">00:30:00</span>
+      <span data-hh="1" data-mm="0" data-ss="0">01:00:00</span>
+      <span data-hh="5" data-mm="0" data-ss="0">05:00:00</span>
+    </p>
     <p class="fancy"><span><b>Status</b></span></p>
     <div style="padding-left: 5px">
       <b>[Current Tab]</b>: <span data-type='msg'></span>
