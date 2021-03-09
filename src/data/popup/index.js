@@ -293,4 +293,12 @@ document.querySelector('#jobs ol').addEventListener('click', e => {
   }
 });
 
-
+// presets
+document.addEventListener('click', e => {
+  const {hh, mm, ss} = e.target.dataset;
+  if (ss) {
+    dom.hh = hh;
+    dom.mm = mm;
+    dom.ss = ss;
+  }
+});
