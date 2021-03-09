@@ -81,12 +81,17 @@
   <div><h1>Reloading Policy</h1> (<span id="desc-3">Toggle Description</span>)</div>
   <div for="desc-3" class="desc hide"  style="margin-bottom: 10px">An object to control whether a reloading job should take place for the current tab at the current time or not. With this object you can, for instance, exclude a URL from a domain to not get reloaded even if other URLs of the domain should get reloaded or even limit the reloading job to a time-span. Read the FAQs page for more info. Your browser's sample time format is "<code id="time"></code>"</div>
   <textarea rows="6" id="policy"></textarea>
+  <h1>Plug-ins:</h1>
+  <div class="grid-1">
+    <input type="checkbox" id="./plugins/badge/core.js">
+    <label for="./plugins/badge/core.js">Display approximate remaining time on the badge area of the tab (causes the extension to reevaluate the remaining times every one minute)</label>
+  </div>
   <h1>Misc</h1>
   <div class="grid-1">
     <input type="checkbox" id="faqs">
     <label for="faqs">Open FAQs page on updates</label>
     <input type="checkbox" id="log">
-    <label for="log">Display logs in the browser console</label>
+    <label for="log">Display logs on the browser console</label>
   </div>
   <div id="explore"></div>
   <div>

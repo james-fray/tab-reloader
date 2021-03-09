@@ -1,3 +1,17 @@
+body {
+  background-color: #fff;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 13px;
+  max-width: 80%;
+  margin: 10px auto;
+}
+@media screen and (max-width: 600px)  {
+  body {
+    margin: 10px;
+    max-width: unset;
+  }
+}
+
 @supports (-moz-appearance: none) {
   body {
     padding: 0 10px;
@@ -23,6 +37,7 @@ input[type=number] {
 }
 h1 {
   display: inline-block;
+  margin-top: 30px;
 }
 td {
   padding: 2px 0;
@@ -64,6 +79,7 @@ div.desc,
 }
 .grid-1 {
   grid-template-columns: 32px 1fr;
+  grid-row-gap: 5px;
 }
 .grid-2 {
   grid-template-columns: 32px 1fr 60px;

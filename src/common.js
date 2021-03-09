@@ -125,8 +125,9 @@ function toPopup(id, extra) {
   chrome.runtime.sendMessage(data, () => chrome.runtime.lastError);
 }
 
-/* due to having variation, the timeout id might change between number and string based on what the previous call is*/
-function timeout(id = '', period, callback) {
+/* due to having variation, the timeout id might change between number and string based on what the previous call is */
+const timeout = {};
+timeout.set = (id = '', period, callback) => {
   window.clearTimeout(id);
   if (typeof id === 'string') {
     chrome.alarms.clear(id, () => {});
@@ -145,7 +146,7 @@ function timeout(id = '', period, callback) {
     });
     return id; // in case the id is the number from previous timeout call
   }
-}
+};
 timeout.stop = id => {
   window.clearTimeout(id);
   if (timeout.cache[id]) {
@@ -173,7 +174,7 @@ function repeat(obj, delay = 0) {
     period = Math.max(period, 7000);
   }
   obj.vperiod = period;
-  obj.id = timeout(obj.id, period, obj.callback);
+  obj.id = timeout.set(obj.id, period, obj.callback);
 }
 
 const onDOMContentLoaded = d => {

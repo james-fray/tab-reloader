@@ -14,7 +14,8 @@ const config = {
   'ss': 0,
   'dynamic.json': false,
   'policy': {},
-  'log': false
+  'log': false,
+  './plugins/badge/core.js': false
 };
 
 document.getElementById('time').textContent = (new Date()).toLocaleString();
@@ -34,6 +35,7 @@ const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('ss').value = prefs.ss;
   document.getElementById('dynamic.json').checked = prefs['dynamic.json'];
   document.getElementById('policy').value = JSON.stringify(prefs.policy, null, '  ');
+  document.getElementById('./plugins/badge/core.js').checked = prefs['./plugins/badge/core.js'];
 });
 restore();
 
@@ -56,7 +58,8 @@ document.getElementById('save').addEventListener('click', () => {
       'mm': Math.min(Math.max(Number(document.getElementById('mm').value), 0), 59),
       'ss': Math.min(Math.max(Number(document.getElementById('ss').value), 0), 59),
       'dynamic.json': document.getElementById('dynamic.json').checked,
-      'policy': JSON.parse(document.getElementById('policy').value.trim() || '{}')
+      'policy': JSON.parse(document.getElementById('policy').value.trim() || '{}'),
+      './plugins/badge/core.js': document.getElementById('./plugins/badge/core.js').checked
     }, () => {
       info.textContent = 'Options saved';
       restore();
