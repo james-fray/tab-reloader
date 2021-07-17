@@ -11,7 +11,10 @@
 body {
   overflow: hidden;
   margin: 0 5px 10px 5px;
-  width: min(100vw, 500px);
+  width: 500px;
+}
+body.ffo {
+  width: unset;
 }
 
 table,
@@ -25,7 +28,7 @@ input {
 }
 
 table {
-  width: calc(100vw - 10px);
+  width: calc(100%);
   border-collapse: collapse;
 }
 th,

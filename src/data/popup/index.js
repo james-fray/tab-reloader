@@ -7,6 +7,11 @@ const prefs = {
   'ss': 0
 };
 
+// detect FF's overflow menu
+if (document.documentElement.clientWidth < 500) {
+  document.body.classList.add('ffo');
+}
+
 const dom = {
   get enable() {
     return document.querySelector('[data-type=enable]');
