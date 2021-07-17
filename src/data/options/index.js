@@ -15,10 +15,9 @@ const config = {
   'dynamic.json': false,
   'policy': {},
   'log': false,
+  'active': 'single',
   './plugins/badge/core.js': false
 };
-
-document.getElementById('time').textContent = (new Date()).toLocaleString();
 
 const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('badge').checked = prefs.badge;
@@ -35,6 +34,7 @@ const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('ss').value = prefs.ss;
   document.getElementById('dynamic.json').checked = prefs['dynamic.json'];
   document.getElementById('policy').value = JSON.stringify(prefs.policy, null, '  ');
+  document.getElementById('active').checked = prefs.active === 'multiple';
   document.getElementById('./plugins/badge/core.js').checked = prefs['./plugins/badge/core.js'];
 });
 restore();
@@ -59,6 +59,7 @@ document.getElementById('save').addEventListener('click', () => {
       'ss': Math.min(Math.max(Number(document.getElementById('ss').value), 0), 59),
       'dynamic.json': document.getElementById('dynamic.json').checked,
       'policy': JSON.parse(document.getElementById('policy').value.trim() || '{}'),
+      'active': document.getElementById('active').checked ? 'multiple' : 'single',
       './plugins/badge/core.js': document.getElementById('./plugins/badge/core.js').checked
     }, () => {
       info.textContent = 'Options saved';
@@ -155,20 +156,17 @@ document.getElementById('import').addEventListener('click', () => {
   }
 });
 // toggle
-document.getElementById('keywords').addEventListener('click', () => {
-  document.querySelector('[for=keywords]').classList.toggle('hide');
-});
-document.getElementById('events').addEventListener('click', () => {
-  document.querySelector('[for=events]').classList.toggle('hide');
-});
+document.getElementById('keywords').addEventListener('click', () => chrome.tabs.create({
+  url: chrome.runtime.getManifest().homepage_url + '#faq27'
+}));
+document.getElementById('events').addEventListener('click', () => chrome.tabs.create({
+  url: chrome.runtime.getManifest().homepage_url + '#faq26'
+}));
 document.getElementById('desc-1').addEventListener('click', () => {
   document.querySelector('[for="desc-1"]').classList.toggle('hide');
 });
 document.getElementById('desc-2').addEventListener('click', () => {
   document.querySelector('[for="desc-2"]').classList.toggle('hide');
-});
-document.getElementById('desc-3').addEventListener('click', () => {
-  document.querySelector('[for="desc-3"]').classList.toggle('hide');
 });
 document.getElementById('desc-4').addEventListener('click', () => {
   document.querySelector('[for="desc-4"]').classList.toggle('hide');
@@ -181,3 +179,11 @@ document.getElementById('permission').addEventListener('click', () => chrome.per
   info.textContent = 'Host permission is ' + (granted ? 'granted' : 'denied');
   window.setTimeout(() => info.textContent = '', 3000);
 }));
+
+document.addEventListener('DOMContentLoaded', () => {
+  for (const a of [...document.querySelectorAll('[data-href]')]) {
+    if (a.hasAttribute('href') === false) {
+      a.href = chrome.runtime.getManifest().homepage_url + '#' + a.dataset.href;
+    }
+  }
+});

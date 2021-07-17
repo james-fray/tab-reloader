@@ -1,41 +1,42 @@
 body {
-  background-color: #fff;
   font-family: "Helvetica Neue", Helvetica, sans-serif;
   font-size: 13px;
   max-width: 80%;
   margin: 10px auto;
+  background-color: #fff;
+  color: #4d5156;
 }
-@media screen and (max-width: 600px)  {
+@media screen and (max-width: 600px) {
   body {
     margin: 10px;
     max-width: unset;
   }
 }
 
-@supports (-moz-appearance: none) {
-  body {
-    padding: 0 10px;
-  }
-  h1 {
-    font-size: 18px;
-    font-weight: normal;
-  }
-  button {
-    height: 24px;
-    color: rgb(68, 68, 68);
-    background-image: linear-gradient(rgb(237, 237, 237), rgb(237, 237, 237) 38%, rgb(222, 222, 222));
-    box-shadow: rgba(0, 0, 0, 0.08) 0 1px 0, rgba(255, 255, 255, 0.75) 0 1px 2px inset;
-    text-shadow: rgb(240, 240, 240) 0 1px 0;
-    border: solid 1px rgba(0, 0, 0, 0.25);
-  }
+button {
+  height: 24px;
+  color: rgb(68, 68, 68);
+  background-image: linear-gradient(rgb(237, 237, 237), rgb(237, 237, 237) 38%, rgb(222, 222, 222));
+  box-shadow: rgba(0, 0, 0, 0.08) 0 1px 0, rgba(255, 255, 255, 0.75) 0 1px 2px inset;
+  text-shadow: rgb(240, 240, 240) 0 1px 0;
 }
+button,
+textarea,
+input {
+  border: solid 1px rgba(0, 0, 0, 0.25);
+  color: #4d5156;
+}
+
 textarea {
   width: 100%;
 }
 input[type=number] {
   width: 45px;
+  padding: 5px;
 }
 h1 {
+  font-size: 18px;
+  font-weight: normal;
   display: inline-block;
   margin-top: 30px;
 }
@@ -46,7 +47,11 @@ td:first-child {
   vertical-align: top;
   padding-right: 5px;
 }
-
+a {
+  text-decoration: none;
+  user-select: none;
+  color: #07c;
+}
 .desc {
   background-color: #e8e8e8;
 }
@@ -65,9 +70,9 @@ div.desc,
 #desc-2,
 #desc-3,
 #desc-4 {
-  user-select: none;
-  color: #004296;
   cursor: pointer;
+  user-select: none;
+  color: #07c;
 }
 
 .grid-1,

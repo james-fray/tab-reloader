@@ -11,12 +11,13 @@
   <div class="grid-1">
     <input type="checkbox" id="badge">
     <label for="badge">Display the total number of active jobs in the badge area</label>
+    <input type="checkbox" id="active">
+    <label for="active">Consider one tab per browser window as an "<a data-href="faq25" target="_blank">active tab</a>"</label>
   </div>
   <div class="grid-2">
     <input type="checkbox" id="history">
-    <label for="history">Automatically restore reloading jobs on a browser restart after (in seconds):</label>
+    <label for="history">Automatically <a data-href="faq8" target="_blank">restore reloading jobs</a> on a browser restart after (in seconds):</label>
     <input type="number" id="history_timeout">
-
   </div>
   <div class="grid-1">
     <input type="checkbox" id="use-native">
@@ -40,35 +41,6 @@
   <div>
     <h1>Custom Jobs</h1> (<span id="example">Inset a Sample</span>, <span id="keywords">Supported Keywords</span>, <span id="events">Supported Events</span>, <span id="desc-1">Toggle Description</span>)
   </div>
-  <div for="keywords" class="desc hide" style="margin-bottom: 10px">
-    <span><code>hostname</code>: Exact hostname (e.g.: <code>hostname: 'www.google.com'</code>) or wildcard hostname (<code>hostname: '*.google.com'</code>)</span>
-    <br>
-    <span><code>dd</code>: Reload after <code>dd</code> days (a number between 0 to 10) (e.g.: <code>dd: 2</code>)</span>
-    <br>
-    <span><code>hh</code>: Reload after <code>hh</code> hours (a number between 0 to 23)</span>
-    <br>
-    <span><code>mm</code>: Reload after <code>mm</code> minutes (a number between 0 to 59)</span>
-    <br>
-    <span><code>ss</code>: Reload after <code>ss</code> seconds (a number between 0 to 59)</span>
-    <br>
-    <span><code>variation</code>: Use a random variation (a number between 0 to 99) (e.g.: <code>variation: 10</code>)</span>
-    <br>
-    <span><code>current</code>: If true, active tab will not be reloaded (e.g.: <code>current: true</code>)</span>
-    <br>
-    <span><code>cache</code>: If true, soft reloading is used (similar to F5). If false, hard reloading is used (similar to Shift + F5)</span>
-    <br>
-    <span><code>form</code>: If true, form submission warning is bypassed (e.g.: <code>form: true</code>)</td></span>
-    <br>
-    <span><code>code</code>: JavaScript code to be executed after each reload (e.g.: <code>code: "console.log('ok');"</code>)</td></span>
-    <br>
-  </div>
-  <div for="events" class="desc hide" style="margin-bottom: 10px">
-    <span><code>toggle-requested</code>: Toggles the enable state of a job. This is useful to stop reloading when a condition met.</span>
-    <br>
-    <span><code>activate-tab</code>: Brings the tab and the window that dispatches this event. This is useful to bring the user's attention when a condition met.</span>
-    <br>
-    <span><code>play-sound</code>: Plays a sound that is provided by the "detail" object of the custom event. This function can be used to play a sound even if a tab is not active.</span>
-  </div>
   <textarea rows="6" id="json"></textarea>
   <div for="desc-1" class="desc hide" style="margin: 5px 0">
     <td colspan="2">JSON list of hostnames to set an automatic refresh after each start-up. You can manually ask the extension to set the JSON rules from "Restore old reloading jobs" context menu over the browser action button. If you need URL matching instead of hostname matching, remove the "hostname" key and append "url" key instead.</td>
@@ -78,8 +50,7 @@
     <label for="dynamic.json">Always check to install reloading jobs from the JSON object when a new page loads (<span id="desc-2">Toggle Description</span>)</label>
   </div>
   <div for="desc-2" class="desc hide"  style="margin-top: 5px">If this option is checked and the new page's hostname matches a key in the JSON object, a new reloading job will automatically be set for the current tab.</div>
-  <div><h1>Reloading Policy</h1> (<span id="desc-3">Toggle Description</span>)</div>
-  <div for="desc-3" class="desc hide"  style="margin-bottom: 10px">An object to control whether a reloading job should take place for the current tab at the current time or not. With this object you can, for instance, exclude a URL from a domain to not get reloaded even if other URLs of the domain should get reloaded or even limit the reloading job to a time-span. Read the FAQs page for more info. Your browser's sample time format is "<code id="time"></code>"</div>
+  <div><h1><a data-href="faq14" target="_blank">Reloading Policy</a></h1></div>
   <textarea rows="6" id="policy"></textarea>
   <h1>Plug-ins:</h1>
   <div class="grid-1">
@@ -113,7 +84,7 @@
   </div>
   <div>
     <button id="ofq">Open FAQs page</button>
-    <button id="support" title="Support Development">Support Development</button> - <button id="save" title="Save settings">Save</button>
+    <button id="support" title="Support Development">Support Development</button> - <button id="save" title="Save settings">Save Options</button>
     <span id="info"></span>
   </div>
 

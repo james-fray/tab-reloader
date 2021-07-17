@@ -50,7 +50,8 @@ const prefs = {
   'dynamic.json': false,
   'policy': {},
   'use-native': true,
-  'log': false
+  'log': false,
+  'active': 'single' // single or multiple; single means only focused active tab
 };
 
 chrome.storage.onChanged.addListener(ps => {
@@ -207,16 +208,16 @@ const onDOMContentLoaded = d => {
     if (storage[id].ste) {
       chrome.tabs.executeScript(id, {
         code: `{
-          window.stop();
-          const scroll = () => {
+          const ste = () => {
+            window.stop();
             const e = (document.scrollingElement || document.body);
             e.scrollTop = e.scrollHeight;
           }
           if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', scroll);
+            document.addEventListener('DOMContentLoaded', ste);
           }
           else {
-            scroll();
+            ste();
           }
         }`
       });
@@ -287,7 +288,7 @@ function reload(tabId, obj) {
         }
       }
       catch (e) {
-        console.error('policy checking failed', e);
+        console.warning('policy checking failed', e);
       }
     }
     if (obj.form) {
@@ -321,24 +322,28 @@ function enable(obj, tab, store = true, origin) {
     storage[id].period = toSecond(obj);
     storage[id].callback = (function(id) {
       storage[id].time = Date.now();
-      chrome.tabs.get(id, tab => {
-        if (tab) {
-          if (storage[id].current) {
-            if (!tab.active) {
+
+
+      chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+        chrome.tabs.get(id, tab => {
+          if (tab) {
+            if (storage[id].current) {
+              if (!tab.active || (tab.active && prefs['active'] === 'single' && tabs.length && tab.id !== tabs[0].id)) {
+                reload(tab.id, storage[id]);
+              }
+            }
+            else {
               reload(tab.id, storage[id]);
             }
+            storage[id]['_title'] = tab.title;
+            // repeat although this might get overwritten after reload.
+            repeat(storage[id]);
           }
           else {
-            reload(tab.id, storage[id]);
+            timeout.stop(storage[id].id);
+            delete storage[id];
           }
-          storage[id]['_title'] = tab.title;
-          // repeat although this might get overwritten after reload.
-          repeat(storage[id]);
-        }
-        else {
-          timeout.stop(storage[id].id);
-          delete storage[id];
-        }
+        });
       });
     }).bind(this, tab.id);
     repeat(storage[id]);

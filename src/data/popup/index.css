@@ -131,6 +131,12 @@ body[data-enabled=true] .presets span {
 textarea[disabled] {
   display: none;
 }
+a,
+a:visited {
+  text-decoration: none;
+  user-select: none;
+  color: #07c;
+}
 
 body[data-jobs="0"] #jobs {
   display: none;
@@ -174,14 +180,13 @@ body[data-jobs="0"] #jobs {
   padding: 2px 5px;
   cursor: pointer;
 }
-@media screen and (max-width: 500px) {
-  .presets {
-    grid-template-columns: min-content repeat(4, 1fr);
-  }
-  .presets span[data-mm="30"],
-  .presets span[data-hh="5"] {
-    display: none;
-  }
+
+body.ffo .presets {
+  grid-template-columns: min-content repeat(4, 1fr);
+}
+body.ffo .presets span[data-mm="30"],
+body.ffo .presets span[data-hh="5"] {
+  display: none;
 }
 
 .attn {
