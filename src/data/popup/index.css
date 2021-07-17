@@ -11,10 +11,7 @@
 body {
   overflow: hidden;
   margin: 0 5px 10px 5px;
-  width: 500px;
-}
-@media (pointer: none), (pointer: coarse) {
-  width: unset;
+  width: min(100vw, 500px);
 }
 
 table,
@@ -28,7 +25,7 @@ input {
 }
 
 table {
-  width: 100%;
+  width: calc(100vw - 10px);
   border-collapse: collapse;
 }
 th,
@@ -174,6 +171,16 @@ body[data-jobs="0"] #jobs {
   padding: 2px 5px;
   cursor: pointer;
 }
+@media screen and (max-width: 500px) {
+  .presets {
+    grid-template-columns: min-content repeat(4, 1fr);
+  }
+  .presets span[data-mm="30"],
+  .presets span[data-hh="5"] {
+    display: none;
+  }
+}
+
 .attn {
   font-size: 140%;
   line-height: 42px;
