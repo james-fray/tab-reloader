@@ -54,6 +54,16 @@ const prefs = {
   'active': 'single' // single or multiple; single means only focused active tab
 };
 
+const tabContextMenusInfo = [
+  { title: 'Don\'t reload', id: 'no.reload', dd: 0, hh: 0, mm: 0, ss: 0 },
+  { title: 'Every 10 secs', id: 'reload.0.0.10', dd: 0, hh: 0, mm: 0, ss: 10 },
+  { title: 'Every 30 secs', id: 'reload.0.0.30', dd: 0, hh: 0, mm: 0, ss: 30 },
+  { title: 'Every minute',  id: 'reload.0.1.0', dd: 0, hh: 0, mm: 1, ss: 0 },
+  { title: 'Every 5 minutes', id: 'reload.0.5.0', dd: 0, hh: 0, mm: 5, ss: 0 },
+  { title: 'Every 15 minutes', id: 'reload.0.15.0', dd: 0, hh: 0, mm: 15, ss: 0 },
+  { title: 'Every hour', id: 'reload.1.0.0', dd: 0, hh: 1, mm: 0, ss: 0 },
+];
+
 chrome.storage.onChanged.addListener(ps => {
   Object.keys(ps).forEach(k => prefs[k] = ps[k].newValue);
   if (ps.history && ps.history.newValue === false) {
@@ -304,6 +314,20 @@ function reload(tabId, obj) {
   });
 }
 
+function markCorrespondingTimeTabContextMenu(data) {
+  for(let tabContextMenuInfo of tabContextMenusInfo) {
+    chrome.contextMenus.update(tabContextMenuInfo.id, { checked: false });
+  }
+
+  const info = (!data.status) ? tabContextMenusInfo[0] :
+                  tabContextMenusInfo.find(i => i.dd === +(data.dd) && i.hh === +(data.hh) && 
+                                                i.mm === +(data.mm) && i.ss === +(data.ss));
+
+  if (info) {
+    chrome.contextMenus.update(info.id, { checked: true });
+  }  
+}
+
 function enable(obj, tab, store = true, origin) {
   const id = tab.id;
   storage[id] = storage[id] || {};
@@ -317,6 +341,8 @@ function enable(obj, tab, store = true, origin) {
   });
 
   app.button.icon(storage[id].status, id);
+
+  markCorrespondingTimeTabContextMenu(storage[id]);
 
   if (storage[id].status) {
     storage[id].period = toSecond(obj);
@@ -558,41 +584,11 @@ chrome.contextMenus.create({
 });
 const contextmenus = () => {
   if ('TAB' in chrome.contextMenus.ContextType) {
-    chrome.contextMenus.create({
-      title: 'Don\'t reload',
-      id: 'no.reload',
-      contexts: ['tab']
-    });
-    chrome.contextMenus.create({
-      title: 'Every 10 secs',
-      id: 'reload.0.0.10',
-      contexts: ['tab']
-    });
-    chrome.contextMenus.create({
-      title: 'Every 30 secs',
-      id: 'reload.0.0.30',
-      contexts: ['tab']
-    });
-    chrome.contextMenus.create({
-      title: 'Every minute',
-      id: 'reload.0.1.0',
-      contexts: ['tab']
-    });
-    chrome.contextMenus.create({
-      title: 'Every 5 minutes',
-      id: 'reload.0.5.0',
-      contexts: ['tab']
-    });
-    chrome.contextMenus.create({
-      title: 'Every 15 minutes',
-      id: 'reload.0.15.0',
-      contexts: ['tab']
-    });
-    chrome.contextMenus.create({
-      title: 'Every hour',
-      id: 'reload.1.0.0',
-      contexts: ['tab']
-    });
+    
+    for(let info of tabContextMenusInfo) {
+      chrome.contextMenus.create({ title: info.title, id: info.id, contexts: ['tab'], type: 'checkbox' });
+    }
+
     chrome.contextMenus.create({
       contexts: ['tab'],
       type: 'separator'
