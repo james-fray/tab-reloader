@@ -38,6 +38,22 @@ const match = (str, rule) => {
   return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
 };
 
+const findEntry = (prefs, tab) => {
+  const {hostname} = new URL(tab.url);
+  return prefs.json.filter(j => {
+      if (j.hostname) {
+        return match(hostname, j.hostname);
+      }
+      if (j.url) {
+        return j.url === tab.url;
+      }
+      if (j.urlRegex) {
+        return tab.url.match(j.urlRegex) !== null;
+      }
+      return false;
+  }).pop();
+};
+
 const prefs = {
   'badge': true,
   'color': '#5e5e5e',
@@ -446,9 +462,7 @@ const restore = () => {
     }, tabs => {
       // automatic jobs
       tabs.forEach(tab => {
-        const {hostname} = new URL(tab.url);
-        const entry = prefs.json.filter(j => j.hostname ? match(hostname, j.hostname) : j.url === tab.url).pop();
-
+        const entry = findEntry(prefs, tab);
         if (entry) {
           enable(Object.assign({
             dd: 0,
