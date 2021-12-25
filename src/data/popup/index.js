@@ -55,6 +55,14 @@ const dom = {
     tmp.textContent = val ? 'Enabled' : 'Disabled';
     tmp.setAttribute('class', 'icon-toggle-' + (val ? 'on' : 'off'));
   },
+  get offline() {
+    return document.querySelector('[data-type=offline]').classList.contains('icon-toggle-on');
+  },
+  set offline(val) {
+    const tmp = document.querySelector('[data-type=offline]');
+    tmp.textContent = val ? 'Enabled' : 'Disabled';
+    tmp.setAttribute('class', 'icon-toggle-' + (val ? 'on' : 'off'));
+  },
   get cache() {
     return document.querySelector('[data-type=cache]').classList.contains('icon-toggle-on');
   },
@@ -149,6 +157,9 @@ chrome.runtime.onMessage.addListener(request => {
     if ('current' in obj) {
       dom.current = obj.current;
     }
+    if ('offline' in obj) {
+      dom.offline = obj.offline;
+    }
     if ('cache' in obj) {
       dom.cache = obj.cache;
     }
@@ -206,6 +217,7 @@ document.addEventListener('click', e => {
         ss: dom.ss,
         variation: Number(dom.vr),
         current: dom.current,
+        offline: dom.offline,
         forced: e.shiftKey, // forced period
         cache: dom.cache,
         form: dom.form,
@@ -216,6 +228,9 @@ document.addEventListener('click', e => {
   }
   else if (type === 'current') {
     dom.current = !dom.current;
+  }
+  else if (type === 'offline') {
+    dom.offline = !dom.offline;
   }
   else if (type === 'cache') {
     dom.cache = !dom.cache;

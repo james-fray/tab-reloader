@@ -113,6 +113,7 @@ function toPopup(id, extra) {
     Object.assign(data.data, {
       variation: obj.variation,
       current: obj.current,
+      offline: obj.offline,
       cache: obj.cache,
       form: obj.form,
       code: obj.code,
@@ -192,6 +193,7 @@ const onDOMContentLoaded = d => {
             mm: 5,
             ss: 0,
             current: false,
+            offline: false,
             cache: false,
             form: false,
             code: '',
@@ -262,15 +264,21 @@ chrome.webNavigation.onDOMContentLoaded.addListener(onDOMContentLoaded);
 
 function reload(tabId, obj) {
   chrome.tabs.get(tabId, tab => {
+    const skip = () => window.setTimeout(() => onDOMContentLoaded({
+      frameId: 0,
+      tabId: tab.id,
+      url: tab.url
+    }), 100);
+
+    // offline check
+    if (navigator.onLine === false && obj.offline) {
+      return skip();
+    }
+
     // policy check
     const {hostname} = new URL(tab.url);
     const entry = Object.entries(prefs.policy).filter(([h]) => match(hostname, h)).map(a => a[1]).pop();
     if (entry) {
-      const skip = () => window.setTimeout(() => onDOMContentLoaded({
-        frameId: 0,
-        tabId: tab.id,
-        url: tab.url
-      }), 100);
       try {
         if (entry && entry.url) {
           const a = new RegExp(entry.url);
@@ -354,6 +362,7 @@ function enable(obj, tab, store = true, origin) {
     url: tab.url,
     status: storage[id].status,
     current: obj.current,
+    offline: obj.offline,
     cache: obj.cache,
     form: obj.form,
     code: obj.code,
@@ -456,6 +465,7 @@ const restore = () => {
             mm: 5,
             ss: 0,
             current: false,
+            offline: false,
             cache: false,
             form: false,
             code: '',
@@ -474,6 +484,7 @@ const restore = () => {
             if (entry.status) {
               enable(Object.assign(entry.period, {
                 'current': entry.current || false,
+                'offline': entry.offline || false,
                 'cache': entry.cache || false,
                 'form': entry.form || false,
                 'code': entry.code || '',
@@ -490,6 +501,7 @@ const restore = () => {
                 'mm': entry.period.mm,
                 'ss': entry.period.ss,
                 'current': entry.current || false,
+                'offline': entry.offline || false,
                 'cache': entry.cache || false,
                 'form': entry.form || false,
                 'code': entry.code || '',
@@ -700,6 +712,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
       mm,
       ss,
       current: prefs['context.active'],
+      offline: false,
       cache: prefs['context.cache'],
       form: false,
       code: '',
