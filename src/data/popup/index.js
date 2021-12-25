@@ -5,6 +5,12 @@ const prefs = {
   'hh': 0,
   'mm': 5,
   'ss': 0,
+  'pp-current': false,
+  'pp-cache': false,
+  'pp-form': false,
+  'pp-offline': false,
+  'pp-scroll-to-end': false,
+
   'presets': [{
     hh: 0,
     mm: 0,
@@ -307,6 +313,12 @@ document.addEventListener('change', ({target}) => {
 // init
 chrome.storage.local.get(prefs, ps => {
   Object.assign(prefs, ps);
+
+  dom.current = prefs['pp-current'];
+  dom.cache = prefs['pp-cache'];
+  dom.form = prefs['pp-form'];
+  dom.offline = prefs['pp-offline'];
+  dom.ste = prefs['pp-scroll-to-end'];
 
   chrome.tabs.query({
     active: true,

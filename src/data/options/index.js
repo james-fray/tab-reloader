@@ -41,6 +41,11 @@ const config = {
     mm: 0,
     ss: 0
   }],
+  'pp-current': false,
+  'pp-cache': false,
+  'pp-form': false,
+  'pp-offline': false,
+  'pp-scroll-to-end': false,
   './plugins/badge/core.js': false
 };
 
@@ -62,6 +67,13 @@ const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('active').checked = prefs.active === 'multiple';
   document.getElementById('presets').value = prefs.presets.slice(0, 6).map(o => o.hh.toString().padStart(2, '0') + ':' +
     o.mm.toString().padStart(2, '0') + ':' + o.ss.toString().padStart(2, '0')).join(', ');
+
+
+  document.getElementById('pp-current').checked = prefs['pp-current'];
+  document.getElementById('pp-cache').checked = prefs['pp-cache'];
+  document.getElementById('pp-form').checked = prefs['pp-form'];
+  document.getElementById('pp-offline').checked = prefs['pp-offline'];
+  document.getElementById('pp-scroll-to-end').checked = prefs['pp-scroll-to-end'];
 
   document.getElementById('./plugins/badge/core.js').checked = prefs['./plugins/badge/core.js'];
 });
@@ -120,6 +132,12 @@ document.getElementById('save').addEventListener('click', () => {
       'dynamic.json': document.getElementById('dynamic.json').checked,
       'policy': JSON.parse(document.getElementById('policy').value.trim() || '{}'),
       'active': document.getElementById('active').checked ? 'multiple' : 'single',
+      'pp-current': document.getElementById('pp-current').checked,
+      'pp-cache': document.getElementById('pp-cache').checked,
+      'pp-form': document.getElementById('pp-form').checked,
+      'pp-offline': document.getElementById('pp-offline').checked,
+      'pp-scroll-to-end': document.getElementById('pp-scroll-to-end').checked,
+
       './plugins/badge/core.js': document.getElementById('./plugins/badge/core.js').checked
     }, () => {
       info.textContent = 'Options saved';
