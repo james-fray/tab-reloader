@@ -16,6 +16,31 @@ const config = {
   'policy': {},
   'log': false,
   'active': 'single',
+  'presets': [{
+    hh: 0,
+    mm: 0,
+    ss: 30
+  }, {
+    hh: 0,
+    mm: 5,
+    ss: 0
+  }, {
+    hh: 0,
+    mm: 15,
+    ss: 0
+  }, {
+    hh: 0,
+    mm: 30,
+    ss: 0
+  }, {
+    hh: 1,
+    mm: 0,
+    ss: 0
+  }, {
+    hh: 5,
+    mm: 0,
+    ss: 0
+  }],
   './plugins/badge/core.js': false
 };
 
@@ -35,6 +60,9 @@ const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('dynamic.json').checked = prefs['dynamic.json'];
   document.getElementById('policy').value = JSON.stringify(prefs.policy, null, '  ');
   document.getElementById('active').checked = prefs.active === 'multiple';
+  document.getElementById('presets').value = prefs.presets.slice(0, 6).map(o => o.hh.toString().padStart(2, '0') + ':' +
+    o.mm.toString().padStart(2, '0') + ':' + o.ss.toString().padStart(2, '0')).join(', ');
+
   document.getElementById('./plugins/badge/core.js').checked = prefs['./plugins/badge/core.js'];
 });
 restore();
@@ -43,9 +71,41 @@ document.getElementById('save').addEventListener('click', () => {
   const info = document.getElementById('info');
   const badge = document.getElementById('badge').checked;
 
+  let presets;
+  if (document.getElementById('presets').value.trim()) {
+    presets = document.getElementById('presets').value.split(/\s*,\s*/).map(s => {
+      const [hh, mm, ss] = s.split(/\s*:\s*/);
+
+      const o = {
+        hh: 0,
+        mm: 0,
+        ss: 0
+      };
+      if (isNaN(hh) === false) {
+        o.hh = Math.max(0, parseInt(hh || '0'));
+      }
+      if (isNaN(mm) === false) {
+        o.mm = Math.min(59, Math.max(0, parseInt(mm || '0')));
+      }
+      if (isNaN(ss) === false) {
+        o.ss = Math.min(59, Math.max(0, parseInt(ss || '0')));
+      }
+      if (o.ss === 0 && o.mm === 0 && o.hh === 0) {
+        o.ss = 10;
+      }
+
+      return o;
+    });
+  }
+  else {
+    presets = [{hh: 0, mm: 0, ss: 30}, {hh: 0, mm: 5, ss: 0}, {hh: 0, mm: 15, ss: 0}, {hh: 0, mm: 30, ss: 0},
+      {hh: 1, mm: 0, ss: 0}, {hh: 5, mm: 0, ss: 0}];
+  }
+
   try {
     chrome.storage.local.set({
       badge,
+      presets,
       'color': document.getElementById('color').value,
       'faqs': document.getElementById('faqs').checked,
       'use-native': document.getElementById('use-native').checked,

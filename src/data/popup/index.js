@@ -4,7 +4,32 @@ const prefs = {
   'dd': 0,
   'hh': 0,
   'mm': 5,
-  'ss': 0
+  'ss': 0,
+  'presets': [{
+    hh: 0,
+    mm: 0,
+    ss: 30
+  }, {
+    hh: 0,
+    mm: 5,
+    ss: 0
+  }, {
+    hh: 0,
+    mm: 15,
+    ss: 0
+  }, {
+    hh: 0,
+    mm: 30,
+    ss: 0
+  }, {
+    hh: 1,
+    mm: 0,
+    ss: 0
+  }, {
+    hh: 5,
+    mm: 0,
+    ss: 0
+  }]
 };
 
 // detect FF's overflow menu
@@ -283,6 +308,18 @@ chrome.storage.local.get(prefs, ps => {
       document.getElementById('permit').check();
     }
   });
+
+  for (const preset of prefs.presets.slice(0, 6)) {
+    const span = document.createElement('span');
+    span.dataset.hh = preset.hh;
+    span.dataset.mm = preset.mm;
+    span.dataset.ss = preset.ss;
+
+    span.textContent = preset.hh.toString().padStart(2, '0') + ':' + preset.mm.toString().padStart(2, '0') + ':' +
+      preset.ss.toString().padStart(2, '0');
+
+    document.querySelector('.presets').appendChild(span);
+  }
 });
 
 // jobs
