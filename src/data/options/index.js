@@ -92,6 +92,10 @@ document.getElementById('support').addEventListener('click', () => chrome.tabs.c
 document.getElementById('ofq').addEventListener('click', () => chrome.tabs.create({
   url: chrome.runtime.getManifest().homepage_url
 }));
+// open usage instruction
+document.getElementById('opv').addEventListener('click', () => chrome.tabs.create({
+  url: 'https://www.youtube.com/watch?v=zAhQlorZZTc'
+}));
 // example
 document.getElementById('example').addEventListener('click', () => {
   document.getElementById('json').value = JSON.stringify([{

@@ -525,6 +525,18 @@ chrome.contextMenus.create({
   parentId: 'reload'
 });
 chrome.contextMenus.create({
+  title: 'Tabs to the right',
+  id: 'reload.tabs.right',
+  contexts: ['browser_action'],
+  parentId: 'reload'
+});
+chrome.contextMenus.create({
+  title: 'Tabs to the left',
+  id: 'reload.tabs.left',
+  contexts: ['browser_action'],
+  parentId: 'reload'
+});
+chrome.contextMenus.create({
   title: 'Toggle active reloading jobs',
   id: 'toggle',
   contexts: ['browser_action']
@@ -645,6 +657,24 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     }, tabs => tabs.forEach(tab => reload(tab.id, {
       bypassCache: true
     })));
+  }
+  else if (info.menuItemId === 'reload.tabs.right') {
+    chrome.tabs.query({
+      currentWindow: true
+    }, tabs => {
+      tabs.filter(t => t.index > tab.index).forEach(tab => reload(tab.id, {
+        bypassCache: true
+      }));
+    });
+  }
+  else if (info.menuItemId === 'reload.tabs.left') {
+    chrome.tabs.query({
+      currentWindow: true
+    }, tabs => {
+      tabs.filter(t => t.index < tab.index).forEach(tab => reload(tab.id, {
+        bypassCache: true
+      }));
+    });
   }
   else if (info.menuItemId === 'reload.now') {
     reload(tab.id, {
