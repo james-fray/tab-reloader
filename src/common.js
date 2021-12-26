@@ -3,23 +3,25 @@
 const app = {};
 app.button = {
   icon(mode, tabId) {
-    const path = 'icons/' + (mode ? '' : 'disabled/');
+    let path = '';
+    if (mode === 'skipped') {
+      path = 'skipped/';
+    }
+    else if (mode === false) {
+      path = 'disabled/';
+    }
     chrome.browserAction.setIcon({
       tabId,
       path: {
-        '16': '/data/' + path + '16.png',
-        '18': '/data/' + path + '18.png',
-        '19': '/data/' + path + '19.png',
-        '32': '/data/' + path + '32.png',
-        '36': '/data/' + path + '36.png',
-        '38': '/data/' + path + '38.png'
+        '16': '/data/icons/' + path + '16.png',
+        '32': '/data/icons/' + path + '32.png'
       }
     });
   },
-  set label(label) {
-    chrome.browserAction.setTitle({
-      title: label
-    });
+  set label(title) {
+    chrome.browserAction.setTitle(typeof title === 'string' ? {
+      title
+    } : title);
   },
   set badge(val) {
     chrome.browserAction.setBadgeText({
@@ -180,7 +182,7 @@ function repeat(obj, delay = 0) {
   obj.id = timeout.set(obj.id, period, obj.callback);
 }
 
-const onDOMContentLoaded = d => {
+const onDOMContentLoaded = (d, icon) => {
   if (d.frameId === 0) {
     const id = d.tabId;
     if (!storage[id] || !storage[id].status) {
@@ -207,7 +209,12 @@ const onDOMContentLoaded = d => {
       return;
     }
     storage[id].time = Date.now();
-    app.button.icon(storage[id].status, id);
+    if (icon) {
+      app.button.icon(icon, id);
+    }
+    else {
+      app.button.icon(storage[id].status, id);
+    }
     repeat(storage[id]);
     if (storage[id].ste) {
       chrome.tabs.executeScript(id, {
@@ -271,34 +278,42 @@ chrome.webNavigation.onDOMContentLoaded.addListener(onDOMContentLoaded);
 
 function reload(tabId, obj) {
   chrome.tabs.get(tabId, tab => {
-    const skip = () => window.setTimeout(() => onDOMContentLoaded({
-      frameId: 0,
-      tabId: tab.id,
-      url: tab.url
-    }), 100);
+    const skip = title => {
+      app.button.label = {
+        tabId,
+        title
+      };
+      setTimeout(() => onDOMContentLoaded({
+        frameId: 0,
+        tabId: tab.id,
+        url: tab.url
+      }, 'skipped'), 100);
+    };
 
     // offline check
     if (navigator.onLine === false && obj.offline) {
-      return skip();
+      return skip('browser is offline');
     }
 
     // policy check
     const {hostname} = new URL(tab.url);
     const entry = Object.entries(prefs.policy).filter(([h]) => match(hostname, h)).map(a => a[1]).pop();
+
     if (entry) {
       try {
         if (entry && entry.url) {
           const a = new RegExp(entry.url);
+
           if (a.test(tab.url) === false) {
             log('reloading job is skipped due to URL policy violation');
-            return skip();
+            return skip('URL policy violation');
           }
         }
         if (entry && entry.date) {
           const a = new RegExp(entry.date);
           if (a.test((new Date()).toLocaleString()) === false) {
             log('reloading job is skipped due to DATE policy violation');
-            return skip();
+            return skip('DATE policy violation');
           }
         }
       }
