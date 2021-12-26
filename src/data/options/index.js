@@ -42,6 +42,7 @@ const config = {
     ss: 0
   }],
   'pp-current': false,
+  'pp-nofocus': false,
   'pp-cache': false,
   'pp-form': false,
   'pp-offline': false,
@@ -70,6 +71,7 @@ const restore = () => chrome.storage.local.get(config, prefs => {
 
 
   document.getElementById('pp-current').checked = prefs['pp-current'];
+  document.getElementById('pp-nofocus').checked = prefs['pp-nofocus'];
   document.getElementById('pp-cache').checked = prefs['pp-cache'];
   document.getElementById('pp-form').checked = prefs['pp-form'];
   document.getElementById('pp-offline').checked = prefs['pp-offline'];
@@ -133,6 +135,7 @@ document.getElementById('save').addEventListener('click', () => {
       'policy': JSON.parse(document.getElementById('policy').value.trim() || '{}'),
       'active': document.getElementById('active').checked ? 'multiple' : 'single',
       'pp-current': document.getElementById('pp-current').checked,
+      'pp-nofocus': document.getElementById('pp-nofocus').checked,
       'pp-cache': document.getElementById('pp-cache').checked,
       'pp-form': document.getElementById('pp-form').checked,
       'pp-offline': document.getElementById('pp-offline').checked,

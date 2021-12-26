@@ -95,6 +95,7 @@ textarea::placeholder {
 }
 
 td[data-type=current],
+td[data-type=nofocus],
 td[data-type=offline],
 td[data-type=cache],
 td[data-type=scoll-to-end],
@@ -107,6 +108,7 @@ td[data-type=enable] {
   -webkit-user-select: none;
 }
 td[data-type=current]::before,
+td[data-type=nofocus]::before,
 td[data-type=offline]::before,
 td[data-type=cache]::before,
 td[data-type=form]::before,
@@ -118,6 +120,7 @@ td[data-type=enable]::before {
 input[disabled],
 body[data-enabled=true] textarea,
 body[data-enabled=true] [data-type='current'],
+body[data-enabled=true] [data-type='nofocus'],
 body[data-enabled=true] [data-type='offline'],
 body[data-enabled=true] [data-type='cache'],
 body[data-enabled=true] [data-type='scoll-to-end'],

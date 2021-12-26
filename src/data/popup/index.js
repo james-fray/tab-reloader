@@ -6,6 +6,7 @@ const prefs = {
   'mm': 5,
   'ss': 0,
   'pp-current': false,
+  'pp-nofocus': false,
   'pp-cache': false,
   'pp-form': false,
   'pp-offline': false,
@@ -58,6 +59,14 @@ const dom = {
   },
   set current(val) {
     const tmp = document.querySelector('[data-type=current]');
+    tmp.textContent = val ? 'Enabled' : 'Disabled';
+    tmp.setAttribute('class', 'icon-toggle-' + (val ? 'on' : 'off'));
+  },
+  get nofocus() {
+    return document.querySelector('[data-type=nofocus]').classList.contains('icon-toggle-on');
+  },
+  set nofocus(val) {
+    const tmp = document.querySelector('[data-type=nofocus]');
     tmp.textContent = val ? 'Enabled' : 'Disabled';
     tmp.setAttribute('class', 'icon-toggle-' + (val ? 'on' : 'off'));
   },
@@ -163,6 +172,9 @@ chrome.runtime.onMessage.addListener(request => {
     if ('current' in obj) {
       dom.current = obj.current;
     }
+    if ('nofocus' in obj) {
+      dom.nofocus = obj.nofocus;
+    }
     if ('offline' in obj) {
       dom.offline = obj.offline;
     }
@@ -223,6 +235,7 @@ document.addEventListener('click', e => {
         ss: dom.ss,
         variation: Number(dom.vr),
         current: dom.current,
+        nofocus: dom.nofocus,
         offline: dom.offline,
         forced: e.shiftKey, // forced period
         cache: dom.cache,
@@ -234,6 +247,9 @@ document.addEventListener('click', e => {
   }
   else if (type === 'current') {
     dom.current = !dom.current;
+  }
+  else if (type === 'nofocus') {
+    dom.nofocus = !dom.nofocus;
   }
   else if (type === 'offline') {
     dom.offline = !dom.offline;
@@ -315,6 +331,7 @@ chrome.storage.local.get(prefs, ps => {
   Object.assign(prefs, ps);
 
   dom.current = prefs['pp-current'];
+  dom.nofocus = prefs['pp-nofocus'];
   dom.cache = prefs['pp-cache'];
   dom.form = prefs['pp-form'];
   dom.offline = prefs['pp-offline'];

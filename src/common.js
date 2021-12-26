@@ -113,6 +113,7 @@ function toPopup(id, extra) {
     Object.assign(data.data, {
       variation: obj.variation,
       current: obj.current,
+      nofocus: obj.nofocus,
       offline: obj.offline,
       cache: obj.cache,
       form: obj.form,
@@ -193,6 +194,7 @@ const onDOMContentLoaded = d => {
             mm: 5,
             ss: 0,
             current: false,
+            nofocus: false,
             offline: false,
             cache: false,
             form: false,
@@ -222,7 +224,7 @@ const onDOMContentLoaded = d => {
             ste();
           }
         }`
-      });
+      }, () => chrome.runtime.lastError);
     }
     // the user passes this custom script to get executed after each reload
     if (storage[id].code) {
@@ -256,6 +258,11 @@ const onDOMContentLoaded = d => {
             script.remove();
           });
         `
+      }, () => {
+        const lastError = chrome.runtime.lastError;
+        if (lastError) {
+          console.warn('Cannot run user code', lastError);
+        }
       });
     }
   }
@@ -331,28 +338,39 @@ function enable(obj, tab, store = true, origin) {
     storage[id].callback = (function(id) {
       storage[id].time = Date.now();
 
+      chrome.windows.getCurrent(w => {
+        chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+          if (storage[id].nofocus && w.focused === false) {
+            log('Window is not focused, clearing the tab list');
+            tabs = [];
+          }
 
-      chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-        chrome.tabs.get(id, tab => {
-          if (tab) {
-            if (storage[id].current) {
-              if (!tab.active || (tab.active && prefs['active'] === 'single' && tabs.length && tab.id !== tabs[0].id)) {
+          chrome.tabs.get(id, tab => {
+            if (tab) {
+              if (storage[id].current) {
+                if (tab.active === false) {
+                  reload(tab.id, storage[id]);
+                }
+                // on single active tab mode, reload when the tab is not in the current window
+                else if (prefs['active'] === 'single' && tabs.some(t => t.id === tab.id) === false) {
+                  reload(tab.id, storage[id]);
+                }
+              }
+              else {
                 reload(tab.id, storage[id]);
               }
+              storage[id]['_title'] = tab.title;
+              // repeat although this might get overwritten after reload.
+              repeat(storage[id]);
             }
             else {
-              reload(tab.id, storage[id]);
+              timeout.stop(storage[id].id);
+              delete storage[id];
             }
-            storage[id]['_title'] = tab.title;
-            // repeat although this might get overwritten after reload.
-            repeat(storage[id]);
-          }
-          else {
-            timeout.stop(storage[id].id);
-            delete storage[id];
-          }
+          });
         });
       });
+
     }).bind(this, tab.id);
     repeat(storage[id]);
   }
@@ -362,6 +380,7 @@ function enable(obj, tab, store = true, origin) {
     url: tab.url,
     status: storage[id].status,
     current: obj.current,
+    nofocus: obj.nofocus,
     offline: obj.offline,
     cache: obj.cache,
     form: obj.form,
@@ -465,6 +484,7 @@ const restore = () => {
             mm: 5,
             ss: 0,
             current: false,
+            nofocus: false,
             offline: false,
             cache: false,
             form: false,
@@ -484,6 +504,7 @@ const restore = () => {
             if (entry.status) {
               enable(Object.assign(entry.period, {
                 'current': entry.current || false,
+                'nofocus': entry.nofocus || false,
                 'offline': entry.offline || false,
                 'cache': entry.cache || false,
                 'form': entry.form || false,
@@ -501,6 +522,7 @@ const restore = () => {
                 'mm': entry.period.mm,
                 'ss': entry.period.ss,
                 'current': entry.current || false,
+                'nofocus': entry.nofocus || false,
                 'offline': entry.offline || false,
                 'cache': entry.cache || false,
                 'form': entry.form || false,
@@ -712,6 +734,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
       mm,
       ss,
       current: prefs['context.active'],
+      nofocus: true,
       offline: false,
       cache: prefs['context.cache'],
       form: false,
