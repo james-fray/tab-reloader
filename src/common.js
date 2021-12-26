@@ -385,7 +385,6 @@ function enable(obj, tab, store = true, origin) {
           });
         });
       });
-
     }).bind(this, tab.id);
     repeat(storage[id]);
   }
@@ -568,20 +567,32 @@ chrome.contextMenus.create({
   parentId: 'reload'
 });
 chrome.contextMenus.create({
+  title: 'All discarded tabs',
+  id: 'reload.all.discarded',
+  contexts: ['browser_action'],
+  parentId: 'reload'
+});
+chrome.contextMenus.create({
   title: 'All tabs in the current window',
   id: 'reload.window',
   contexts: ['browser_action'],
   parentId: 'reload'
 });
 chrome.contextMenus.create({
-  title: 'Tabs to the right',
-  id: 'reload.tabs.right',
+  title: 'All discarded tabs in the current window',
+  id: 'reload.window.discarded',
   contexts: ['browser_action'],
   parentId: 'reload'
 });
 chrome.contextMenus.create({
   title: 'Tabs to the left',
   id: 'reload.tabs.left',
+  contexts: ['browser_action'],
+  parentId: 'reload'
+});
+chrome.contextMenus.create({
+  title: 'Tabs to the right',
+  id: 'reload.tabs.right',
   contexts: ['browser_action'],
   parentId: 'reload'
 });
@@ -700,10 +711,22 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
       bypassCache: true
     })));
   }
+  else if (info.menuItemId === 'reload.all.discarded') {
+    chrome.tabs.query({}, tabs => tabs.filter(t => t.discarded === true || t.status === 'unloaded').forEach(tab => reload(tab.id, {
+      bypassCache: true
+    })));
+  }
   else if (info.menuItemId === 'reload.window' || info.menuItemId === 'reload.window.c') {
     chrome.tabs.query({
       currentWindow: true
     }, tabs => tabs.forEach(tab => reload(tab.id, {
+      bypassCache: true
+    })));
+  }
+  else if (info.menuItemId === 'reload.window.discarded') {
+    chrome.tabs.query({
+      currentWindow: true
+    }, tabs => tabs.filter(t => t.discarded === true || t.status === 'unloaded').forEach(tab => reload(tab.id, {
       bypassCache: true
     })));
   }
