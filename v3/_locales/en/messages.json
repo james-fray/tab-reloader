@@ -1,0 +1,59 @@
+{
+  "description": {
+    "message": "An easy-to-use tab reloader with custom reloading time for individual tabs and more!"
+  },
+  "popup_active": {
+    "message": "Do not reload if tab is active"
+  },
+  "popup_nofocus": {
+    "message": "Reload if window is not focused"
+  },
+  "popup_cache": {
+    "message": "Use cache while reloading (restore state)"
+  },
+  "popup_form": {
+    "message": "Bypass form submission"
+  },
+  "popup_offline": {
+    "message": "Do not reload tab if offline"
+  },
+  "popup_ste": {
+    "message": "Scroll to the end after reload"
+  },
+  "popup_switch": {
+    "message": "Switch to the tab if content changed"
+  },
+  "popup_sound": {
+    "message": "Play sound if content changed"
+  },
+  "popup_bw": {
+    "message": "Do not reload if the address or title contains"
+  },
+  "popup_period": {
+    "message": "Reload between"
+  },
+  "popup_active_tabs": {
+    "message": "Active Tabs"
+  },
+  "popup_enable": {
+    "message": "Reload this tab every"
+  },
+  "popup_permission": {
+    "message": "Tab's host permission is required"
+  },
+  "popup_presets": {
+    "message": "Presets"
+  },
+  "popup_forced": {
+    "message": "Use Shift key to force periods less than 10 seconds"
+  },
+  "popup_code": {
+    "message": "Run JS code"
+  },
+  "popup_variation": {
+    "message": "with variation"
+  },
+  "popup_variation_hint": {
+    "message": "Set variation in percent to randomize reloading time (applies after the first reload)"
+  }
+}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+  <div id="timer">
+    <svg viewBox="0 0 32 32" width="32" id="disable">
+      <polygon points="28.71 4.71 27.29 3.29 16 14.59 4.71 3.29 3.29 4.71 14.59 16 3.29 27.29 4.71 28.71 16 17.41 27.29 28.71 28.71 27.29 17.41 16 28.71 4.71"/>
+    </svg>
+    <div></div>
+  </div>
+  <header class="three">
+    <input type="checkbox" id="enable" data-i18n="popup_forced" data-i18n-value="title">
+    <label for="enable" data-i18n="popup_enable"></label>
+    <div id="period-container">
+      <input type="text" id="period" placeholder="hh:mm:ss">
+      <span data-i18n="popup_variation"></span>
+      <input type="number" id="variation" min="0" max="100" data-i18n="popup_variation_hint" data-i18n-value="title" value="0">
+    </div>
+    <span></span>
+    <span></span>
+    <div id="presets">
+      <span data-i18n="popup_presets"></span>
+    </div>
+  </header>
+
+  <div class="three">
+    <input type="checkbox" id="current">
+    <label for="current" data-i18n="popup_active"></label>
+    <span></span>
+
+    <svg viewBox="0 0 20 15">
+      <line x1="11" y1="2" x2="11" y2="10" stroke="#444" stroke-dasharray="1"/>
+      <line x1="11" y1="10" x2="25" y2="10" stroke="#444" stroke-dasharray="1"/>
+    </svg>
+    <div>
+      <div class="three">
+        <input type="checkbox" id="nofocus">
+        <label for="nofocus" data-i18n="popup_nofocus"></label>
+      </div>
+    </div>
+    <span></span>
+
+    <input type="checkbox" id="cache">
+    <label for="cache" data-i18n="popup_cache"></label>
+    <span></span>
+    <input type="checkbox" id="form">
+    <label for="form" data-i18n="popup_form"></label>
+    <span></span>
+    <input type="checkbox" id="offline">
+    <label for="offline" data-i18n="popup_offline"></label>
+    <span></span>
+    <input type="checkbox" id="scroll-to-end" data-permission=true>
+    <label for="scroll-to-end"><span data-i18n="popup_ste"></span><span class="permission" data-i18n="popup_permission" data-i18n-value="title"> (!)</span></label>
+    <span></span>
+    <input type="checkbox" id="switch" data-permission=true>
+    <label for="switch"><span data-i18n="popup_switch"></span><span class="permission" data-i18n="popup_permission" data-i18n-value="title"> (!)</span></label>
+    <span></span>
+    <input type="checkbox" id="sound" data-permission=true>
+    <label for="sound"><span data-i18n="popup_sound"></span><span class="permission" data-i18n="popup_permission" data-i18n-value="title"> (!)</span></label>
+    <select id="sound-value">
+      <option value="1">Sound 1</option>
+      <option value="2">Sound 2</option>
+      <option value="3">Sound 3</option>
+      <option value="4">Sound 4</option>
+    </select>
+    <span></span>
+    <label for="blocked-words" data-i18n="popup_bw"></label>
+    <input type="text" id="blocked-words" placeholder="e.g. /mail/">
+    <span></span>
+    <label for="blocked-period" data-i18n="popup_period"></label>
+    <input type="text" id="blocked-period" placeholder="start time (hh:mm:ss) - end time (hh:mm:ss)">
+    <input type="checkbox" id="code" data-permission=true>
+    <label for="code"><span data-i18n="popup_code"></span><span class="permission" data-i18n="popup_permission" data-i18n-value="title"> (!)</span></label>
+    <textarea id="code-value" rows="5"></textarea>
+  </div>
+  <footer id="actives"></footer>
+
+  <script type="text/javascript" src="locale.js"></script>
+  <script type="text/javascript" src="/defaults.js"></script>
+  <script type="text/javascript" src="/api.js"></script>
+  <script type="text/javascript" src="extra/behave.js"></script>
+  <script type="text/javascript" src="startup.js"></script>
+  <script type="text/javascript" src="index.js"></script>
+  <script type="text/javascript" src="actives.js"></script>
+  <script type="text/javascript" src="permission.js"></script>
+</body>
+</html>
