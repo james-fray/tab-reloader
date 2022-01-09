@@ -58,9 +58,9 @@ api.alarms.fired(async o => {
 
     if (tab.active && profile.current) {
       if (profile.nofocus) {
-        const w = api.tabs.window(tab.windowId);
+        const w = await api.tabs.window(tab.windowId);
         if (w.focused) {
-          return skip('window is not focused');
+          return skip('window is focused');
         }
       }
       else {

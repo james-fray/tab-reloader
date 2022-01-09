@@ -207,8 +207,10 @@ api.button = {
     catch (e) {}
   },
   badge(text, tabId) {
-    api.storage.get('badge').then(b => {
-      if (b) {
+    api.storage.get({
+      badge: true
+    }).then(({badge}) => {
+      if (badge) {
         const o = {
           text: String(text ? text : '')
         };

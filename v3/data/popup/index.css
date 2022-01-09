@@ -1,6 +1,6 @@
 :root {
   --bg: #fff;
-  --bg-inactive: #efefef;
+  --bg-inactive: #f1f1f1;
   --bg-active: #e1f1ff;
   --fg: #444;
 }
@@ -14,14 +14,16 @@ body {
   color: var(--fg);
   background-color: var(--bg);
   width: 700px;
-  max-height: 510px;
+  max-height: 550px;
   user-select: none;
+  margin: 0;
 }
+body > * {
+  padding: 10px;
+}
+
 header {
-  margin-bottom: 20px;
-}
-footer {
-  margin-top: 20px;
+  margin-bottom: 10px;
 }
 textarea,
 input[type=text],
@@ -39,7 +41,12 @@ textarea {
 textarea:focus,
 input[type=text]:focus,
 input[type=number]:focus {
-  background-color: var(--bg-active);
+  background-color: var(--bg-active) !important;
+}
+
+#options {
+  border-top: solid 1px var(--bg-inactive);
+  padding-top: 15px;
 }
 
 .three {
