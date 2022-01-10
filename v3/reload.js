@@ -25,9 +25,10 @@ const custom = (tab, json) => {
         profile,
         tab
       });
-      break;
+      return true;
     }
   }
+  return false;
 };
 
 api.alarms.fired(async o => {
@@ -53,7 +54,7 @@ api.alarms.fired(async o => {
     const options = {};
 
     if (navigator.onLine === false && profile.offline) {
-      skip('browser is offline');
+      return skip('browser is offline');
     }
 
     if (tab.active && profile.current) {
@@ -182,7 +183,6 @@ api.tabs.loaded(d => {
         period = Math.max(period, 5); // make sure time is in valid range
       }
 
-      console.log('reset');
       api.button.icon('active', tabId);
       api.alarms.add(o.name, {
         when: Date.now() + period * 1000
@@ -248,25 +248,30 @@ api.tabs.loaded(d => {
         }));
       }
     }
-    // custom jobs is only applied if there is no ongoing job
+    // custom jobs is only applied if there is no ongoing job (after initialization is done)
     else {
-      const prefs = await api.storage.get({
-        'dynamic.json': false,
-        'json': []
-      });
-      if (prefs['dynamic.json']) {
-        custom({
-          url: d.url,
-          id: d.tabId
-        }, prefs.json);
+      if (api.tabs.ready !== false) {
+        const prefs = await api.storage.get({
+          'dynamic.json': false,
+          'json': []
+        });
+        if (prefs['dynamic.json']) {
+          custom({
+            url: d.url,
+            id: d.tabId
+          }, prefs.json);
+        }
       }
     }
   });
 });
 
-// update badge on startup
-api.runtime.started(() => {
-  api.alarms.forEach(async o => {
+/* startup -> restore a job, find a job for matching tab, run custom jobs */
+api.runtime.started(async () => {
+  // make sure a custom policy is not being applied before initialization
+  api.tabs.ready = false;
+
+  await api.alarms.forEach(async o => {
     const tabId = Number(o.name);
     const tab = await api.tabs.get(tabId);
 
@@ -292,20 +297,17 @@ api.runtime.started(() => {
           }
         }
       }
-      // remove the not found job anyway
       messaging({
         method: 'remove-job',
-        id: Number(o.name)
+        id: o.name
       });
     }
   });
-  api.alarms.count().then(c => api.button.badge(c));
-});
 
-// run custom jobs on startup
-api.runtime.started(() => api.storage.get({
-  json: []
-}).then(async prefs => {
+  // check custom jobs
+  const prefs = await api.storage.get({
+    'json': []
+  });
   if (prefs.json.length) {
     const tabs = await api.tabs.query({});
     for (const tab of tabs) {
@@ -316,4 +318,8 @@ api.runtime.started(() => api.storage.get({
       }
     }
   }
-}));
+
+  // done
+  api.tabs.ready = true;
+  api.alarms.count().then(c => api.button.badge(c));
+});

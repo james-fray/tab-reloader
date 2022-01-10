@@ -3,6 +3,8 @@
   --bg-inactive: #f1f1f1;
   --bg-active: #e1f1ff;
   --fg: #444;
+  --border-width: 5px;
+  --border-color: #d9d9d9;
 }
 
 body {
@@ -14,7 +16,6 @@ body {
   color: var(--fg);
   background-color: var(--bg);
   width: 700px;
-  max-height: 550px;
   user-select: none;
   margin: 0;
 }
@@ -23,17 +24,37 @@ body > * {
 }
 
 header {
-  margin-bottom: 10px;
+  display: grid;
+  grid-template-columns: 1fr min-content;
+  padding: 0;
+}
+header > div {
+  padding: 10px;
+}
+header > div:last-child {
+  border-left: solid var(--border-width) var(--bg-inactive);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  white-space: nowrap;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+footer {
+  max-height: 50px;
+}
+
+select {
+  padding: 5px;
 }
 textarea,
 input[type=text],
-input[type=number],
-select {
+input[type=number] {
   padding: 5px;
-  border: none;
   outline: none;
   color: var(--fg);
-  background-color: var(--bg-inactive);
+  border: solid 1px var(--border-color);
 }
 textarea {
   resize: vertical;
@@ -44,8 +65,35 @@ input[type=number]:focus {
   background-color: var(--bg-active) !important;
 }
 
+.button {
+  background-image: linear-gradient(rgb(237, 237, 237), rgb(237, 237, 237) 38%, rgb(222, 222, 222));
+  box-shadow: rgba(0, 0, 0, 0.08) 0 1px 0, rgba(255, 255, 255, 0.75) 0 1px 2px inset;
+  text-shadow: rgb(240, 240, 240) 0 1px 0;
+  border: solid 1px var(--border-color);
+  cursor: pointer;
+  transition: 100ms;
+  display: inline-block;
+}
+.button:active {
+  opacity: 0.5;
+}
+
+#enable {
+  display: none;
+}
+#enable ~ * {
+  display: block;
+  padding: 5px 10px;
+}
+#enable:checked ~ [data-i18n="popup_start"] {
+  display: none;
+}
+#enable:not(:checked) ~ [data-i18n="popup_stop"] {
+  display: none;
+}
+
 #options {
-  border-top: solid 1px var(--bg-inactive);
+  border-top: solid var(--border-width) var(--bg-inactive);
   padding-top: 15px;
 }
 
@@ -55,15 +103,6 @@ input[type=number]:focus {
   grid-template-columns: min-content min-content 1fr;
   grid-gap: 5px;
   align-items: center;
-}
-
-#period-container {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-#period-container > input[type=text] {
-  flex: 1;
 }
 
 #timer {
@@ -108,18 +147,17 @@ body:not([data-enabled=true]) #timer {
 #actives:empty {
   display: none;
 }
-#presets > span:first-child {
-  flex: 1;
-}
 #actives .entry,
 #presets .entry {
   height: min-content;
-  background-color: var(--bg-inactive);
   padding: 5px 10px;
-  cursor: pointer;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  cursor: pointer;
+}
+#presets .entry {
+  text-decoration: underline;
 }
 #presets .entry:active {
   background-color: var(--bg-active);

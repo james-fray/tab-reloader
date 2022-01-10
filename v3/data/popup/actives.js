@@ -9,7 +9,7 @@ api.alarms.forEach(async o => {
     span.textContent = tab.title || tab.url;
     span.title = tab.title + ' -> ' + tab.url;
     span.tabId = tabId;
-    span.classList.add('entry');
+    span.classList.add('entry', 'button');
     document.getElementById('actives').appendChild(span);
   }
 });

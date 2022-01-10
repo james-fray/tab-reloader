@@ -3,19 +3,18 @@
   "description": "__MSG_description__",
   "default_locale": "en",
   "version": "0.5.0",
-  "manifest_version": 3,
+  "manifest_version": 2,
   "permissions": [
     "storage",
     "tabs",
     "alarms",
     "webNavigation",
-    "contextMenus",
-    "scripting"
+    "contextMenus"
   ],
-  "host_permissions": [
+  "optional_permissions": [
     "<all_urls>"
   ],
-  "action": {
+  "browser_action": {
     "default_icon": {
       "16": "data/icons/disabled/16.png",
       "32": "data/icons/disabled/32.png"
@@ -23,7 +22,14 @@
     "default_popup": "data/popup/index.html"
   },
   "background": {
-    "service_worker": "worker.js"
+    "persistent": false,
+    "scripts": [
+      "v2.js",
+      "api.js",
+      "defaults.js",
+      "reload.js",
+      "worker.js"
+    ]
   },
   "homepage_url": "https://add0n.com/tab-reloader.html",
   "icons": {
@@ -35,10 +41,9 @@
     "256": "data/icons/256.png",
     "512": "data/icons/512.png"
   },
-  "web_accessible_resources": [{
-    "resources": ["data/sounds/*.wav"],
-    "matches": ["*://*/*"]
-  }],
+  "web_accessible_resources": [
+    "data/sounds/*.wav"
+  ],
   "options_ui": {
     "page": "data/options/index.html",
     "open_in_tab": true

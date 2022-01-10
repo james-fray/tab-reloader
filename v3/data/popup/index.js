@@ -1,4 +1,4 @@
-/* global api, tab, Behave */
+/* global api, tab, Behave, startup */
 
 // start or stop a job
 document.getElementById('enable').onclick = e => {
@@ -40,8 +40,9 @@ document.getElementById('enable').onchange = e => {
   // unregister
   else {
     api.post.bg({
-      method: 'remove-job',
-      id: tab.id
+      'method': 'remove-job',
+      'id': tab.id,
+      'skip-echo': true
     });
   }
 };
@@ -53,9 +54,25 @@ const active = () => {
   document.body.dataset.enabled = true;
 
   const once = () => api.alarms.get(tab.id.toString()).then(o => {
-    const remaining = Math.max(0, (o.scheduledTime - Date.now()) / 1000);
-    const v = api.convert.sec2obj(remaining);
-    document.querySelector('#timer div').textContent = api.convert.obj2str(v);
+    console.log('once', tab.profile);
+    if (o) {
+      let remaining = (o.scheduledTime - Date.now()) / 1000;
+      if (remaining < 0 && tab.profile) {
+        const period = api.convert.secods(
+          api.convert.str2obj(tab.profile.period)
+        );
+        while (period > 0 && remaining < 0) {
+          remaining += period;
+        }
+      }
+      //
+      if (remaining < 0) {
+        remaining = 0;
+      }
+
+      const v = api.convert.sec2obj(remaining);
+      document.querySelector('#timer div').textContent = api.convert.obj2str(v);
+    }
 
     clearTimeout(timer);
     timer = setTimeout(once, 1000);
@@ -65,6 +82,7 @@ const active = () => {
 
 // disable active timer
 const disable = () => {
+  console.log(2);
   clearTimeout(timer);
   document.body.dataset.enabled = false;
   document.getElementById('enable').checked = false;
@@ -81,8 +99,13 @@ new Behave({
 });
 
 // reload
-api.post.fired(request => {
+api.post.fired(async request => {
+  console.log(request);
   if (request.method === 'reload-interface') {
-    location.reload();
+    const o = await api.alarms.get(tab.id.toString());
+    // location.reload();
+    for (const c of startup) {
+      c(o, false);
+    }
   }
 });

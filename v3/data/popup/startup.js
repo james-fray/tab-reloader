@@ -1,4 +1,4 @@
-/* global api, defaults, active */
+/* global api, defaults, active, disable */
 
 let tab;
 const startup = [];
@@ -9,13 +9,14 @@ api.storage.get({
 }).then(({presets}) => {
   const f = document.createDocumentFragment();
 
-  for (const preset of presets) {
+  presets.slice(0, 5).forEach((preset, n) => {
     const span = document.createElement('span');
     span.textContent = api.convert.obj2str(preset);
     span.preset = preset;
     span.classList.add('entry');
+    span.title = 'Ctrl + ' + (n + 1);
     f.appendChild(span);
-  }
+  });
 
   document.getElementById('presets').appendChild(f);
 });
@@ -34,12 +35,11 @@ const profile = prefs => {
   }
 };
 
-startup.push(async () => {
+startup.push(async o => {
   // Do we have a job for this tab
-  const o = await api.alarms.get(tab.id.toString());
   if (o) {
     const p = await api.storage.get('job-' + o.name);
-
+    tab.profile = p;
     active();
 
     return profile(p);
@@ -57,11 +57,18 @@ startup.push(async () => {
     'default-profile': defaults.profile
   }).then(prefs => profile(prefs['default-profile']));
 });
+startup.push(async (o, firstRun) => {
+  if (firstRun === false && !o) {
+    disable();
+  }
+});
 
 /* init */
-api.tabs.active().then(t => {
+api.tabs.active().then(async t => {
   tab = t;
+  const o = await api.alarms.get(tab.id.toString());
+
   for (const c of startup) {
-    c();
+    c(o, true);
   }
 });

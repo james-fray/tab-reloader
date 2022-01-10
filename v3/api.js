@@ -135,18 +135,21 @@ api.alarms = {
     return chrome.alarms.getAll().then(os => os.length);
   },
   forEach(c) {
-    chrome.alarms.getAll().then(os => os.forEach(o => c(o)));
+    return chrome.alarms.getAll().then(os => Promise.all(os.map(o => c(o))));
   }
 };
 
 api.post = {
-  bg: (o, c) => chrome.runtime.sendMessage(o, c),
+  bg: (o, c) => {
+    chrome.runtime.sendMessage(o, c);
+  },
   fired(...args) {
     chrome.runtime.onMessage.addListener(...args);
   }
 };
 
 api.tabs = {
+  ready: true, // this switch is true when initialization is done
   async active() {
     const [tab] = await chrome.tabs.query({
       active: true,
@@ -163,7 +166,10 @@ api.tabs = {
     }));
   },
   get(id) {
-    return chrome.tabs.get(id).catch(() => null);
+    return chrome.tabs.get(id).then(tab => {
+      chrome.runtime.lastError;
+      return tab;
+    }).catch(() => null);
   },
   window(id) {
     return chrome.windows.get(id);

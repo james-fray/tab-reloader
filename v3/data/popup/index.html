@@ -12,18 +12,23 @@
     </svg>
     <div></div>
   </div>
-  <header class="three">
-    <input type="checkbox" id="enable" data-i18n="popup_forced" data-i18n-value="title">
-    <label for="enable" data-i18n="popup_enable"></label>
-    <div id="period-container">
-      <input type="text" id="period" placeholder="hh:mm:ss">
-      <span data-i18n="popup_variation"></span>
-      <input type="number" id="variation" min="0" max="100" data-i18n="popup_variation_hint" data-i18n-value="title" value="0">
+  <header data-i18n="popup_enable_keys" data-i18n-value="title">
+    <div>
+      <div id="period-container">
+        <label for="enable" data-i18n="popup_enable"></label>
+        <input type="text" id="period" placeholder="hh:mm:ss">
+        <span data-i18n="popup_variation"></span>
+        <input type="number" id="variation" min="0" max="100" data-i18n="popup_variation_hint" data-i18n-value="title" value="0">
+        %
+      </div>
+      <div id="presets">
+        <span data-i18n="popup_presets"></span>
+      </div>
     </div>
-    <span></span>
-    <span></span>
-    <div id="presets">
-      <span data-i18n="popup_presets"></span>
+    <div data-i18n="popup_forced" data-i18n-value="title">
+      <input type="checkbox" id="enable">
+      <label for="enable" class="button" data-i18n="popup_start"></label>
+      <label for="enable" class="button" data-i18n="popup_stop"></label>
     </div>
   </header>
 
@@ -61,7 +66,7 @@
     <span></span>
     <input type="checkbox" id="sound" data-permission=true>
     <label for="sound"><span data-i18n="popup_sound"></span><span class="permission" data-i18n="popup_permission" data-i18n-value="title"> (!)</span></label>
-    <select id="sound-value">
+    <select id="sound-value" class="button">
       <option value="1">Sound 1</option>
       <option value="2">Sound 2</option>
       <option value="3">Sound 3</option>
@@ -79,6 +84,7 @@
   </div>
   <footer id="actives"></footer>
 
+  <script type="text/javascript" src="/v2.js"></script>
   <script type="text/javascript" src="locale.js"></script>
   <script type="text/javascript" src="/defaults.js"></script>
   <script type="text/javascript" src="/api.js"></script>
@@ -87,5 +93,6 @@
   <script type="text/javascript" src="index.js"></script>
   <script type="text/javascript" src="actives.js"></script>
   <script type="text/javascript" src="permission.js"></script>
+  <script type="text/javascript" src="keyboard.js"></script>
 </body>
 </html>

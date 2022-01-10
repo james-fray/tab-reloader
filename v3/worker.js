@@ -1,6 +1,6 @@
-/* global importScripts, api, defaults */
+/* global api, defaults */
 
-importScripts('api.js', 'defaults.js', 'reload.js');
+// importScripts('api.js', 'defaults.js', 'reload.js');
 
 const messaging = (request, sender, response = () => {}) => {
   if (request.method === 'remove-job') {
@@ -8,9 +8,11 @@ const messaging = (request, sender, response = () => {}) => {
     api.alarms.remove(id);
     api.storage.remove('job-' + id);
     api.alarms.count().then(c => api.button.badge(c));
-    api.post.bg({
-      method: 'reload-interface'
-    });
+    if (request['skip-echo'] !== true) {
+      api.post.bg({
+        method: 'reload-interface'
+      });
+    }
     api.button.icon('disabled', request.id);
   }
   else if (request.method === 'add-job') {
@@ -131,10 +133,12 @@ const messaging = (request, sender, response = () => {}) => {
 api.post.fired(messaging);
 
 /* remove the job if tab is removed */
-api.tabs.removed(id => messaging({
-  method: 'remove-job',
-  id
-}));
+api.tabs.removed((id, info) => {
+  messaging({
+    method: 'remove-job',
+    id
+  });
+});
 
 /* badge color */
 api.storage.get({

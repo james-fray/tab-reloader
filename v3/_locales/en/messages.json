@@ -55,5 +55,14 @@
   },
   "popup_variation_hint": {
     "message": "Set variation in percent to randomize reloading time (applies after the first reload)"
+  },
+  "popup_enable_keys": {
+    "message": "Use 'S' key to enable, 'Escape' key to disable, and Shift + Escape key to close the popup"
+  },
+  "popup_start": {
+    "message": "Start Reloading"
+  },
+  "popup_stop": {
+    "message": "Stop Reloading"
   }
 }
