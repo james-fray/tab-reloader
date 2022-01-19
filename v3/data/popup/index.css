@@ -2,9 +2,24 @@
   --bg: #fff;
   --bg-inactive: #f1f1f1;
   --bg-active: #e1f1ff;
+  --bg-button-1: rgb(237, 237, 237);
+  --bg-button-2: rgb(222, 222, 222);
   --fg: #444;
   --border-width: 5px;
   --border-color: #d9d9d9;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #202124;
+    --bg-inactive: #292a2d;
+    --bg-active: #000;
+    --bg-button-1: #202124;
+    --bg-button-2: #292a2d;
+    --fg: #b5bec6;
+    --border-width: 5px;
+    --border-color: #494c50;
+  }
 }
 
 body {
@@ -47,6 +62,8 @@ footer {
 
 select {
   padding: 5px;
+  color: var(--fg);
+  outline: none;
 }
 textarea,
 input[type=text],
@@ -54,6 +71,7 @@ input[type=number] {
   padding: 5px;
   outline: none;
   color: var(--fg);
+  background-color: var(--bg);
   border: solid 1px var(--border-color);
 }
 textarea {
@@ -66,13 +84,13 @@ input[type=number]:focus {
 }
 
 .button {
-  background-image: linear-gradient(rgb(237, 237, 237), rgb(237, 237, 237) 38%, rgb(222, 222, 222));
-  box-shadow: rgba(0, 0, 0, 0.08) 0 1px 0, rgba(255, 255, 255, 0.75) 0 1px 2px inset;
-  text-shadow: rgb(240, 240, 240) 0 1px 0;
+  background-image: linear-gradient(var(--bg-button-1), var(--bg-button-1) 38%, var(--bg-button-2));
   border: solid 1px var(--border-color);
   cursor: pointer;
   transition: 100ms;
   display: inline-block;
+  display: block;
+  padding: 5px 10px;
 }
 .button:active {
   opacity: 0.5;
@@ -80,10 +98,6 @@ input[type=number]:focus {
 
 #enable {
   display: none;
-}
-#enable ~ * {
-  display: block;
-  padding: 5px 10px;
 }
 #enable:checked ~ [data-i18n="popup_start"] {
   display: none;
@@ -150,7 +164,7 @@ body:not([data-enabled=true]) #timer {
 #actives .entry,
 #presets .entry {
   height: min-content;
-  padding: 5px 10px;
+  padding: 5px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -161,4 +175,8 @@ body:not([data-enabled=true]) #timer {
 }
 #presets .entry:active {
   background-color: var(--bg-active);
+}
+
+#save-as-json {
+  justify-self: end;
 }

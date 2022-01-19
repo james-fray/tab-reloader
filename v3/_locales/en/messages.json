@@ -57,12 +57,15 @@
     "message": "Set variation in percent to randomize reloading time (applies after the first reload)"
   },
   "popup_enable_keys": {
-    "message": "Use 'S' key to enable, 'Escape' key to disable, and Shift + Escape key to close the popup"
+    "message": "'S' key to enable reloading\n'Escape' key to disable reloading\nShift + Escape key to close the popup\nCtrl/Command + 1/10 keys to select a preset"
   },
   "popup_start": {
     "message": "Start Reloading"
   },
   "popup_stop": {
     "message": "Stop Reloading"
+  },
+  "popup_save_as_json": {
+    "message": "Save as a Custom Job"
   }
 }

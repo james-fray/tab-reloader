@@ -41,9 +41,6 @@
     "256": "data/icons/256.png",
     "512": "data/icons/512.png"
   },
-  "web_accessible_resources": [
-    "data/sounds/*.wav"
-  ],
   "options_ui": {
     "page": "data/options/index.html",
     "open_in_tab": true

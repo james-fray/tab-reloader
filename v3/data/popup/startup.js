@@ -9,12 +9,12 @@ api.storage.get({
 }).then(({presets}) => {
   const f = document.createDocumentFragment();
 
-  presets.slice(0, 5).forEach((preset, n) => {
+  presets.slice(0, 6).forEach((preset, n) => {
     const span = document.createElement('span');
     span.textContent = api.convert.obj2str(preset);
     span.preset = preset;
     span.classList.add('entry');
-    span.title = 'Ctrl + ' + (n + 1);
+    span.title = 'Ctrl/Command + ' + (n + 1);
     f.appendChild(span);
   });
 

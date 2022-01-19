@@ -5,9 +5,9 @@ const custom = (tab, json) => {
     if (api.match('ht:' + o.hostname, tab.url)) {
       const profile = o;
       profile.period = api.convert.obj2str({
-        hh: o.dd * 24 + o.hh,
-        mm: o.mm,
-        ss: o.ss
+        hh: (o.dd || 0) * 24 + (o.hh || 0),
+        mm: (o.mm || 0),
+        ss: (o.ss || 0)
       });
       if (o.code) {
         profile['code-value'] = o.code;

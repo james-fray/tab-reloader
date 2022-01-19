@@ -6,6 +6,7 @@ document.addEventListener('keydown', e => {
   }
 
   const enabled = document.body.dataset.enabled === 'true';
+  const meta = e.ctrlKey || e.metaKey;
 
   if (e.code === 'Escape' && e.shiftKey) {
     window.close();
@@ -17,7 +18,7 @@ document.addEventListener('keydown', e => {
   else if (e.code === 'KeyS' && !enabled) {
     document.getElementById('enable').click();
   }
-  else if (e.code.startsWith('Digit') && !enabled) {
+  else if (e.code.startsWith('Digit') && meta && !enabled) {
     e.preventDefault();
     document.querySelectorAll('#presets .entry')[Number(e.key) - 1].dispatchEvent(new Event('click', {
       bubbles: true
