@@ -201,7 +201,7 @@ api.tabs.loaded(d => {
       if (profile.sound) {
         api.inject(tabId, {
           func: src => window.src = src,
-          args: [chrome.runtime.getURL('/data/sounds/' + profile['sound-value'] + '.wav')]
+          args: [chrome.runtime.getURL('/data/sounds/' + profile['sound-value'] + '.mp3')]
         });
       }
       if (profile.switch || profile.sound) {
