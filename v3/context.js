@@ -81,7 +81,6 @@ api.context.fired(async (info, tab) => {
     else if (info.menuItemId === 'reload.now') {
       tabs = [tab];
     }
-    console.log(tabs);
     tabs.forEach(tab => api.tabs.reload(tab, {bypassCache: true}));
   }
   else if (info.menuItemId === 'stop.all') {

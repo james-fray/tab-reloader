@@ -42,7 +42,9 @@ api.alarms.fired(async o => {
     const period = Math.max(1, api.convert.secods(time));
 
     api.alarms.add(o.name, {
-      when: Date.now() + period * 1000
+      when: Date.now() + period * 1000,
+      // only used as backup. The extension sets a new alarm
+      periodInMinutes: Math.max(1, period / 60)
     });
 
     const skip = reason => {

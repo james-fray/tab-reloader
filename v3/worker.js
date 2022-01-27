@@ -21,13 +21,16 @@ const messaging = (request, sender, response = () => {}) => {
       href: request.tab.url
     });
     const name = request.tab.id.toString();
-    const when = Date.now() + Math.max(1, api.convert.secods(api.convert.str2obj(profile.period))) * 1000;
+    const period = Math.max(1, api.convert.secods(api.convert.str2obj(profile.period)));
+    const when = Date.now() + period * 1000;
 
     api.storage.set({
       ['job-' + name]: profile
     });
     api.alarms.add(name, {
-      when
+      when,
+      // only used as backup. The extension sets a new alarm
+      periodInMinutes: Math.max(1, period / 60)
     });
     api.alarms.count().then(c => api.button.badge(c));
     api.button.icon('active', request.tab.id);
