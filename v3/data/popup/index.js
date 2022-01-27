@@ -56,7 +56,6 @@ const active = () => {
   document.body.dataset.enabled = true;
 
   const once = () => api.alarms.get(tab.id.toString()).then(o => {
-    console.log('once', tab.profile);
     if (o) {
       let remaining = (o.scheduledTime - Date.now()) / 1000;
       if (remaining < 0 && tab.profile) {
@@ -101,7 +100,6 @@ new Behave({
 
 // reload
 api.post.fired(async request => {
-  console.log(request);
   if (request.method === 'reload-interface') {
     const o = await api.alarms.get(tab.id.toString());
     // location.reload();

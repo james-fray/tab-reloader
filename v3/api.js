@@ -66,7 +66,7 @@ api.convert = {
   }
 };
 
-api.match = (key = '', str = '', parent = '') => {
+api.match = (key = '', str = '', parent = undefined) => {
   if (key === '' || str === '') {
     return false;
   }

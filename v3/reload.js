@@ -2,17 +2,17 @@
 
 const custom = (tab, json) => {
   for (const o of json) {
-    const match = false;
+    let match = false;
     if (o.url) {
       try {
-        api.match('pt:' + o.url, tab.url);
+        match = api.match('pt:' + o.url, tab.url);
       }
       catch (e) {
         console.warn('URL Matching Failed', o, e);
       }
     }
     else if (o.hostname) {
-      api.match('ht:' + o.hostname, tab.url);
+      match = api.match('ht:' + o.hostname, tab.url);
     }
     if (match) {
       const profile = o;

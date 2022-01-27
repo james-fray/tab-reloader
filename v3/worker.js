@@ -38,8 +38,6 @@ const messaging = (request, sender, response = () => {}) => {
       method: 'reload-interface'
     });
 
-    console.log('added', name);
-
     // keep in profiles
     try {
       const {hostname} = new URL(request.tab.url);
