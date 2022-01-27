@@ -2,7 +2,19 @@
 
 const custom = (tab, json) => {
   for (const o of json) {
-    if (api.match('ht:' + o.hostname, tab.url)) {
+    const match = false;
+    if (o.url) {
+      try {
+        api.match('pt:' + o.url, tab.url);
+      }
+      catch (e) {
+        console.warn('URL Matching Failed', o, e);
+      }
+    }
+    else if (o.hostname) {
+      api.match('ht:' + o.hostname, tab.url);
+    }
+    if (match) {
       const profile = o;
       profile.period = api.convert.obj2str({
         hh: (o.dd || 0) * 24 + (o.hh || 0),
@@ -13,6 +25,8 @@ const custom = (tab, json) => {
         profile['code-value'] = o.code;
         profile.code = true;
       }
+
+
       delete o.dd;
       delete o.hh;
       delete o.mm;
