@@ -243,6 +243,15 @@ api.button = {
   }
 };
 
+api.context = {
+  add(options) {
+    chrome.contextMenus.create(options);
+  },
+  fired(c) {
+    chrome.contextMenus.onClicked.addListener(c);
+  }
+};
+
 api.runtime = {
   started(c) {
     chrome.runtime.onStartup.addListener(c);
