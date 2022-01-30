@@ -25,7 +25,7 @@ const messaging = (request, sender, response = () => {}) => {
   else if (request.method === 'add-job') {
     const profile = Object.assign({}, defaults.profile, request.profile, {
       timestamp: Date.now(),
-      href: request.tab.url
+      href: request.tab.url.split('#')[0]
     });
 
     const name = request.tab.id.toString();

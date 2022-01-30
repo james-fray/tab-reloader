@@ -85,9 +85,13 @@ api.match = (key = '', str = '', parent = undefined) => {
   // URLPattern matching
   else if (key.startsWith('pt:')) {
     try {
-      const pattern = new URLPattern(str, parent);
+      let v = key.substr(3);
+      if (v.startsWith('http') === false) {
+        v = 'http{s}?://' + v;
+      }
+      const pattern = new URLPattern(v, parent);
 
-      return pattern.test(key.substr(3));
+      return pattern.test(str);
     }
     catch (e) {
       console.warn('Cannot run URLPattern matching', e);

@@ -4,12 +4,7 @@ const custom = (tab, json) => {
   for (const o of json) {
     let match = false;
     if (o.url) {
-      try {
-        match = api.match('pt:' + o.url, tab.url);
-      }
-      catch (e) {
-        console.warn('URL Matching Failed', o, e);
-      }
+      match = api.match('pt:' + o.url, tab.url);
     }
     else if (o.hostname) {
       match = api.match('ht:' + o.hostname, tab.url);
@@ -203,9 +198,21 @@ api.tabs.loaded(d => {
       }
 
       api.button.icon('active', tabId);
-      api.alarms.add(o.name, {
-        when: Date.now() + period * 1000
-      });
+
+      // if URL is updated, add as a new job so we can restore after a restart
+      if (profile.href === d.url) {
+        api.alarms.add(o.name, {
+          when: Date.now() + period * 1000
+        });
+      }
+      else {
+        profile.href = d.url;
+        messaging({
+          method: 'add-job',
+          profile,
+          tab: await api.tabs.get(tabId)
+        });
+      }
 
       if (profile['scroll-to-end']) {
         api.inject(tabId, {
@@ -294,7 +301,6 @@ const restore = async () => {
     ...Object.keys(await api.storage.get(null)).filter(n => n.startsWith('job-')).map(s => Number(s.slice(4))),
     ...(await api.alarms.keys()).map(Number)
   ]);
-
   const profiles = [];
 
   for (const tabId of jobs) {
@@ -363,7 +369,7 @@ const restore = async () => {
   api.alarms.count().then(c => api.button.badge(c));
 };
 api.runtime.started(() => api.storage.get({
-  'restore-delay': 2
+  'restore-delay': 3
 }).then(prefs => api.alarms.add('restore', {
   when: Date.now() + prefs['restore-delay'] * 1000
 })));
