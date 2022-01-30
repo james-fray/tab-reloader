@@ -85,6 +85,7 @@ api.context.fired(async (info, tab) => {
   }
   else if (info.menuItemId === 'stop.all') {
     api.alarms.forEach(o => messaging({
+      reason: 'context-stop-all',
       method: 'remove-job',
       id: Number(o.name.replace('job-', ''))
     }));

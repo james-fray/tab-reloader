@@ -101,8 +101,8 @@ chrome.scripting = chrome.scripting || {
 };
 
 chrome.contextMenus.create = new Proxy(chrome.contextMenus.create, {
-  apply(target, self, [properties]) {
+  apply(target, self, [properties, c]) {
     properties.contexts = properties.contexts.map(s => s === 'action' ? 'browser_action' : s);
-    Reflect.apply(target, self, [properties]);
+    Reflect.apply(target, self, [properties, c]);
   }
 });

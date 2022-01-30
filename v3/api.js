@@ -134,6 +134,9 @@ api.alarms = {
   count() {
     return chrome.alarms.getAll().then(os => os.length);
   },
+  keys() {
+    return chrome.alarms.getAll().then(os => os.map(o => o.name));
+  },
   forEach(c) {
     return chrome.alarms.getAll().then(os => Promise.all(os.map(o => c(o))));
   }
@@ -245,7 +248,9 @@ api.button = {
 
 api.context = {
   add(options) {
-    chrome.contextMenus.create(options);
+    chrome.contextMenus.create(options, () => {
+      chrome.runtime.lastError;
+    });
   },
   fired(c) {
     chrome.contextMenus.onClicked.addListener(c);

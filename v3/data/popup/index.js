@@ -42,6 +42,7 @@ document.getElementById('enable').onchange = e => {
   // unregister
   else {
     api.post.bg({
+      'reason': 'user-request',
       'method': 'remove-job',
       'id': tab.id,
       'skip-echo': true

@@ -47,6 +47,9 @@ const custom = (tab, json) => {
 
 api.alarms.fired(async o => {
   const tabId = Number(o.name);
+  if (isNaN(tabId)) {
+    return;
+  }
   const tab = await api.tabs.get(tabId);
   // only set new alarm if tab still exists
   if (tab) {
@@ -283,42 +286,62 @@ api.tabs.loaded(d => {
 });
 
 /* startup -> restore a job, find a job for matching tab, run custom jobs */
-api.runtime.started(async () => {
+const restore = async () => {
   // make sure a custom policy is not being applied before initialization
   api.tabs.ready = false;
 
-  await api.alarms.forEach(async o => {
-    const tabId = Number(o.name);
-    const tab = await api.tabs.get(tabId);
+  const jobs = new Set([
+    ...Object.keys(await api.storage.get(null)).filter(n => n.startsWith('job-')).map(s => Number(s.slice(4))),
+    ...(await api.alarms.keys()).map(Number)
+  ]);
 
-    if (tab) {
+  const profiles = [];
+
+  for (const tabId of jobs) {
+    const tab = await api.tabs.get(tabId);
+    const profile = await api.storage.get('job-' + tabId);
+
+    if (tab && tab.url === profile.href) {
       api.button.icon('active', tabId);
+      const o = await api.alarms.get(tabId + '');
+      if (!o) {
+        messaging({
+          method: 'add-job',
+          profile,
+          tab
+        });
+      }
     }
     else {
-      // see if we can find an identical tab for the missed profile
-      const profile = await api.storage.get('job-' + o.name);
-      if (profile.href) {
-        const [tab] = await api.tabs.query({
-          url: profile.href
-        });
-        if (tab) {
-          // make sure this tab does not have an active job
-          const o = await api.alarms.get(tab.id.toString());
-          if (!o) {
-            messaging({
-              method: 'add-job',
-              profile,
-              tab
-            });
-          }
+      await new Promise(resolve => messaging({
+        reason: 'restore-tab-not-found',
+        method: 'remove-job',
+        id: tabId
+      }, undefined, resolve));
+      profiles.push(profile);
+    }
+  }
+  // see if we can find an identical tab for the missed profiles
+  for (const profile of profiles) {
+    if (profile && profile.href) {
+      const tabs = await api.tabs.query({
+        url: profile.href
+      });
+      // find the first tab with no job
+      for (const tab of tabs) {
+        // make sure this tab does not have an active job
+        const o = await api.alarms.get(tab.id.toString());
+        if (!o) {
+          await new Promise(resolve => messaging({
+            method: 'add-job',
+            profile,
+            tab
+          }, undefined, resolve));
+          break;
         }
       }
-      messaging({
-        method: 'remove-job',
-        id: o.name
-      });
     }
-  });
+  }
 
   // check custom jobs
   const prefs = await api.storage.get({
@@ -338,4 +361,11 @@ api.runtime.started(async () => {
   // done
   api.tabs.ready = true;
   api.alarms.count().then(c => api.button.badge(c));
-});
+};
+api.runtime.started(() => api.storage.get({
+  'restore-delay': 2
+}).then(prefs => api.alarms.add('restore', {
+  when: Date.now() + prefs['restore-delay'] * 1000
+})));
+
+api.alarms.fired(o => o.name === 'restore' && restore());
