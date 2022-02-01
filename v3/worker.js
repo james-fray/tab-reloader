@@ -6,7 +6,6 @@ const messaging = (request, sender, response = () => {}) => {
   if (request.method === 'remove-job') {
     const id = request.id.toString();
 
-    // on browser close, this causes issue
     setTimeout(async () => {
       await api.alarms.remove(id);
       await api.storage.remove('job-' + id);
@@ -17,7 +16,7 @@ const messaging = (request, sender, response = () => {}) => {
         });
       }
       response();
-    }, request.reason === 'tab-removed' ? 1000 : 0);
+    }, 0);
     api.button.icon('disabled', request.id);
 
     return true;
@@ -147,12 +146,32 @@ api.post.fired(messaging);
 
 /* remove the job if tab is removed */
 api.tabs.removed((id, info) => {
-  messaging({
-    reason: 'tab-removed',
-    method: 'remove-job',
-    id
-  });
+  // on browser close, this causes issue
+  if (info.isWindowClosing === false) {
+    messaging({
+      reason: 'tab-removed',
+      method: 'remove-job',
+      id
+    });
+  }
 });
+/*
+  make sure all jobs have a tab;
+  sometimes api.tabs.remove(..., false) is not being called when the tab is the only child
+*/
+api.tabs.removed(() => setTimeout(() => {
+  api.alarms.forEach(async o => {
+    const tabId = Number(o.name);
+    const tab = await api.tabs.get(tabId);
+    if (!tab) {
+      messaging({
+        reason: 'tab-not-found-on-window-removed',
+        method: 'remove-job',
+        id: tabId
+      });
+    }
+  });
+}, 2000), true);
 
 /* badge color */
 api.storage.get({

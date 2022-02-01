@@ -181,8 +181,13 @@ api.tabs = {
   window(id) {
     return chrome.windows.get(id);
   },
-  removed(c) {
-    chrome.tabs.onRemoved.addListener(c);
+  removed(c, windows = false) {
+    if (windows) {
+      chrome.windows.onRemoved.addListener(c);
+    }
+    else {
+      chrome.tabs.onRemoved.addListener(c);
+    }
   },
   query(o) {
     return chrome.tabs.query(o);

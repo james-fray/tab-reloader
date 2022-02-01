@@ -12,6 +12,13 @@ api.alarms.forEach(async o => {
     span.classList.add('entry', 'button');
     document.getElementById('actives').appendChild(span);
   }
+  else {
+    api.post.bg({
+      reason: 'tab-not-found-on-popup',
+      method: 'remove-job',
+      id: tabId
+    });
+  }
 });
 
 document.getElementById('actives').onclick = e => {
