@@ -21,7 +21,6 @@ const custom = (tab, json) => {
         profile.code = true;
       }
 
-
       delete o.dd;
       delete o.hh;
       delete o.mm;
@@ -173,7 +172,6 @@ api.alarms.fired(async o => {
         }
       }
     }
-
     api.tabs.reload(tab, options, profile.form);
   }
   else {
@@ -214,26 +212,32 @@ api.tabs.loaded(d => {
         });
       }
 
+      const error = e => {
+        api.button.icon('error', tabId);
+        api.button.badge('E', tabId);
+        api.button.tooltip(e.message, tabId);
+      };
+
       if (profile['scroll-to-end']) {
         api.inject(tabId, {
           files: ['/data/scripts/ste.js']
-        }).catch(e => console.warn('Cannot run ste.js', e));
+        }).catch(error);
       }
       if (profile.switch) {
         api.inject(tabId, {
           func: () => window.switch = true
-        }).catch(e => console.warn('cannot run switch', e));
+        }).catch(error);
       }
       if (profile.sound) {
         api.inject(tabId, {
           func: src => window.src = src,
           args: [chrome.runtime.getURL('/data/sounds/' + profile['sound-value'] + '.mp3')]
-        });
+        }).catch(error);
       }
       if (profile.switch || profile.sound) {
         api.inject(tabId, {
           files: ['/data/scripts/sha.js']
-        }).catch(e => console.warn('cannot calculate SHA256', e));
+        }).catch(error);
       }
       if (profile.code && profile['code-value'].trim()) {
         Promise.all([
@@ -271,7 +275,7 @@ api.tabs.loaded(d => {
           },
           // temporary convert "script.dispatchEvent" with "post" so that examples run
           args: [profile['code-value'].replaceAll('script.dispatchEvent', 'post')]
-        }));
+        })).catch(error);
       }
     }
     // custom jobs is only applied if there is no ongoing job (after initialization is done)
