@@ -32,5 +32,6 @@ defaults['max-number-of-profiles'] = 50;
 
 defaults['schedule-offset'] = 0;
 
-
 defaults['badge-color'] = '#5e5e5e';
+
+defaults['removed.jobs'] = 5 * 24 * 60 * 60 * 1000;

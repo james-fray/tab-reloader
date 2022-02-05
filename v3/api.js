@@ -66,6 +66,12 @@ api.convert = {
   }
 };
 
+api.clean = {
+  href(o) {
+    return o.split('#')[0];
+  }
+};
+
 api.match = (key = '', str = '', parent = undefined) => {
   if (key === '' || str === '') {
     return false;

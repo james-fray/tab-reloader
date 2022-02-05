@@ -7,6 +7,34 @@ const messaging = (request, sender, response = () => {}) => {
     const id = request.id.toString();
 
     setTimeout(async () => {
+      // keep track of jobs that are not removed by the user
+      if (
+        request.reason === 'tab-removed' ||
+        request.reason === 'tab-not-found-on-window-removed' ||
+        request.reason === 'tab-not-found-on-popup'
+      ) {
+        const profile = await api.storage.get('job-' + id);
+        if (profile) {
+          api.storage.get({
+            'removed.jobs': {}
+          }).then(prefs => {
+            // remove old profiles
+            Object.entries(prefs['removed.jobs']).forEach(([key, o]) => {
+              if (Date.now() - o.timestamp > defaults['removed.jobs']) {
+                delete prefs['removed.jobs'][key];
+              }
+            });
+            // add new one
+            prefs['removed.jobs'][api.clean.href(profile.href)] = {
+              reason: request.reason,
+              profile,
+              timestamp: Date.now()
+            };
+            api.storage.set(prefs);
+          });
+        }
+      }
+      // remove the job
       await api.alarms.remove(id);
       await api.storage.remove('job-' + id);
       await api.alarms.count().then(c => api.button.badge(c));
@@ -24,7 +52,7 @@ const messaging = (request, sender, response = () => {}) => {
   else if (request.method === 'add-job') {
     const profile = Object.assign({}, defaults.profile, request.profile, {
       timestamp: Date.now(),
-      href: request.tab.url.split('#')[0]
+      href: request.tab.url
     });
 
     const name = request.tab.id.toString();

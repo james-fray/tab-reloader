@@ -278,18 +278,39 @@ api.tabs.loaded(d => {
         })).catch(error);
       }
     }
-    // custom jobs is only applied if there is no ongoing job (after initialization is done)
+    // custom jobs and removed jobs are only applied if there is no ongoing job (after initialization is done)
     else {
       if (api.tabs.ready !== false) {
         const prefs = await api.storage.get({
           'dynamic.json': false,
-          'json': []
+          'json': [],
+
+          'removed.jobs': {},
+          'removed.jobs.enabled': true
         });
+        const tab = {
+          url: d.url,
+          id: d.tabId
+        };
+
+        if (prefs['removed.jobs.enabled']) {
+          const href = api.clean.href(d.url);
+          const o = prefs['removed.jobs'][href];
+          if (o) {
+            messaging({
+              method: 'add-job',
+              profile: o.profile,
+              tab
+            });
+            delete prefs['removed.jobs'][href];
+
+            return api.storage.set({
+              'removed.jobs': prefs['removed.jobs']
+            });
+          }
+        }
         if (prefs['dynamic.json']) {
-          custom({
-            url: d.url,
-            id: d.tabId
-          }, prefs.json);
+          custom(tab, prefs.json);
         }
       }
     }
@@ -335,7 +356,7 @@ const restore = async () => {
   for (const profile of profiles) {
     if (profile && profile.href) {
       const tabs = await api.tabs.query({
-        url: profile.href
+        url: api.clean.href(profile.href)
       });
       // find the first tab with no job
       for (const tab of tabs) {

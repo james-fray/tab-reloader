@@ -6,6 +6,7 @@ const config = {
   'badge': true,
   'color': defaults['badge-color'],
   'faqs': true,
+  'removed.jobs.enabled': true,
   'json': [],
   'dynamic.json': false,
   'policy': {},
@@ -17,6 +18,7 @@ const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('badge').checked = prefs.badge;
   document.getElementById('color').value = prefs.color;
   document.getElementById('faqs').checked = prefs.faqs;
+  document.getElementById('removed.jobs.enabled').checked = prefs['removed.jobs.enabled'];
   document.getElementById('json').value = JSON.stringify(prefs.json, null, '  ');
   document.getElementById('dynamic.json').checked = prefs['dynamic.json'];
   document.getElementById('policy').value = JSON.stringify(prefs.policy, null, '  ');
@@ -72,6 +74,7 @@ document.getElementById('save').addEventListener('click', () => {
       'default-profile': profile,
       'color': document.getElementById('color').value,
       'faqs': document.getElementById('faqs').checked,
+      'removed.jobs.enabled': document.getElementById('removed.jobs.enabled').checked,
       'json': JSON.parse(document.getElementById('json').value.trim() || '[]'),
       'dynamic.json': document.getElementById('dynamic.json').checked,
       'policy': JSON.parse(document.getElementById('policy').value.trim() || '{}')
