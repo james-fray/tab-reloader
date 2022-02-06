@@ -2,7 +2,7 @@
   "name": "Tab Reloader (page auto refresh)",
   "description": "__MSG_description__",
   "default_locale": "en",
-  "version": "0.5.0.6",
+  "version": "0.5.0.7",
   "manifest_version": 2,
   "permissions": [
     "storage",

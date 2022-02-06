@@ -278,40 +278,38 @@ api.tabs.loaded(d => {
         })).catch(error);
       }
     }
-    // custom jobs and removed jobs are only applied if there is no ongoing job (after initialization is done)
+    // custom jobs and removed jobs are only applied if there is no ongoing job
     else {
-      if (api.tabs.ready !== false) {
-        const prefs = await api.storage.get({
-          'dynamic.json': false,
-          'json': [],
+      const prefs = await api.storage.get({
+        'dynamic.json': false,
+        'json': [],
 
-          'removed.jobs': {},
-          'removed.jobs.enabled': true
-        });
-        const tab = {
-          url: d.url,
-          id: d.tabId
-        };
+        'removed.jobs': {},
+        'removed.jobs.enabled': true
+      });
+      const tab = {
+        url: d.url,
+        id: d.tabId
+      };
 
-        if (prefs['removed.jobs.enabled']) {
-          const href = api.clean.href(d.url);
-          const o = prefs['removed.jobs'][href];
-          if (o) {
-            messaging({
-              method: 'add-job',
-              profile: o.profile,
-              tab
-            });
-            delete prefs['removed.jobs'][href];
+      if (prefs['removed.jobs.enabled']) {
+        const href = api.clean.href(d.url);
+        const o = prefs['removed.jobs'][href];
+        if (o) {
+          messaging({
+            method: 'add-job',
+            profile: o.profile,
+            tab
+          });
+          delete prefs['removed.jobs'][href];
 
-            return api.storage.set({
-              'removed.jobs': prefs['removed.jobs']
-            });
-          }
+          return api.storage.set({
+            'removed.jobs': prefs['removed.jobs']
+          });
         }
-        if (prefs['dynamic.json']) {
-          custom(tab, prefs.json);
-        }
+      }
+      if (prefs['dynamic.json']) {
+        custom(tab, prefs.json);
       }
     }
   });
@@ -319,9 +317,6 @@ api.tabs.loaded(d => {
 
 /* startup -> restore a job, find a job for matching tab, run custom jobs */
 const restore = async () => {
-  // make sure a custom policy is not being applied before initialization
-  api.tabs.ready = false;
-
   const jobs = new Set([
     ...Object.keys(await api.storage.get(null)).filter(n => n.startsWith('job-')).map(s => Number(s.slice(4))),
     ...(await api.alarms.keys()).map(Number)
@@ -390,13 +385,6 @@ const restore = async () => {
   }
 
   // done
-  api.tabs.ready = true;
   api.alarms.count().then(c => api.button.badge(c));
 };
-api.runtime.started(() => api.storage.get({
-  'restore-delay': 3
-}).then(prefs => api.alarms.add('restore', {
-  when: Date.now() + prefs['restore-delay'] * 1000
-})));
-
-api.alarms.fired(o => o.name === 'restore' && restore());
+api.runtime.started(() => restore());

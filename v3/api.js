@@ -162,7 +162,6 @@ api.post = {
 };
 
 api.tabs = {
-  ready: true, // this switch is true when initialization is done
   async active() {
     const [tab] = await chrome.tabs.query({
       active: true,
