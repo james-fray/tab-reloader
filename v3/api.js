@@ -128,6 +128,12 @@ api.match = (key = '', str = '', parent = undefined) => {
   }
 };
 
+api.idle = {
+  fired(c) {
+    chrome.idle.onStateChanged.addListener(c);
+  }
+};
+
 api.alarms = {
   add(name, o) {
     return chrome.alarms.create(name, o);

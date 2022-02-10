@@ -388,3 +388,18 @@ const restore = async () => {
   api.alarms.count().then(c => api.button.badge(c));
 };
 api.runtime.started(() => restore());
+
+// make sure timeout are ok
+api.idle.fired(state => {
+  if (state === 'active') {
+    const now = Date.now();
+    api.alarms.forEach(o => {
+      if (o.scheduledTime < now) {
+        api.alarms.add(o.name, {
+          when: now + 1000,
+          periodInMinutes: o.periodInMinutes
+        });
+      }
+    });
+  }
+});
