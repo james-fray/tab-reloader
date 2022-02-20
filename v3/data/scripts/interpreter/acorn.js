@@ -5427,7 +5427,7 @@
       }
     default:
       if (ch >= 48 && ch <= 55) {
-        var octalStr = this.input.substr(this.pos - 1, 3).match(/^[0-7]+/)[0];
+        var octalStr = this.input.slice(this.pos - 1, this.pos + 2).match(/^[0-7]+/)[0];
         var octal = parseInt(octalStr, 8);
         if (octal > 255) {
           octalStr = octalStr.slice(0, -1);

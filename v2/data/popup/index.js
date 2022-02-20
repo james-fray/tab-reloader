@@ -165,7 +165,7 @@ function check() {
 }
 
 chrome.runtime.onMessage.addListener(request => {
-  const twoDigit = num => ('00' + num).substr(-2);
+  const twoDigit = num => ('00' + num).slice(-2);
   if (request.method === 'updated-info') {
     const obj = request.data;
 
