@@ -79,7 +79,7 @@ api.match = (key = '', str = '', parent = undefined) => {
   // RegExp matching
   if (key.startsWith('re:')) {
     try {
-      const r = new RegExp(key.substr(3));
+      const r = new RegExp(key.slice(3));
 
       return r.test(str);
     }
@@ -91,7 +91,7 @@ api.match = (key = '', str = '', parent = undefined) => {
   // URLPattern matching
   else if (key.startsWith('pt:')) {
     try {
-      let v = key.substr(3);
+      let v = key.slice(3);
       if (v.startsWith('http') === false) {
         v = 'http{s}?://' + v;
       }
@@ -108,7 +108,7 @@ api.match = (key = '', str = '', parent = undefined) => {
   else if (key.startsWith('ht:')) {
     try {
       // https://*.example.com/test*
-      const [hostname, ...parts] = key.substr(3).replace(/^https?:\/\//, '').split('/');
+      const [hostname, ...parts] = key.slice(3).replace(/^https?:\/\//, '').split('/');
       const [pathname, search] = parts.join('/').split('?');
 
       const pattern = new URLPattern({
