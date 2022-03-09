@@ -176,6 +176,25 @@ api.alarms.fired(async o => {
   }
   else {
     console.warn('cannot find tab with id', o.name);
+    // is tab discarded (https://github.com/james-fray/tab-reloader/issues/110)
+    const profile = await api.storage.get('job-' + o.name);
+    const tabs = await api.tabs.query({
+      url: profile.href,
+      discarded: true
+    });
+    messaging({
+      reason: tabs.length ? 'alarm-replace' : 'tab-not-found-on-alarm',
+      method: 'remove-job',
+      id: tabId
+    });
+    if (tabs.length) {
+      messaging({
+        method: 'add-job',
+        profile,
+        tab: tabs[0],
+        now: true
+      });
+    }
   }
 });
 
@@ -389,7 +408,7 @@ const restore = async () => {
 };
 api.runtime.started(() => restore());
 
-// make sure timeout are ok
+/* make sure timeouts are OK */
 api.idle.fired(state => {
   if (state === 'active') {
     const now = Date.now();
