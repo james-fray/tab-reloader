@@ -91,7 +91,6 @@ input[type=number]:focus {
   display: inline-block;
   padding: 0 10px;
   box-sizing: border-box;
-  height: 28px;
   line-height: 28px;
 }
 .button:active {

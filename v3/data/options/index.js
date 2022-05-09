@@ -118,7 +118,7 @@ document.getElementById('opv').addEventListener('click', () => chrome.tabs.creat
 // example
 document.getElementById('example').addEventListener('click', () => {
   document.getElementById('json').value = JSON.stringify([{
-    'hostname': '*.google.com',
+    'hostname': 'www.google.com',
     'dd': 0,
     'hh': 0,
     'mm': 1,
