@@ -6,7 +6,15 @@
     const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
     return hashHex;
   };
-  sha256(document.body.innerText).then(hash => {
+  let e = document.body;
+  try {
+    e = document.querySelector(localStorage.getItem('tab-reloader-element')) || e;
+  }
+  catch (e) {}
+
+  console.log('Calculating hash of', e);
+
+  sha256(e.innerText).then(hash => {
     const oh = localStorage.getItem('tab-reloader-hash');
 
     if (oh && oh !== hash) {
@@ -18,7 +26,8 @@
       if (window.src) {
         chrome.runtime.sendMessage({
           method: 'play-sound',
-          src: window.src
+          src: window.src,
+          volume: Number(localStorage.getItem('tab-reloader-volume') || 1)
         });
       }
     }

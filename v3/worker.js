@@ -148,7 +148,9 @@ const messaging = (request, sender, response = () => {}) => {
   }
   else if (request.method === 'play-sound') { // user command
     try {
-      (new Audio(request.src)).play();
+      const audio = new Audio(request.src);
+      audio.volume = request.volume || 1;
+      audio.play();
     }
     catch (e) {
       console.warn(e);
