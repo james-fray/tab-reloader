@@ -122,12 +122,17 @@ document.getElementById('example').addEventListener('click', () => {
     'mm': 1,
     'ss': 0
   }, {
-    'hostname':
-    'www.bing.com',
     'dd': 0,
     'hh': 0,
-    'mm': 1,
-    'ss': 30
+    'mm': 2,
+    'ss': 0,
+    'url': 're:.*\\.wikipedia\\.org\\/wiki\\/Book'
+  }, {
+    'dd': 0,
+    'hh': 0,
+    'mm': 3,
+    'ss': 0,
+    'url': '*.wikipedia.org/wiki/Cat'
   }], null, 2);
 });
 // export
