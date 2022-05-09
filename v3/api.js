@@ -277,6 +277,12 @@ api.context = {
   }
 };
 
+api.commands = {
+  fired(c) {
+    chrome.commands.onCommand.addListener(c);
+  }
+};
+
 api.runtime = {
   started(c) {
     chrome.runtime.onStartup.addListener(c);

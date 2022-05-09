@@ -47,5 +47,28 @@
   "options_ui": {
     "page": "data/options/index.html",
     "open_in_tab": true
+  },
+  "commands": {
+    "reload.all": {
+      "description": "Reload all tabs"
+    },
+    "reload.all.discarded": {
+      "description": "Reload all discarded tabs"
+    },
+    "reload.window": {
+      "description": "Reload all tabs in the current window"
+    },
+    "reload.window.discarded": {
+      "description": "Reload all discarded tabs in the current window"
+    },
+    "reload.tabs.left": {
+      "description": "Reload tabs to the left"
+    },
+    "reload.tabs.right": {
+      "description": "Reload tabs to the right"
+    },
+    "stop.all": {
+      "description": "Stop all Reloading Jobs"
+    }
   }
 }

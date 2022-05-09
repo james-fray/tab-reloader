@@ -188,7 +188,6 @@ api.alarms.fired(async o => {
     // is tab discarded (https://github.com/james-fray/tab-reloader/issues/110)
 
     const profile = await api.storage.get('job-' + o.name);
-    console.log(profile);
 
     if (profile.discarded !== true) {
       const tabs = await api.tabs.query({
