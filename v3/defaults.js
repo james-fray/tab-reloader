@@ -8,6 +8,7 @@ defaults.profile = {
   'cache': false,
   'form': false,
   'offline': false,
+  'discarded': false,
   'scroll-to-end': false,
   'switch': false,
   'sound': false,

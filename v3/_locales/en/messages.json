@@ -17,6 +17,9 @@
   "popup_offline": {
     "message": "Do not reload tab if offline"
   },
+  "popup_discarded": {
+    "message": "Do not reload tab if discarded"
+  },
   "popup_ste": {
     "message": "Scroll to the end after reload"
   },

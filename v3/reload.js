@@ -75,6 +75,10 @@ api.alarms.fired(async o => {
       return skip('browser is offline');
     }
 
+    if (tab.discarded && profile.discarded) {
+      return skip('tab is discarded');
+    }
+
     if (tab.active && profile.current) {
       if (profile.nofocus) {
         const w = await api.tabs.window(tab.windowId);
@@ -182,23 +186,28 @@ api.alarms.fired(async o => {
   else {
     console.warn('cannot find tab with id', o.name);
     // is tab discarded (https://github.com/james-fray/tab-reloader/issues/110)
+
     const profile = await api.storage.get('job-' + o.name);
-    const tabs = await api.tabs.query({
-      url: profile.href,
-      discarded: true
-    });
-    messaging({
-      reason: tabs.length ? 'alarm-replace' : 'tab-not-found-on-alarm',
-      method: 'remove-job',
-      id: tabId
-    });
-    if (tabs.length) {
-      messaging({
-        method: 'add-job',
-        profile,
-        tab: tabs[0],
-        now: true
+    console.log(profile);
+
+    if (profile.discarded !== true) {
+      const tabs = await api.tabs.query({
+        url: profile.href,
+        discarded: true
       });
+      messaging({
+        reason: tabs.length ? 'alarm-replace' : 'tab-not-found-on-alarm',
+        method: 'remove-job',
+        id: tabId
+      });
+      if (tabs.length) {
+        messaging({
+          method: 'add-job',
+          profile,
+          tab: tabs[0],
+          now: true
+        });
+      }
     }
   }
 });

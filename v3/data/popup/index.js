@@ -19,6 +19,7 @@ const generate = (forced = false) => {
     'cache': document.getElementById('cache').checked,
     'form': document.getElementById('form').checked,
     'offline': document.getElementById('offline').checked,
+    'discarded': document.getElementById('discarded').checked,
     'scroll-to-end': document.getElementById('scroll-to-end').checked,
     'switch': document.getElementById('switch').checked,
     'sound': document.getElementById('sound').checked,
