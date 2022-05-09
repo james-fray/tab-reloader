@@ -147,3 +147,12 @@ document.getElementById('save-as-json').onclick = async e => {
     alert(e.message);
   }
 };
+
+// test sounds
+document.getElementById('test-sound').onclick = () => {
+  const src = document.getElementById('sound-value').value;
+
+  const audio = new Audio();
+  audio.src = '/data/sounds/' + src + '.mp3';
+  audio.play();
+};

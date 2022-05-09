@@ -69,16 +69,19 @@
     <span class="button" id="save-as-json" data-i18n="popup_save_as_json"></span>
     <input type="checkbox" id="sound" data-permission=true>
     <label for="sound"><span data-i18n="popup_sound"></span><span class="permission" data-i18n="popup_permission" data-i18n-value="title"> (!)</span></label>
-    <select id="sound-value" class="button">
-      <option value="1">Sound 1</option>
-      <option value="2">Sound 2</option>
-      <option value="3">Sound 3</option>
-      <option value="4">Sound 4</option>
-      <option value="5">Sound 5</option>
-      <option value="6">Sound 6</option>
-      <option value="7">Sound 7</option>
-      <option value="8">Sound 8</option>
-    </select>
+    <div id="sound-container">
+      <select id="sound-value" class="button">
+        <option value="1">Sound 1</option>
+        <option value="2">Sound 2</option>
+        <option value="3">Sound 3</option>
+        <option value="4">Sound 4</option>
+        <option value="5">Sound 5</option>
+        <option value="6">Sound 6</option>
+        <option value="7">Sound 7</option>
+        <option value="8">Sound 8</option>
+      </select>
+      <span class="button" id="test-sound" data-i18n="popup_test_sound"></span>
+    </div>
     <span></span>
     <label for="blocked-words" data-i18n="popup_bw"></label>
     <input type="text" id="blocked-words" placeholder="e.g. /mail/">

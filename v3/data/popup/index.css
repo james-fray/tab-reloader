@@ -89,8 +89,10 @@ input[type=number]:focus {
   cursor: pointer;
   transition: 100ms;
   display: inline-block;
-  display: block;
-  padding: 5px 10px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  height: 28px;
+  line-height: 28px;
 }
 .button:active {
   opacity: 0.5;
@@ -182,4 +184,10 @@ body:not([data-enabled=true]) #timer {
 
 #save-as-json {
   justify-self: end;
+}
+
+#sound-container {
+  display: flex;
+  justify-self: end;
+  gap: 5px;
 }

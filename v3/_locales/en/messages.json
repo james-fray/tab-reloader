@@ -70,5 +70,8 @@
   },
   "popup_save_as_json": {
     "message": "Save as a Custom Job"
+  },
+  "popup_test_sound": {
+    "message": "Test"
   }
 }
