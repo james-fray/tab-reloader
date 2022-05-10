@@ -73,5 +73,140 @@
   },
   "popup_test_sound": {
     "message": "Test"
+  },
+  "options_title": {
+    "message": "Options Page :: Tab Reloader"
+  },
+  "options_badge": {
+    "message": "Display the total number of active jobs in the badge area"
+  },
+  "options_color": {
+    "message": "Badge color is:"
+  },
+  "options_default": {
+    "message": "Defaults"
+  },
+  "options_default_time": {
+    "message": "Default reloading time:"
+  },
+  "options_pp_current": {
+    "message": "Default value for \"Do no reload if tab is active\""
+  },
+  "options_pp_nofocus": {
+    "message": "Default value for \"Reload if window is not focused\""
+  },
+  "options_pp_cache": {
+    "message": "Default value for \"Use cache while reloading\""
+  },
+  "options_pp_form": {
+    "message": "Default value for \"Bypass form submission\""
+  },
+  "options_pp_offline": {
+    "message": "Default value for \"Do not reload if offline\""
+  },
+  "options_pp_discarded": {
+    "message": "Default value for \"Do not reload if discarded\""
+  },
+  "options_pp_scroll_to_end": {
+    "message": "Default value for \"Scroll to the end after reload\""
+  },
+  "options_presets": {
+    "message": "Presets"
+  },
+  "options_custom_jobs": {
+    "message": "Custom Jobs"
+  },
+  "options_sample": {
+    "message": "Inset a Sample"
+  },
+  "options_keywords": {
+    "message": "Supported Keywords"
+  },
+  "options_events": {
+    "message": "Supported Events"
+  },
+  "options_desc": {
+    "message": "Toggle Description"
+  },
+  "options_json_desc": {
+    "message": "List hostnames in JSON format to set an automatic refresh after each startup. If you need URL matching instead of hostname matching, remove the \"hostname\" key and append the \"url\" key instead. Read the FAQs page for additional instructions."
+  },
+  "options_dynamic_json": {
+    "message": "Always check to install reloading jobs from the JSON object when a new page loads."
+  },
+  "options_dynamic_json_desc": {
+    "message": "When this option is enabled, the extension installs a new custom reloading job for new pages matching one of the keys in the list."
+  },
+  "options_policy": {
+    "message": "Reloading Policy"
+  },
+  "options_misc": {
+    "message": "Misc"
+  },
+  "options_reassign": {
+    "message": "Try to assign a reloading job when a new tab used to have an active reloading job."
+  },
+  "options_faqs": {
+    "message": "Open FAQs page on updates"
+  },
+  "options_tools": {
+    "message": "Tools"
+  },
+  "options_export_desc": {
+    "message": "Export: Export all settings to a JSON file and download it to the default download directory"
+  },
+  "options_import_desc": {
+    "message": "Import: Import settings from a JSON file (this will overwrite current settings and restarts the extension)"
+  },
+  "options_reset_desc": {
+    "message": "Reset: Reset settings to the factory values"
+  },
+  "options_reset": {
+    "message": "Reset Defaults"
+  },
+  "options_export": {
+    "message": "Export"
+  },
+  "options_import": {
+    "message": "Import"
+  },
+  "options_permission": {
+    "message": "Host Permission"
+  },
+  "options_instruction": {
+    "message": "Usage Instruction"
+  },
+  "options_ofq": {
+    "message": "Open FAQs page"
+  },
+  "options_support": {
+    "message": "Support Development"
+  },
+  "options_save": {
+    "message": "Save Options"
+  },
+  "bg_reload_tabs": {
+    "message": "Reload tabs"
+  },
+  "bg_all_tabs": {
+    "message": "All tabs"
+  },
+  "bg_reload_all_discarded": {
+    "message": "All discarded tabs"
+  },
+  "bg_reload_window": {
+    "message": "All tabs in the current window"
+  },
+  "bg_reload_window_discarded": {
+    "message": "All discarded tabs in the current window"
+  },
+  "bg_reload_tabs_left": {
+    "message": "Tabs to the left"
+  },
+  "bg_reload_tabs_right": {
+    "message": "Tabs to the right"
+  },
+  "bg_stop_all": {
+    "message": "Stop all reloading jobs"
   }
 }

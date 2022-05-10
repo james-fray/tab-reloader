@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Options Page :: Tab Reloader</title>
+  <title data-i18n="options_title"></title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="index.css">
@@ -10,86 +10,87 @@
 <body>
   <div class="grid-1">
     <input type="checkbox" id="badge">
-    <label for="badge">Display the total number of active jobs in the badge area</label>
+    <label for="badge" data-i18n="options_badge"></label>
   </div>
   <div class="grid-3">
     <span></span>
-    <label for="color">Badge color is:</label>
+    <label for="color" data-i18n="options_color"></label>
     <input type="color" id="color">
   </div>
   <div>
-    <h1>Defaults</h1>
+    <h1 data-i18n="options_defaults"></h1>
     <div class="grid-1">
       <span></span>
       <div>
-        <span>Default reloading time:</span>
+        <span data-i18n="options_default_time"></span>
         <input type="text" id="pp-period">
       </div>
       <input type="checkbox" id="pp-current">
-      <label for="pp-current">Default value for "Do no reload if tab is active"</label>
+      <label for="pp-current" data-i18n="options_pp_current"></label>
       <input type="checkbox" id="pp-nofocus">
-      <label for="pp-nofocus">Default value for "Reload if window is not focused"</label>
+      <label for="pp-nofocus" data-i18n="options_pp_nofocus"></label>
       <input type="checkbox" id="pp-cache">
-      <label for="pp-cache">Default value for "Use cache while reloading"</label>
+      <label for="pp-cache" data-i18n="options_pp_cache"></label>
       <input type="checkbox" id="pp-form">
-      <label for="pp-form">Default value for "Bypass form submission"</label>
+      <label for="pp-form" data-i18n="options_pp_form"></label>
       <input type="checkbox" id="pp-offline">
-      <label for="pp-offline">Default value for "Do not reload if offline"</label>
+      <label for="pp-offline" data-i18n="options_pp_offline"></label>
       <input type="checkbox" id="pp-discarded">
-      <label for="pp-discarded">Default value for "Do not reload if discarded"</label>
+      <label for="pp-discarded" data-i18n="options_pp_discarded"></label>
       <input type="checkbox" id="pp-scroll-to-end">
-      <label for="pp-scroll-to-end">Default value for "Scroll to the end after reload"</label>
+      <label for="pp-scroll-to-end" data-i18n="options_pp_scroll_to_end"></label>
     </div>
   </div>
   <div>
-    <h1>Presets</h1>
+    <h1 data-i18n="options_presets"></h1>
     <textarea rows="2" id="presets"></textarea>
   </div>
   <div>
-    <h1><a data-href="faq11" target="_blank">Custom Jobs</a></h1> (<span id="example">Inset a Sample</span>, <span id="keywords">Supported Keywords</span>, <span id="events">Supported Events</span>, <span id="desc-1">Toggle Description</span>)
+    <h1><a data-href="faq11" target="_blank" data-i18n="options_custom_jobs"></a></h1> (<span id="example" data-i18n="options_sample"></span>, <span id="keywords" data-i18n="options_keywords"></span>, <span id="events" data-i18n="options_events"></span>, <span id="desc-1" data-i18n="options_desc"></span>)
   </div>
   <textarea rows="6" id="json"></textarea>
   <div for="desc-1" class="desc hide" style="margin: 5px 0">
-    <td colspan="2">JSON list of hostnames to set an automatic refresh after each start-up. You can manually ask the extension to set the JSON rules from "Restore old reloading jobs" context menu over the browser action button. If you need URL matching instead of hostname matching, remove the "hostname" key and append "url" key instead.</td>
+    <span data-i18n="options_json_desc"></span>
   </div>
   <div class="grid-1">
     <input type="checkbox" id="dynamic.json">
-    <label for="dynamic.json">Always check to install reloading jobs from the JSON object when a new page loads (<span id="desc-2">Toggle Description</span>)</label>
+    <label for="dynamic.json"><span data-i18n="options_dynamic_json"></span> (<span id="desc-2" data-i18n="options_desc"></span>)</label>
   </div>
-  <div for="desc-2" class="desc hide"  style="margin-top: 5px">If this option is checked and the new page's hostname matches a key in the JSON object, a new reloading job will automatically be set for the current tab.</div>
-  <div><h1><a data-href="faq14" target="_blank">Reloading Policy</a></h1></div>
+  <div for="desc-2" class="desc hide"  style="margin-top: 5px" data-i18n="options_dynamic_json_desc"></div>
+  <div><h1><a data-href="faq14" target="_blank" data-i18n="options_policy"></a></h1></div>
   <textarea rows="6" id="policy"></textarea>
-  <h1>Misc</h1>
+  <h1 data-i18n="options_misc"></h1>
   <div class="grid-1">
     <input type="checkbox" id="removed.jobs.enabled">
-    <label for="removed.jobs.enabled">Try to assign a reloading job when a new tab had an active reloading job</label>
+    <label for="removed.jobs.enabled" data-i18n="options_reassign"></label>
     <input type="checkbox" id="faqs">
-    <label for="faqs">Open FAQs page on updates</label>
+    <label for="faqs" data-i18n="options_faqs"></label>
   </div>
   <div id="explore"></div>
   <div>
-    <h1>Tools</h1> (<span id="desc-4">Toggle Description</span>)
+    <h1 data-i18n="options_tools"></h1> (<span id="desc-4" data-i18n="options_desc"></span>)
   </div>
   <div for="desc-4" class="desc hide" style="margin-bottom: 10px">
-    Export: Export all settings to a JSON file and download it to the default download directory
+    <span data-i18n="options_export_desc"></span>
     <br>
-    Import: Import settings from a JSON file (this will overwrite current settings and restarts the extension)
+    <span data-i18n="options_import_desc"></span>
     <br>
-    Reset: Reset settings to the factory values
+    <span data-i18n="options_reset_desc"></span>
   </div>
   <div style="margin-bottom: 5px">
-    <button id="export">Export</button>
-    <button id="import">Import</button> - <button id="reset">Reset Defaults</button> - <button id="permission">Host Permission</button>
+    <button id="export" data-i18n="options_export"></button>
+    <button id="import" data-i18n="options_import"></button> - <button id="reset" data-i18n="options_reset"></button> - <button id="permission" data-i18n="options_permission"></button>
   </div>
   <div>
-    <button id="opv">Usage Instruction</button>
-    <button id="ofq">Open FAQs page</button>
-    <button id="support" title="Support Development">Support Development</button> - <button id="save" title="Save settings">Save Options</button>
+    <button id="opv" data-i18n="options_instruction"></button>
+    <button id="ofq" data-i18n="options_ofq"></button>
+    <button id="support" title="Support Development" data-i18n="options_support"></button> - <button id="save" data-i18n="options_save"></button>
     <span id="info"></span>
   </div>
 
   <script src="/defaults.js"></script>
   <script src="/api.js"></script>
+  <script src="../locale.js"></script>
   <script src="index.js"></script>
   <script async src="matched/matched.js"></script>
 </body>

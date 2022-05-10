@@ -2,48 +2,48 @@
 
 api.runtime.started(() => {
   api.context.add({
-    title: 'Reload tabs',
+    title: chrome.i18n.getMessage('bg_reload_tabs'),
     id: 'reload',
     contexts: ['action']
   });
   api.context.add({
-    title: 'All tabs',
+    title: chrome.i18n.getMessage('bg_all_tabs'),
     id: 'reload.all',
     contexts: ['action'],
     parentId: 'reload'
   });
   api.context.add({
-    title: 'All discarded tabs',
+    title: chrome.i18n.getMessage('bg_reload_all_discarded'),
     id: 'reload.all.discarded',
     contexts: ['action'],
     parentId: 'reload'
   });
   api.context.add({
-    title: 'All tabs in the current window',
+    title: chrome.i18n.getMessage('bg_reload_window'),
     id: 'reload.window',
     contexts: ['action'],
     parentId: 'reload'
   });
   api.context.add({
-    title: 'All discarded tabs in the current window',
+    title: chrome.i18n.getMessage('bg_reload_window_discarded'),
     id: 'reload.window.discarded',
     contexts: ['action'],
     parentId: 'reload'
   });
   api.context.add({
-    title: 'Tabs to the left',
+    title: chrome.i18n.getMessage('bg_reload_tabs_left'),
     id: 'reload.tabs.left',
     contexts: ['action'],
     parentId: 'reload'
   });
   api.context.add({
-    title: 'Tabs to the right',
+    title: chrome.i18n.getMessage('bg_reload_tabs_right'),
     id: 'reload.tabs.right',
     contexts: ['action'],
     parentId: 'reload'
   });
   api.context.add({
-    title: 'Stop all Reloading Jobs',
+    title: chrome.i18n.getMessage('bg_stop_all'),
     id: 'stop.all',
     contexts: ['action']
   });
