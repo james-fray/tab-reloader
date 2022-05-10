@@ -134,7 +134,7 @@ document.getElementById('example').addEventListener('click', () => {
     'hh': 0,
     'mm': 3,
     'ss': 0,
-    'url': '*.wikipedia.org/wiki/Cat'
+    'url': 'pt:*.wikipedia.org/wiki/Cat'
   }], null, 2);
 });
 // export
