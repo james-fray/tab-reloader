@@ -1,0 +1,212 @@
+{
+  "description": {
+    "message": "Ein einfach zu bedienender Tab-Reloader mit individuellen Ladezeiten für verschiedene Tabs und vielem mehr!"
+  },
+  "popup_active": {
+    "message": "Nicht neu laden, wenn der Tab aktiv ist"
+  },
+  "popup_nofocus": {
+    "message": "Neu laden, wenn das Fenster keinen Fokus hat"
+  },
+  "popup_cache": {
+    "message": "Cache beim Reload verwenden (Zustand wiederherstellen)"
+  },
+  "popup_form": {
+    "message": "Übertragung von Formularen umgehen"
+  },
+  "popup_offline": {
+    "message": "Tab nicht neu laden, wenn er offline ist"
+  },
+  "popup_discarded": {
+    "message": "Tab nicht neu laden, wenn er entladen wurde"
+  },
+  "popup_ste": {
+    "message": "Nach dem Reload bis zum Ende scrollen"
+  },
+  "popup_switch": {
+    "message": "Zum Tab wechseln, wenn der Inhalt sich ändert"
+  },
+  "popup_sound": {
+    "message": "Ton abspielen, wenn der Inhalt sich ändert"
+  },
+  "popup_bw": {
+    "message": "Nicht neu laden, wenn die Adresse oder Titel folgendes enthält"
+  },
+  "popup_period": {
+    "message": "Neu laden zwischen"
+  },
+  "popup_active_tabs": {
+    "message": "Aktive Tabs"
+  },
+  "popup_enable": {
+    "message": "Diesen Tab neu laden, alle"
+  },
+  "popup_permission": {
+    "message": "Berechtigungen für diesen Tab erforderlich"
+  },
+  "popup_presets": {
+    "message": "Voreinstellungen"
+  },
+  "popup_forced": {
+    "message": "Benutze die Umschalttaste (Shift), um Zeiten von weniger als 10 Sekunden zu erzwingen"
+  },
+  "popup_code": {
+    "message": "JS-Code ausführen"
+  },
+  "popup_variation": {
+    "message": "mit Variation"
+  },
+  "popup_variation_hint": {
+    "message": "Variation in Prozent setzen, um Tabs zufällig neu zu laden (gilt nach dem ersten Reload)"
+  },
+  "popup_enable_keys": {
+    "message": "'S'-Taste zum Aktivieren des Reloads\\n'ESC'-Taste zum Deaktivieren des Reloads\\nUmschalttaste + ESC-Taste zum Schließen des Einstellungs-Fensters\\nStrg + 1 bis 10-Tasten zum Auswählen einer Voreinstellung"
+  },
+  "popup_start": {
+    "message": "Reload starten"
+  },
+  "popup_stop": {
+    "message": "Reload stoppen"
+  },
+  "popup_save_as_json": {
+    "message": "Als benutzerdefinierten Auftrag speichern"
+  },
+  "popup_test_sound": {
+    "message": "Test"
+  },
+  "options_title": {
+    "message": "Einstellungen :: Tab Reloader"
+  },
+  "options_badge": {
+    "message": "Anzahl aktiver Jobs in der Symbolleiste anzeigen"
+  },
+  "options_color": {
+    "message": "Symbol Farbe:"
+  },
+  "options_default": {
+    "message": "Standardwerte"
+  },
+  "options_default_time": {
+    "message": "Standard Reload Zeit"
+  },
+  "options_pp_current": {
+    "message": "Standardwert für \"Nicht neu laden, wenn der Tab aktiv ist\""
+  },
+  "options_pp_nofocus": {
+    "message": "Standardwert für \"Neu laden, wenn das Fenster keinen Fokus hat\""
+  },
+  "options_pp_cache": {
+    "message": "Standardwert für \"Cache beim Reload verwenden\""
+  },
+  "options_pp_form": {
+    "message": "Standardwert für \"Übertragung von Formularen umgehen\""
+  },
+  "options_pp_offline": {
+    "message": "Standardwert für \"Tab nicht neu laden, wenn er offline ist\""
+  },
+  "options_pp_discarded": {
+    "message": "Standardwert für \"Tab nicht neu laden, wenn er entladen wurde\""
+  },
+  "options_pp_scroll_to_end": {
+    "message": "Standardwert für \"Nach dem Reload bis zum Ende scrollen\""
+  },
+  "options_presets": {
+    "message": "Voreinstellungen"
+  },
+  "options_custom_jobs": {
+    "message": "Benutzerdefinierte Aufträge"
+  },
+  "options_sample": {
+    "message": "Beispiel einfügen"
+  },
+  "options_keywords": {
+    "message": "Unterstützte Schlüsselwörter"
+  },
+  "options_events": {
+    "message": "Unterstützte Events"
+  },
+  "options_desc": {
+    "message": "Beschreibung einblenden"
+  },
+  "options_json_desc": {
+    "message": "Führen Sie Hostnamen im JSON-Format auf, um eine automatische Aktualisierung nach jedem Start einzustellen. Wenn Sie eine URL anstelle eines Hostnamens abgleichen wollen, dann entfernen Sie den Schlüssel \"hostname\" und fügen stattdessen den Schlüssel \"url\" ein. Lesen Sie die FAQ-Seite für weitere Hinweise."
+  },
+  "options_dynamic_json": {
+    "message": "Immer überprüfen, ob Reload-Aufträge aus dem JSON-Objekt aktiviert werden können, wenn eine neue Seite geladen wird."
+  },
+  "options_dynamic_json_desc": {
+    "message": "Wenn diese Option aktiviert ist, aktiviert die Erweiterung einen neuen benutzerdefinierten Auftrag für neue Seiten, die einem der Schlüssel in der Liste entsprechen."
+  },
+  "options_policy": {
+    "message": "Reload Regeln"
+  },
+  "options_misc": {
+    "message": "Verschiedenes"
+  },
+  "options_reassign": {
+    "message": "Versuche einen Reload-Auftrag wieder zuzuweisen, wenn ein Tab einen aktiven Reload-Auftrag hatte."
+  },
+  "options_faqs": {
+    "message": "FAQ-Seite nach einem Update öffnen"
+  },
+  "options_tools": {
+    "message": "Werkzeuge"
+  },
+  "options_export_desc": {
+    "message": "Export: Exportiert alle Einstellungen in eine JSON Datei und speichert sie im Download-Verzeichnis"
+  },
+  "options_import_desc": {
+    "message": "Import: Importiert alle Einstellungen aus einer JSON-Datei (dies überschreibt die aktuellen Einstellungen und startet die Erweiterung neu)"
+  },
+  "options_reset_desc": {
+    "message": "Zurücksetzten: Setzt alle Einstellungen auf Standard zurück"
+  },
+  "options_reset": {
+    "message": "Zurücksetzten auf Standwerte"
+  },
+  "options_export": {
+    "message": "Export"
+  },
+  "options_import": {
+    "message": "Import"
+  },
+  "options_permission": {
+    "message": "Addon-Berechtigungen"
+  },
+  "options_instruction": {
+    "message": "Anleitung zur Verwendung (engl.)"
+  },
+  "options_ofq": {
+    "message": "FAQ-Seite öffnen"
+  },
+  "options_support": {
+    "message": "Projekt unterstützen"
+  },
+  "options_save": {
+    "message": "Einstellungen speichern"
+  },
+  "bg_reload_tabs": {
+    "message": "Tabs neu laden"
+  },
+  "bg_all_tabs": {
+    "message": "Alle Tabs"
+  },
+  "bg_reload_all_discarded": {
+    "message": "Alle entladenen Tabs"
+  },
+  "bg_reload_window": {
+    "message": "Alle Tabs im aktuellen Fenster"
+  },
+  "bg_reload_window_discarded": {
+    "message": "Alle entladenen Tabs im aktuellen Fenster"
+  },
+  "bg_reload_tabs_left": {
+    "message": "Tabs auf der linken Seite"
+  },
+  "bg_reload_tabs_right": {
+    "message": "Tabs auf der rechten Seite"
+  },
+  "bg_stop_all": {
+    "message": "Alle Reload Aufträge stoppen"
+  }
+}
