@@ -97,6 +97,14 @@ input[type=number]:focus {
   opacity: 0.5;
 }
 
+#period-container {
+  display: grid;
+  white-space: nowrap;
+  grid-template-columns: min-content 5fr min-content 1fr min-content;
+  align-items: center;
+  grid-gap: 5px;
+}
+
 #enable {
   display: none;
 }
