@@ -7,15 +7,15 @@ const messaging = (request, sender, response = () => {}) => {
     const id = request.id.toString();
 
     setTimeout(async () => {
+      const profile = await api.storage.get('job-' + id);
       // keep track of jobs that are not removed by the user
-      if (
-        request.reason === 'tab-removed' ||
-        request.reason === 'tab-not-found-on-window-removed' ||
-        request.reason === 'tab-not-found-on-popup' ||
-        request.reason === 'tab-not-found-on-alarm'
-      ) {
-        const profile = await api.storage.get('job-' + id);
-        if (profile) {
+      if (profile) {
+        if (
+          request.reason === 'tab-removed' ||
+          request.reason === 'tab-not-found-on-window-removed' ||
+          request.reason === 'tab-not-found-on-popup' ||
+          request.reason === 'tab-not-found-on-alarm'
+        ) {
           api.storage.get({
             'removed.jobs': {}
           }).then(prefs => {
@@ -34,6 +34,12 @@ const messaging = (request, sender, response = () => {}) => {
             api.storage.set(prefs);
           });
         }
+      }
+      // allow discarding
+      if (profile && profile.nodiscard) {
+        chrome.tabs.update(request.id, {
+          autoDiscardable: true
+        });
       }
       // remove the job
       await api.alarms.remove(id);
@@ -76,6 +82,13 @@ const messaging = (request, sender, response = () => {}) => {
       });
       response();
     });
+
+    // no discard
+    if (profile.nodiscard) {
+      chrome.tabs.update(request.tab.id, {
+        autoDiscardable: false
+      });
+    }
 
     // keep in profiles
     try {

@@ -30,6 +30,7 @@ const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('pp-form').checked = prefs['default-profile'].form;
   document.getElementById('pp-offline').checked = prefs['default-profile'].offline;
   document.getElementById('pp-discarded').checked = prefs['default-profile'].discarded;
+  document.getElementById('pp-nodiscard').checked = prefs['default-profile'].nodiscard;
   document.getElementById('pp-scroll-to-end').checked = prefs['default-profile']['scroll-to-end'];
 });
 restore();
@@ -63,6 +64,7 @@ document.getElementById('save').addEventListener('click', () => {
     'form': document.getElementById('pp-form').checked,
     'offline': document.getElementById('pp-offline').checked,
     'discarded': document.getElementById('pp-discarded').checked,
+    'nodiscard': document.getElementById('pp-nodiscard').checked,
     ['scroll-to-end']: document.getElementById('pp-scroll-to-end').checked
   });
 

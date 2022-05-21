@@ -9,6 +9,7 @@ defaults.profile = {
   'form': false,
   'offline': false,
   'discarded': false,
+  'nodiscard': false,
   'scroll-to-end': false,
   'switch': false,
   'sound': false,

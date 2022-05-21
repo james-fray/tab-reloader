@@ -20,6 +20,9 @@
   "popup_discarded": {
     "message": "Do not reload tab if discarded"
   },
+  "popup_nodiscard": {
+    "message": "Prevent the tab from discarding"
+  },
   "popup_ste": {
     "message": "Scroll to the end after reload"
   },
@@ -106,6 +109,9 @@
   },
   "options_pp_discarded": {
     "message": "Default value for \"Do not reload if discarded\""
+  },
+  "options_pp_nodiscard": {
+    "message": "Default value for \"Prevent the tab from discarding\""
   },
   "options_pp_scroll_to_end": {
     "message": "Default value for \"Scroll to the end after reload\""
