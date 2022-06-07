@@ -184,6 +184,9 @@ const messaging = (request, sender, response = () => {}) => {
       }
     });
   }
+  else if (request.method === 'echo') {
+    response(true);
+  }
 };
 
 api.post.fired(messaging);

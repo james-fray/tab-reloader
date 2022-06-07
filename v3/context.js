@@ -47,6 +47,11 @@ api.runtime.started(() => {
     id: 'stop.all',
     contexts: ['action']
   });
+  api.context.add({
+    title: chrome.i18n.getMessage('bg_restart'),
+    id: 'restart',
+    contexts: ['action']
+  });
 });
 {
   const observe = async (info, tab) => {
@@ -89,6 +94,9 @@ api.runtime.started(() => {
         method: 'remove-job',
         id: Number(o.name.replace('job-', ''))
       }));
+    }
+    else if (info.menuItemId === 'restart') {
+      chrome.runtime.reload();
     }
   };
   api.context.fired(observe);

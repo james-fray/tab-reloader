@@ -177,7 +177,7 @@ api.tabs = {
   },
   activate(tabId) {
     chrome.tabs.update(tabId, {
-      highlighted: true
+      active: true
     });
     api.tabs.get(tabId).then(t => chrome.windows.update(t.windowId, {
       focused: true

@@ -8,24 +8,26 @@
     const tab = await api.tabs.get(tabId);
 
     if (tab) {
-      const div = document.createElement('div');
-      div.tabId = tabId;
-      div.classList.add('entry', 'button');
-      div.title = tab.title + ' -> ' + tab.url;
+      if (tab.active !== true) {
+        const div = document.createElement('div');
+        div.tabId = tabId;
+        div.classList.add('entry', 'button');
+        div.title = tab.title + ' -> ' + tab.url;
 
-      const timer = document.createElement('span');
-      timer.textContent = '00:20';
-      timer.classList.add('timer');
-      div.append(timer);
+        const timer = document.createElement('span');
+        timer.textContent = '00:20';
+        timer.classList.add('timer');
+        div.append(timer);
 
-      const title = document.createElement('span');
-      title.textContent = tab.title || tab.url;
-      title.classList.add('title');
-      div.append(title);
+        const title = document.createElement('span');
+        title.textContent = tab.title || tab.url;
+        title.classList.add('title');
+        div.append(title);
 
-      document.getElementById('actives').append(div);
+        document.getElementById('actives').append(div);
 
-      cache[tabId] = timer;
+        cache[tabId] = timer;
+      }
     }
     else {
       api.post.bg({

@@ -217,5 +217,8 @@
   },
   "bg_stop_all": {
     "message": "Stop all reloading jobs"
+  },
+  "bg_restart": {
+    "message": "Restart the extension"
   }
 }
