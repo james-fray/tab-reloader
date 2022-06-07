@@ -24,6 +24,9 @@ input {
 textarea {
   width: 100%;
 }
+input[type=text] {
+  padding: 5px;
+}
 input[type=number] {
   width: 45px;
   padding: 5px;

@@ -24,6 +24,7 @@ const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('policy').value = JSON.stringify(prefs.policy, null, '  ');
   document.getElementById('presets').value = prefs.presets.slice(0, 6).map(o => api.convert.obj2str(o)).join(', ');
   document.getElementById('pp-period').value = prefs['default-profile'].period;
+  document.getElementById('pp-variation').value = prefs['default-profile'].variation;
   document.getElementById('pp-current').checked = prefs['default-profile'].current;
   document.getElementById('pp-nofocus').checked = prefs['default-profile'].nofocus;
   document.getElementById('pp-cache').checked = prefs['default-profile'].cache;
@@ -58,6 +59,7 @@ document.getElementById('save').addEventListener('click', () => {
 
   const profile = Object.assign({}, defaults.profile, {
     'period': api.convert.obj2str(api.convert.sec2obj(period)),
+    'variation': Math.min(100, Math.max(0, document.getElementById('pp-variation').valueAsNumber)),
     'current': document.getElementById('pp-current').checked,
     'nofocus': document.getElementById('pp-nofocus').checked,
     'cache': document.getElementById('pp-cache').checked,

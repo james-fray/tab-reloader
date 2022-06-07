@@ -92,6 +92,9 @@
   "options_default_time": {
     "message": "Default reloading time:"
   },
+  "options_default_variation": {
+    "message": "Default reloading variation:"
+  },
   "options_pp_current": {
     "message": "Default value for \"Do no reload if tab is active\""
   },
