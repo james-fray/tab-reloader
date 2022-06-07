@@ -7,6 +7,7 @@
   --fg: #444;
   --border-width: 5px;
   --border-color: #d9d9d9;
+  --gap: 5px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -57,7 +58,8 @@ header > div:last-child {
   padding-right: 40px;
 }
 footer {
-  max-height: 50px;
+  max-height: 70px;
+  z-index: 1;
 }
 
 select {
@@ -117,14 +119,14 @@ input[type=number]:focus {
 
 #options {
   border-top: solid var(--border-width) var(--bg-inactive);
-  padding-top: 15px;
+  padding-top: 10px;
 }
 
 .three {
   white-space: nowrap;
   display: grid;
   grid-template-columns: min-content min-content 1fr;
-  grid-gap: 5px;
+  grid-gap: var(--gap);
   align-items: center;
 }
 
@@ -165,10 +167,10 @@ body:not([data-enabled=true]) #timer {
   margin-top: 5px;
 }
 #actives {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-gap: 5px;
   overflow: auto;
+  gap: 5px;
+  display: flex;
+  flex-flow: wrap;
 }
 #actives:empty {
   display: none;
@@ -176,11 +178,19 @@ body:not([data-enabled=true]) #timer {
 #actives .entry,
 #presets .entry {
   height: min-content;
-  padding: 5px;
+  padding: 0 5px;
+  cursor: pointer;
+  display: flex;
+  gap: 1ch;
+}
+#actives .entry * {
+  pointer-events: none;
+}
+#actives .entry .title {
+  max-width: 13ch;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  cursor: pointer;
 }
 #presets .entry {
   text-decoration: underline;

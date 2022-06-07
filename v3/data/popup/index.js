@@ -5,6 +5,25 @@ document.getElementById('enable').onclick = e => {
   e.target.dataset.forced = e.shiftKey;
 };
 
+const remaining = (o, profile) => {
+  let remaining = (o.scheduledTime - Date.now()) / 1000;
+  if (remaining < 0 && profile) {
+    const period = api.convert.secods(
+      api.convert.str2obj(profile.period)
+    );
+    while (period > 0 && remaining < 0) {
+      remaining += period;
+    }
+  }
+  //
+  if (remaining < 0) {
+    remaining = 0;
+  }
+
+  const v = api.convert.sec2obj(remaining);
+  return api.convert.obj2str(v);
+};
+
 const generate = (forced = false) => {
   const time = api.convert.str2obj(document.getElementById('period').value);
   let period = Math.max(1, api.convert.secods(time));
@@ -60,22 +79,7 @@ const active = () => {
 
   const once = () => api.alarms.get(tab.id.toString()).then(o => {
     if (o) {
-      let remaining = (o.scheduledTime - Date.now()) / 1000;
-      if (remaining < 0 && tab.profile) {
-        const period = api.convert.secods(
-          api.convert.str2obj(tab.profile.period)
-        );
-        while (period > 0 && remaining < 0) {
-          remaining += period;
-        }
-      }
-      //
-      if (remaining < 0) {
-        remaining = 0;
-      }
-
-      const v = api.convert.sec2obj(remaining);
-      document.querySelector('#timer div').textContent = api.convert.obj2str(v);
+      document.querySelector('#timer div').textContent = remaining(o, tab.profile);
     }
 
     clearTimeout(timer);

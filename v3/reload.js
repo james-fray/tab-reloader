@@ -428,7 +428,7 @@ api.idle.fired(state => {
     api.alarms.forEach(o => {
       if (o.scheduledTime < now) {
         api.alarms.add(o.name, {
-          when: now + 1000,
+          when: now + Math.round(Math.random() * 1000),
           periodInMinutes: o.periodInMinutes
         });
       }
