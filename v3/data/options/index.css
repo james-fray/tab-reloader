@@ -1,26 +1,41 @@
+:root {
+  color-scheme: dark light;
+
+  --bg: #fff;
+  --fg: #4d5156;
+  --bt: #4d5156;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    --fg: #e7eaed;
+    --bg: #202124;
+    --bt: #202124;
+  }
+}
+
 body {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
   font-size: 14px;
-  background-color: #fff;
-  color: #4d5156;
+  background-color: var(--bg);
+  color: var(--fg);
   margin-inline: auto;
   width: min(100% - 2rem, 70rem);
 }
 
 button {
   height: 24px;
-  color: rgb(68, 68, 68);
+  color: var(--bt);
   background-image: linear-gradient(rgb(237, 237, 237), rgb(237, 237, 237) 38%, rgb(222, 222, 222));
   box-shadow: rgba(0, 0, 0, 0.08) 0 1px 0, rgba(255, 255, 255, 0.75) 0 1px 2px inset;
   text-shadow: rgb(240, 240, 240) 0 1px 0;
+  border: solid 1px rgba(0, 0, 0, 0.25);
 }
-button,
 textarea,
 input {
   border: solid 1px rgba(0, 0, 0, 0.25);
-  color: #4d5156;
+  color: var(--fg);
 }
-
 textarea {
   width: 100%;
 }

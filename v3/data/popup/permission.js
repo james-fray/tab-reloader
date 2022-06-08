@@ -9,9 +9,12 @@ document.addEventListener('change', e => {
         origins: [url]
       }).then(granted => {
         if (granted === false) {
-          e.target.checked = false;
+          setTimeout(() => e.target.checked = false, 500);
         }
       });
+    }
+    else {
+      setTimeout(() => e.target.checked = false, 500);
     }
   }
 });

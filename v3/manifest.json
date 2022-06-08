@@ -3,7 +3,7 @@
   "description": "__MSG_description__",
   "default_locale": "en",
   "version": "0.5.4",
-  "manifest_version": 3,
+  "manifest_version": 2,
   "permissions": [
     "storage",
     "tabs",
@@ -12,10 +12,10 @@
     "contextMenus",
     "idle"
   ],
-  "optional_host_permissions": [
+  "optional_permissions": [
     "<all_urls>"
   ],
-  "action": {
+  "browser_action": {
     "default_icon": {
       "16": "data/icons/disabled/16.png",
       "32": "data/icons/disabled/32.png"
@@ -24,7 +24,15 @@
     "default_title": "Tab Reloader"
   },
   "background": {
-    "service_worker": "worker.js"
+    "persistent": false,
+    "scripts": [
+      "v2.js",
+      "api.js",
+      "defaults.js",
+      "reload.js",
+      "worker.js",
+      "context.js"
+    ]
   },
   "homepage_url": "https://add0n.com/tab-reloader.html",
   "icons": {
@@ -41,7 +49,6 @@
     "open_in_tab": true
   },
   "commands": {
-    "_execute_action": {},
     "reload.all": {
       "description": "Reload all tabs"
     },

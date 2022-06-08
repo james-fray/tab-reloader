@@ -12,5 +12,6 @@ api.post.bg({
 }, r => {
   if (r) {
     clearTimeout(check.id);
+    console.log('health check passed');
   }
 });

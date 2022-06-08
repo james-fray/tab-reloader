@@ -1,6 +1,6 @@
 /* global api, defaults */
 
-self.importScripts('api.js', 'defaults.js', 'reload.js', 'context.js');
+// self.importScripts('api.js', 'defaults.js', 'reload.js', 'context.js');
 
 const messaging = (request, sender, response = () => {}) => {
   if (request.method === 'remove-job') {
