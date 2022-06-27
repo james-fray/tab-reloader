@@ -24,8 +24,6 @@
 }
 
 body {
-  display: flex;
-  flex-direction: column;
   overflow: hidden;
   font-size: 13px;
   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
@@ -34,6 +32,9 @@ body {
   width: 700px;
   user-select: none;
   margin: 0;
+  display: grid;
+  grid-template-rows: min-content min-content 1fr;
+  max-height: 600px;
 }
 body > * {
   padding: 10px;
@@ -58,7 +59,6 @@ header > div:last-child {
   padding-right: 40px;
 }
 footer {
-  max-height: 70px;
   z-index: 1;
 }
 
@@ -86,6 +86,7 @@ input[type=number]:focus {
 }
 
 .button {
+  color: var(--fg);
   background-image: linear-gradient(var(--bg-button-1), var(--bg-button-1) 38%, var(--bg-button-2));
   border: solid 1px var(--border-color);
   cursor: pointer;
@@ -122,14 +123,54 @@ input[type=number]:focus {
   padding: 10px;
   margin-bottom: 10px;
 }
+#options summary {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+#options summary::marker {
+  display: none;
+  content: "";
+}
+#options summary::before {
+  content: '';
+  width: 16px;
+  height: 16px;
+  background: url('img/arrow.svg') center left no-repeat;
+  transition: transform 100ms ease-in-out;
+}
+
+@media (prefers-color-scheme: dark) {
+  #options summary::before {
+    filter: invert(0.7);
+  }
+}
+
+#options[open] summary::before {
+  transform: rotate(90deg);
+}
+#options summary div {
+  margin-left: 5px;
+  flex: 1;
+}
+#options summary input[data-hide=true] {
+  display: none;
+}
 #options[open] summary {
   margin-bottom: 10px;
 }
 
-.three {
+.tree {
   white-space: nowrap;
   display: grid;
   grid-template-columns: min-content min-content 1fr;
+  grid-gap: var(--gap);
+  align-items: center;
+}
+.four {
+  white-space: nowrap;
+  display: grid;
+  grid-template-columns: min-content 1fr min-content 1fr;
   grid-gap: var(--gap);
   align-items: center;
 }
@@ -141,9 +182,12 @@ input[type=number]:focus {
   right: 0;
   bottom: 0;
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: center;
   font-size: 64px;
+}
+#options[open] ~ #timer {
+  align-items: center;
 }
 body:not([data-enabled=true]) #timer {
   display: none;
@@ -152,6 +196,7 @@ body:not([data-enabled=true]) #timer {
   box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.6);
   background-color: var(--bg);
   padding: 10px;
+  margin-top: 5px;
 }
 #timer > svg {
   background: var(--bg);

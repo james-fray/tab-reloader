@@ -24,7 +24,7 @@
     "message": "Do not reload tab if discarded"
   },
   "popup_randomize": {
-    "message": "Random delay on the first reloading"
+    "message": "Random delay on the first reload"
   },
   "popup_nodiscard": {
     "message": "Prevent the tab from discarding"
@@ -83,6 +83,9 @@
   "popup_test_sound": {
     "message": "Test"
   },
+  "popup_rate": {
+    "message": "Rate Me"
+  },
   "options_title": {
     "message": "Options Page :: Tab Reloader"
   },
@@ -123,7 +126,7 @@
     "message": "Default value for \"Prevent the tab from discarding\""
   },
   "options_pp_randomize": {
-    "message": "Default value for \"Random delay on the first reloading\""
+    "message": "Default value for \"Random delay on the first reload\""
   },
   "options_pp_scroll_to_end": {
     "message": "Default value for \"Scroll to the end after reload\""
