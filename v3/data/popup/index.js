@@ -162,3 +162,11 @@ document.getElementById('test-sound').onclick = () => {
   audio.src = '/data/sounds/' + src + '.mp3';
   audio.play();
 };
+
+// options
+document.getElementById('options').addEventListener('toggle', e => api.storage.set({
+  'options': e.target.open
+}));
+api.storage.get({
+  'options': false
+}).then(prefs => document.getElementById('options').open = prefs.options);

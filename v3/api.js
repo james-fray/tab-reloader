@@ -176,12 +176,14 @@ api.tabs = {
     return tab;
   },
   activate(tabId) {
-    chrome.tabs.update(tabId, {
-      active: true
-    });
-    api.tabs.get(tabId).then(t => chrome.windows.update(t.windowId, {
-      focused: true
-    }));
+    return Promise.all([
+      new Promise(resolve => chrome.tabs.update(tabId, {
+        active: true
+      }, resolve)),
+      new Promise(resolve => api.tabs.get(tabId).then(t => chrome.windows.update(t.windowId, {
+        focused: true
+      }, resolve)))
+    ]);
   },
   get(id) {
     return chrome.tabs.get(id).then(tab => {
@@ -219,6 +221,9 @@ api.tabs = {
         c(d);
       }
     });
+  },
+  update(...args) {
+    chrome.tabs.update(...args);
   }
 };
 
@@ -292,11 +297,16 @@ api.runtime = {
 
 api.permissions = {
   async request(o) {
-    const grantted = await chrome.permissions.contains(o);
-    if (grantted) {
-      return true;
+    try {
+      const grantted = await chrome.permissions.contains(o);
+      if (grantted) {
+        return true;
+      }
+      return await chrome.permissions.request(o);
     }
-    return await chrome.permissions.request(o);
+    catch (e) {
+      console.log(e);
+    }
   }
 };
 

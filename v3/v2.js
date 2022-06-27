@@ -50,6 +50,10 @@ chrome.alarms.getAll = new Proxy(chrome.alarms.getAll, {
 });
 chrome.permissions.contains = new Proxy(chrome.permissions.contains, {
   apply(target, self, args) {
+    if (/Firefox/.test(navigator.userAgent)) {
+      return Promise.resolve(false);
+    }
+
     if (args.length === 2) {
       return Reflect.apply(target, self, args);
     }
@@ -106,3 +110,10 @@ chrome.contextMenus.create = new Proxy(chrome.contextMenus.create, {
     Reflect.apply(target, self, [properties, c]);
   }
 });
+
+// Firefox
+if (typeof URLPattern === 'undefined') {
+  import('./polyfill/urlpattern.js').then(o => {
+    self.URLPattern = o.URLPattern;
+  });
+}

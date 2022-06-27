@@ -37,7 +37,7 @@ const messaging = (request, sender, response = () => {}) => {
       }
       // allow discarding
       if (profile && profile.nodiscard) {
-        chrome.tabs.update(request.id, {
+        api.tabs.update(request.id, {
           autoDiscardable: true
         });
       }
@@ -87,7 +87,7 @@ const messaging = (request, sender, response = () => {}) => {
 
     // no discard
     if (profile.nodiscard) {
-      chrome.tabs.update(request.tab.id, {
+      api.tabs.update(request.tab.id, {
         autoDiscardable: false
       });
     }

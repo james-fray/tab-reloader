@@ -107,6 +107,11 @@ input[type=number]:focus {
   align-items: center;
   grid-gap: 5px;
 }
+#period-container input {
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 80px;
+}
 
 #enable {
   display: none;
@@ -256,4 +261,12 @@ body:not([data-enabled=true]) #timer {
   display: flex;
   justify-self: end;
   gap: 5px;
+}
+
+@supports (-moz-appearance:none) {
+  .chrome {
+    opacity: 0.5;
+    pointer-events: none;
+    text-decoration: line-through;
+  }
 }

@@ -1,4 +1,4 @@
-/* global api, messaging */
+/* global api, messaging, Sval */
 
 const custom = (tab, json) => {
   for (const o of json) {
@@ -281,7 +281,7 @@ api.tabs.loaded(d => {
           })
         ]).then(() => api.inject(tabId, {
           func: code => {
-            const interpreter = new window.Sval({
+            const interpreter = new Sval({
               ecmaVer: 10,
               sandBox: true
             });

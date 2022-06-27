@@ -59,6 +59,6 @@ document.getElementById('actives').onclick = e => {
   const tabId = e.target.tabId;
 
   if (tabId) {
-    api.tabs.activate(tabId);
+    api.tabs.activate(tabId).then(() => window.close());
   }
 };
