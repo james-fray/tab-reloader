@@ -5,6 +5,9 @@
   "popup_active": {
     "message": "Do not reload if tab is active"
   },
+  "popup_configs": {
+    "message": "Settings"
+  },
   "popup_nofocus": {
     "message": "Reload if window is not focused"
   },
@@ -19,6 +22,9 @@
   },
   "popup_discarded": {
     "message": "Do not reload tab if discarded"
+  },
+  "popup_randomize": {
+    "message": "Random delay on the first reloading"
   },
   "popup_nodiscard": {
     "message": "Prevent the tab from discarding"
@@ -115,6 +121,9 @@
   },
   "options_pp_nodiscard": {
     "message": "Default value for \"Prevent the tab from discarding\""
+  },
+  "options_pp_randomize": {
+    "message": "Default value for \"Random delay on the first reloading\""
   },
   "options_pp_scroll_to_end": {
     "message": "Default value for \"Scroll to the end after reload\""

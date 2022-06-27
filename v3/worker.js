@@ -64,7 +64,9 @@ const messaging = (request, sender, response = () => {}) => {
 
     const name = request.tab.id.toString();
     const period = Math.max(1, api.convert.secods(api.convert.str2obj(profile.period)));
-    const when = Date.now() + (request.now ? 100 : period * 1000);
+    const when = Date.now() + (request.now ? 100 : (
+      profile.randomize ? parseInt(Math.random() * period * 1000) : period * 1000
+    ));
 
     setTimeout(async () => {
       await api.storage.set({

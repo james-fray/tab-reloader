@@ -118,8 +118,12 @@ input[type=number]:focus {
 }
 
 #options {
-  border-top: solid var(--border-width) var(--bg-inactive);
-  padding-top: 10px;
+  background-color: var(--bg-inactive);
+  padding: 10px;
+  margin-bottom: 10px;
+}
+#options[open] summary {
+  margin-bottom: 10px;
 }
 
 .three {

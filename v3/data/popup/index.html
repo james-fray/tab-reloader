@@ -32,69 +32,76 @@
     </div>
   </header>
 
-  <div class="three" id="options" style="--gap: 5px">
-    <input type="checkbox" id="current">
-    <label for="current" data-i18n="popup_active"></label>
-    <span></span>
+  <details id="options" style="--gap: 5px">
+    <summary data-i18n="popup_configs"></summary>
 
-    <svg viewBox="0 0 20 15">
-      <line x1="11" y1="2" x2="11" y2="10" stroke="#444" stroke-dasharray="1"/>
-      <line x1="11" y1="10" x2="25" y2="10" stroke="#444" stroke-dasharray="1"/>
-    </svg>
-    <div>
-      <div class="three">
-        <input type="checkbox" id="nofocus">
-        <label for="nofocus" data-i18n="popup_nofocus"></label>
+    <div class="three">
+      <input type="checkbox" id="current">
+      <label for="current" data-i18n="popup_active"></label>
+      <span></span>
+
+      <svg viewBox="0 0 20 15">
+        <line x1="11" y1="2" x2="11" y2="10" stroke="#444" stroke-dasharray="1"/>
+        <line x1="11" y1="10" x2="25" y2="10" stroke="#444" stroke-dasharray="1"/>
+      </svg>
+      <div>
+        <div class="three">
+          <input type="checkbox" id="nofocus">
+          <label for="nofocus" data-i18n="popup_nofocus"></label>
+        </div>
       </div>
-    </div>
-    <span></span>
+      <span></span>
 
-    <input type="checkbox" id="cache">
-    <label for="cache" data-i18n="popup_cache"></label>
-    <span></span>
-    <input type="checkbox" id="form">
-    <label for="form" data-i18n="popup_form"></label>
-    <span></span>
-    <input type="checkbox" id="offline">
-    <label for="offline" data-i18n="popup_offline"></label>
-    <span></span>
-    <input type="checkbox" id="discarded">
-    <label for="discarded" data-i18n="popup_discarded"></label>
-    <span></span>
-    <input type="checkbox" id="nodiscard">
-    <label for="nodiscard" data-i18n="popup_nodiscard"></label>
-    <span></span>
-    <input type="checkbox" id="scroll-to-end" data-permission=true>
-    <label for="scroll-to-end"><span data-i18n="popup_ste"></span><span class="permission" data-i18n="popup_permission" data-i18n-value="title"> (!)</span></label>
-    <span></span>
-    <input type="checkbox" id="switch" data-permission=true>
-    <label for="switch"><span data-i18n="popup_switch"></span><span class="permission" data-i18n="popup_permission" data-i18n-value="title"> (!)</span></label>
-    <span class="button" id="save-as-json" data-i18n="popup_save_as_json"></span>
-    <input type="checkbox" id="sound" data-permission=true>
-    <label for="sound"><span data-i18n="popup_sound"></span><span class="permission" data-i18n="popup_permission" data-i18n-value="title"> (!)</span></label>
-    <div id="sound-container">
-      <select id="sound-value" class="button">
-        <option value="1">Sound 1</option>
-        <option value="2">Sound 2</option>
-        <option value="3">Sound 3</option>
-        <option value="4">Sound 4</option>
-        <option value="5">Sound 5</option>
-        <option value="6">Sound 6</option>
-        <option value="7">Sound 7</option>
-        <option value="8">Sound 8</option>
-      </select>
-      <span class="button" id="test-sound" data-i18n="popup_test_sound"></span>
+      <input type="checkbox" id="cache">
+      <label for="cache" data-i18n="popup_cache"></label>
+      <span></span>
+      <input type="checkbox" id="form">
+      <label for="form" data-i18n="popup_form"></label>
+      <span></span>
+      <input type="checkbox" id="offline">
+      <label for="offline" data-i18n="popup_offline"></label>
+      <span></span>
+      <input type="checkbox" id="discarded">
+      <label for="discarded" data-i18n="popup_discarded"></label>
+      <span></span>
+      <input type="checkbox" id="nodiscard">
+      <label for="nodiscard" data-i18n="popup_nodiscard"></label>
+      <span></span>
+      <input type="checkbox" id="randomize">
+      <label for="randomize" data-i18n="popup_randomize"></label>
+      <span></span>
+      <input type="checkbox" id="scroll-to-end" data-permission=true>
+      <label for="scroll-to-end"><span data-i18n="popup_ste"></span><span class="permission" data-i18n="popup_permission" data-i18n-value="title"> (!)</span></label>
+      <span></span>
+      <input type="checkbox" id="switch" data-permission=true>
+      <label for="switch"><span data-i18n="popup_switch"></span><span class="permission" data-i18n="popup_permission" data-i18n-value="title"> (!)</span></label>
+      <span class="button" id="save-as-json" data-i18n="popup_save_as_json"></span>
+      <input type="checkbox" id="sound" data-permission=true>
+      <label for="sound"><span data-i18n="popup_sound"></span><span class="permission" data-i18n="popup_permission" data-i18n-value="title"> (!)</span></label>
+      <div id="sound-container">
+        <select id="sound-value" class="button">
+          <option value="1">Sound 1</option>
+          <option value="2">Sound 2</option>
+          <option value="3">Sound 3</option>
+          <option value="4">Sound 4</option>
+          <option value="5">Sound 5</option>
+          <option value="6">Sound 6</option>
+          <option value="7">Sound 7</option>
+          <option value="8">Sound 8</option>
+        </select>
+        <span class="button" id="test-sound" data-i18n="popup_test_sound"></span>
+      </div>
+      <span></span>
+      <label for="blocked-words" data-i18n="popup_bw"></label>
+      <input type="text" id="blocked-words" placeholder="e.g. /mail/">
+      <span></span>
+      <label for="blocked-period" data-i18n="popup_period"></label>
+      <input type="text" id="blocked-period" placeholder="start time (hh:mm:ss) - end time (hh:mm:ss)">
+      <input type="checkbox" id="code" data-permission=true>
+      <label for="code"><span data-i18n="popup_code"></span><span class="permission" data-i18n="popup_permission" data-i18n-value="title"> (!)</span></label>
+      <textarea id="code-value" rows="3"></textarea>
     </div>
-    <span></span>
-    <label for="blocked-words" data-i18n="popup_bw"></label>
-    <input type="text" id="blocked-words" placeholder="e.g. /mail/">
-    <span></span>
-    <label for="blocked-period" data-i18n="popup_period"></label>
-    <input type="text" id="blocked-period" placeholder="start time (hh:mm:ss) - end time (hh:mm:ss)">
-    <input type="checkbox" id="code" data-permission=true>
-    <label for="code"><span data-i18n="popup_code"></span><span class="permission" data-i18n="popup_permission" data-i18n-value="title"> (!)</span></label>
-    <textarea id="code-value" rows="3"></textarea>
-  </div>
+  </details>
   <footer id="actives"></footer>
 
   <script type="text/javascript" src="/v2.js"></script>

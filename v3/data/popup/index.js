@@ -40,6 +40,7 @@ const generate = (forced = false) => {
     'offline': document.getElementById('offline').checked,
     'discarded': document.getElementById('discarded').checked,
     'nodiscard': document.getElementById('nodiscard').checked,
+    'randomize': document.getElementById('randomize').checked,
     'scroll-to-end': document.getElementById('scroll-to-end').checked,
     'switch': document.getElementById('switch').checked,
     'sound': document.getElementById('sound').checked,

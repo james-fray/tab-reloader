@@ -10,6 +10,7 @@ defaults.profile = {
   'offline': false,
   'discarded': false,
   'nodiscard': false,
+  'randomize': false,
   'scroll-to-end': false,
   'switch': false,
   'sound': false,
