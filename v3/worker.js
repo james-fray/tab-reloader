@@ -189,6 +189,15 @@ const messaging = (request, sender, response = () => {}) => {
   else if (request.method === 'echo') {
     response(true);
   }
+  else if (request.method === 'sha256') {
+    const msgBuffer = new TextEncoder('utf-8').encode(request.message);
+    crypto.subtle.digest('SHA-256', msgBuffer).then(hashBuffer => {
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
+      response(hashHex);
+    });
+    return true;
+  }
 };
 
 api.post.fired(messaging);

@@ -283,7 +283,7 @@ api.tabs.loaded(d => {
           func: code => {
             const interpreter = new Sval({
               ecmaVer: 10,
-              sandBox: true
+              sandBox: false
             });
             interpreter.import('post', e => {
               const method = e.type || e;

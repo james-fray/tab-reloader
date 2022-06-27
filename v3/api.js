@@ -220,7 +220,12 @@ api.tabs = {
   loaded(c) {
     chrome.webNavigation.onDOMContentLoaded.addListener(d => {
       if (d.frameId === 0) {
-        c(d);
+        if (api.firefox) {
+          setTimeout(c, 100, d);
+        }
+        else {
+          c(d);
+        }
       }
     });
   },
