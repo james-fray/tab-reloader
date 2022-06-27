@@ -1,6 +1,8 @@
 /* global URLPattern */
 
-const api = {};
+const api = {
+  firefox: /Firefox/.test(navigator.userAgent)
+};
 
 api.storage = {
   get(prefs) {

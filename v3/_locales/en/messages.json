@@ -232,5 +232,8 @@
   },
   "bg_restart": {
     "message": "Restart the extension"
+  },
+  "bg_options": {
+    "message": "Options"
   }
 }

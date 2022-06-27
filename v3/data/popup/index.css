@@ -29,7 +29,7 @@ body {
   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   color: var(--fg);
   background-color: var(--bg);
-  width: 700px;
+  width: 650px;
   user-select: none;
   margin: 0;
   display: grid;
@@ -125,8 +125,8 @@ input[type=number]:focus {
 
 #options {
   background-color: var(--bg-inactive);
-  padding: 10px;
   margin-bottom: 10px;
+  width: calc(100% - 30px);
 }
 #options summary {
   display: flex;

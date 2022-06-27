@@ -52,10 +52,20 @@ api.runtime.started(() => {
     id: 'restart',
     contexts: ['action']
   });
+  if (api.firefox) {
+    api.context.add({
+      title: chrome.i18n.getMessage('bg_options'),
+      id: 'options',
+      contexts: ['action']
+    });
+  }
 });
 {
   const observe = async (info, tab) => {
-    if (info.menuItemId.startsWith('reload.')) {
+    if (info.menuItemId === 'options') {
+      chrome.runtime.openOptionsPage();
+    }
+    else if (info.menuItemId.startsWith('reload.')) {
       let tabs = [];
       if (info.menuItemId === 'reload.all' || info.menuItemId === 'reload.all.c') {
         tabs = await api.tabs.query({});
