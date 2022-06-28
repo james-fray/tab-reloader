@@ -44,6 +44,69 @@ const custom = (tab, json) => {
   return false;
 };
 
+// time: 00:00:00 - 00:30:59, 01:00:00 - 01:30:59
+const schedule = (time, prefs) => {
+  const match = time => {
+    const [sstart = '', send = ''] = time.split(/\s*-\s*/);
+
+    if (sstart === '' || send === '') {
+      console.error('Time is invalid', 'start', sstart, 'end', send);
+      return;
+    }
+
+    const start = new Date();
+    const ofsb = start.getTimezoneOffset();
+    // apply offset
+    start.setTime(
+      start.getTime() + prefs['schedule-offset'] * 60 * 1000
+    );
+    const [sh, sm, ss] = sstart.split(':');
+    start.setSeconds(Number(ss || '0'));
+    start.setMinutes(Number(sm || '0'));
+    start.setHours(Number(sh || '0'));
+    start.setTime(
+      start.getTime() - prefs['schedule-offset'] * 60 * 1000
+    );
+    // consider timezone changes
+    const ofsa = start.getTimezoneOffset();
+    start.setTime(start.getTime() + (ofsb - ofsa) * 60 * 1000);
+
+    const end = new Date();
+    // apply offset
+    end.setTime(
+      end.getTime() + prefs['schedule-offset'] * 60 * 1000
+    );
+    const [eh, em, es] = send.split(':');
+    end.setSeconds(Number(es || '59'));
+    end.setMinutes(Number(em || '59'));
+    end.setHours(Number(eh || '23'));
+    end.setTime(
+      end.getTime() - prefs['schedule-offset'] * 60 * 1000
+    );
+    // consider timezone changes
+    const ofea = end.getTimezoneOffset();
+    end.setTime(end.getTime() + (ofsb - ofea) * 60 * 1000);
+
+    if (isNaN(start) || isNaN(end)) {
+      console.error('Time is invalid', start, end);
+      return;
+    }
+    else {
+      if (start.getTime() >= end.getTime()) {
+        end.setTime(end.getTime() + 24 * 60 * 60 * 1000);
+      }
+
+      const now = Date.now();
+      if (now >= start.getTime() && now <= end.getTime()) {
+        return true;
+      }
+    }
+  };
+
+  const rs = time.split(/\s*,\s*/).filter(a => a).map(match);
+  return rs.some(a => a) === false;
+};
+
 api.alarms.fired(async o => {
   const tabId = Number(o.name);
   if (isNaN(tabId)) {
@@ -106,47 +169,7 @@ api.alarms.fired(async o => {
     });
 
     // schedule
-    const [sstart = '', send = ''] = profile['blocked-period'].split(/\s*-\s*/);
-
-    const start = new Date();
-    const ofsb = start.getTimezoneOffset();
-    // apply offset
-    start.setTime(
-      start.getTime() + prefs['schedule-offset'] * 60 * 1000
-    );
-    const [sh, sm, ss] = sstart.split(':');
-    start.setSeconds(Number(ss || '0'));
-    start.setMinutes(Number(sm || '0'));
-    start.setHours(Number(sh || '0'));
-    start.setTime(
-      start.getTime() - prefs['schedule-offset'] * 60 * 1000
-    );
-    // consider timezone changes
-    const ofsa = start.getTimezoneOffset();
-    start.setTime(start.getTime() + (ofsb - ofsa) * 60 * 1000);
-
-    const end = new Date();
-    // apply offset
-    end.setTime(
-      end.getTime() + prefs['schedule-offset'] * 60 * 1000
-    );
-    const [eh, em, es] = send.split(':');
-    end.setSeconds(Number(es || '59'));
-    end.setMinutes(Number(em || '59'));
-    end.setHours(Number(eh || '23'));
-    end.setTime(
-      end.getTime() - prefs['schedule-offset'] * 60 * 1000
-    );
-    // consider timezone changes
-    const ofea = end.getTimezoneOffset();
-    end.setTime(end.getTime() + (ofsb - ofea) * 60 * 1000);
-
-    if (start.getTime() >= end.getTime()) {
-      end.setTime(end.getTime() + 24 * 60 * 60 * 1000);
-    }
-
-    const now = Date.now();
-    if (now < start.getTime() || now > end.getTime()) {
+    if (profile['blocked-period'] && schedule(profile['blocked-period'], prefs)) {
       return skip('schedule mismatch');
     }
 

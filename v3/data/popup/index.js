@@ -170,3 +170,10 @@ document.getElementById('options').addEventListener('toggle', e => api.storage.s
 api.storage.get({
   'options': false
 }).then(prefs => document.getElementById('options').open = prefs.options);
+
+// links
+for (const a of [...document.querySelectorAll('[data-href]')]) {
+  if (a.hasAttribute('href') === false) {
+    a.href = chrome.runtime.getManifest().homepage_url + '#' + a.dataset.href;
+  }
+}

@@ -5,7 +5,7 @@
   }
   catch (e) {}
 
-  console.log('Calculating hash of', e, crypto.subtle);
+  console.info('Tab Reloader', 'Calculating hash of', e);
 
   // crypto.subtle is not available on http
   chrome.runtime.sendMessage({
@@ -29,7 +29,7 @@
       }
     }
 
-    console.log('Hash is', hash);
+    console.info('Tab Reloader', 'Hash is', hash);
     localStorage.setItem('tab-reloader-hash', hash);
   });
 }

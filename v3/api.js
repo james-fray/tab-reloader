@@ -312,7 +312,8 @@ api.permissions = {
       return await chrome.permissions.request(o);
     }
     catch (e) {
-      console.log(e);
+      console.error(e);
+      return false;
     }
   }
 };
