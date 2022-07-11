@@ -1,4 +1,6 @@
 :root {
+  color-scheme: light dark;
+  
   --bg: #fff;
   --bg-inactive: #f1f1f1;
   --bg-active: #e1f1ff;
