@@ -5,6 +5,9 @@
   "popup_active": {
     "message": "Nicht neu laden, wenn der Tab aktiv ist"
   },
+  "popup_configs": {
+    "message": "Einstellungen"
+  },
   "popup_nofocus": {
     "message": "Neu laden, wenn das Fenster keinen Fokus hat"
   },
@@ -19,6 +22,12 @@
   },
   "popup_discarded": {
     "message": "Tab nicht neu laden, wenn er entladen wurde"
+  },
+  "popup_randomize": {
+    "message": "Zufällige Verzögerung beim ersten Neu-Laden"
+  },
+  "popup_nodiscard": {
+    "message": "Verhindern, dass der Tab entladen wird"
   },
   "popup_ste": {
     "message": "Nach dem Reload bis zum Ende scrollen"
@@ -74,6 +83,9 @@
   "popup_test_sound": {
     "message": "Test"
   },
+  "popup_rate": {
+    "message": "Bewerte mich"
+  },
   "options_title": {
     "message": "Einstellungen :: Tab Reloader"
   },
@@ -88,6 +100,9 @@
   },
   "options_default_time": {
     "message": "Standard Reload Zeit"
+  },
+  "options_default_variation": {
+    "message": "Standardwert für die Variation der Reload Zeit "
   },
   "options_pp_current": {
     "message": "Standardwert für \"Nicht neu laden, wenn der Tab aktiv ist\""
@@ -106,6 +121,12 @@
   },
   "options_pp_discarded": {
     "message": "Standardwert für \"Tab nicht neu laden, wenn er entladen wurde\""
+  },
+  "options_pp_nodiscard": {
+    "message": "Standardwert für \"Verhindern, dass der Tab entladen wird\""
+  },
+  "options_pp_randomize": {
+    "message": "Standardwert für \"Zufällige Verzögerung beim ersten Neu-Laden\""
   },
   "options_pp_scroll_to_end": {
     "message": "Standardwert für \"Nach dem Reload bis zum Ende scrollen\""
@@ -206,7 +227,40 @@
   "bg_reload_tabs_right": {
     "message": "Tabs auf der rechten Seite"
   },
+  "bg_stop": {
+    "message": "Reload stoppen"
+  },
   "bg_stop_all": {
-    "message": "Alle Reload Aufträge stoppen"
+    "message": "Alle Tabs"
+  },
+  "bg_no_reload": {
+    "message": "Dieser Tab"
+  },
+  "bg_reload_every": {
+    "message": "Tab neu laden"
+  },
+  "bg_reload_every_10s": {
+    "message": "Alle 10s"
+  },
+  "bg_reload_every_30s": {
+    "message": "Alle 30s"
+  },
+  "bg_reload_every_1m": {
+    "message": "Jede Minute"
+  },
+  "bg_reload_every_5m": {
+    "message": "Alle 5 Minuten"
+  },
+  "bg_reload_every_15m": {
+    "message": "Alle 15 Minuten"
+  },
+  "bg_reload_every_1h": {
+    "message": "Jede Stunde"
+  },
+  "bg_restart": {
+    "message": "Erweiterung neu starten"
+  },
+  "bg_options": {
+    "message": "Einstellungen"
   }
 }

@@ -206,6 +206,9 @@
   "options_save": {
     "message": "Save Options"
   },
+  "options_save_reminder": {
+    "message": "Make sure to press the \"Save Options\" button!"
+  },
   "bg_reload_tabs": {
     "message": "Reload tabs"
   },
