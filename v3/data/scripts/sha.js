@@ -23,7 +23,7 @@
       if (window.src) {
         chrome.runtime.sendMessage({
           method: 'play-sound',
-          src: window.src,
+          src: localStorage.getItem('tab-reloader-sound') || window.src,
           volume: Number(localStorage.getItem('tab-reloader-volume') || 1)
         });
       }
