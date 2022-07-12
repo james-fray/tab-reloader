@@ -131,7 +131,6 @@ api.runtime.started(() => {
         alarm
       }, {}, r => {
         r.profile.period = period;
-        console.log(r.profile);
         messaging({
           method: 'add-job',
           tab,

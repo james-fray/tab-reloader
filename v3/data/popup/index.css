@@ -1,6 +1,6 @@
 :root {
   color-scheme: light dark;
-  
+
   --bg: #fff;
   --bg-inactive: #f1f1f1;
   --bg-active: #e1f1ff;
@@ -42,15 +42,26 @@ body {
 }
 body > * {
   padding: 10px;
+  width: calc(100vw - 20px);
 }
 
 header {
   display: grid;
   grid-template-columns: 1fr min-content;
   padding: 0;
+  width: 100vw;
 }
+
+@media screen and (max-width: 500px) {
+  header {
+    grid-template-columns: 1fr;
+  }
+}
+
 header > div {
   padding: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 header > div:last-child {
   border-left: solid var(--border-width) var(--bg-inactive);
@@ -59,9 +70,17 @@ header > div:last-child {
   justify-content: center;
   font-weight: bold;
   white-space: nowrap;
-  padding-left: 40px;
-  padding-right: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
+
+@media screen and (max-width: 500px) {
+  header > div:last-child {
+    border-left: none;
+  }
+}
+
+
 footer {
   z-index: 1;
 }
@@ -112,9 +131,13 @@ a:visited {
 #period-container {
   display: grid;
   white-space: nowrap;
-  grid-template-columns: min-content 5fr min-content 1fr min-content;
+  grid-template-columns: minmax(20vw, min-content) 5fr min-content 1fr min-content;
   align-items: center;
   grid-gap: 5px;
+}
+#period-container * {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 #period-container input {
   width: 100%;
@@ -135,7 +158,6 @@ a:visited {
 #options {
   background-color: var(--bg-inactive);
   margin-bottom: 10px;
-  width: calc(100% - 30px);
 }
 #options summary {
   display: flex;
@@ -177,7 +199,7 @@ a:visited {
 .tree {
   white-space: nowrap;
   display: grid;
-  grid-template-columns: min-content min-content 1fr;
+  grid-template-columns: min-content minmax(10vw, min-content) minmax(50vw, 1fr);
   grid-gap: var(--gap);
   align-items: center;
 }
@@ -187,6 +209,11 @@ a:visited {
   grid-template-columns: min-content 1fr min-content 1fr;
   grid-gap: var(--gap);
   align-items: center;
+}
+.tree *,
+.four * {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #timer {
@@ -233,6 +260,7 @@ body:not([data-enabled=true]) #timer {
   align-items: center;
   gap: 5px;
   margin-top: 5px;
+  overflow: hidden;
 }
 #actives {
   overflow: auto;

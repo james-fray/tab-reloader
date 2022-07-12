@@ -56,7 +56,7 @@ const messaging = (request, sender, response = () => {}) => {
       if (request['skip-echo'] !== true) {
         api.post.bg({
           method: 'reload-interface'
-        });
+        }, () => chrome.runtime.lastError);
       }
       response();
     }, 0);
