@@ -35,27 +35,19 @@ const profile = prefs => {
   }
 };
 
-startup.push(async o => {
-  // Do we have a job for this tab
-  if (o) {
-    const p = await api.storage.get('job-' + o.name);
-    tab.profile = p;
-    active();
-
-    return profile(p);
-  }
-  // Do we have a profile for this tab
-  const vv = await new Promise(resolve => api.post.bg({
-    method: 'search-for-profile',
+startup.push(async alarm => {
+  api.post.bg({
+    method: 'search-for-profile-anyway',
+    alarm,
     url: tab.url
-  }, resolve));
-  if (vv) {
-    return profile(vv);
-  }
-  // load defaults
-  api.storage.get({
-    'default-profile': defaults.profile
-  }).then(prefs => profile(prefs['default-profile']));
+  }, r => {
+    if (r.active) {
+      tab.profile = r.profile;
+      active();
+    }
+
+    profile(r.profile);
+  });
 });
 startup.push(async (o, firstRun) => {
   if (firstRun === false && !o) {

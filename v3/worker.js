@@ -1,6 +1,14 @@
 /* global api, defaults */
 
-// self.importScripts('api.js', 'defaults.js', 'reload.js', 'context.js');
+self.importScripts('api.js', 'defaults.js', 'reload.js', 'context.js');
+
+// Firefox
+if (typeof URLPattern === 'undefined') {
+  import('./polyfill/urlpattern.js').then(o => {
+    self.URLPattern = o.URLPattern;
+  });
+}
+
 
 const messaging = (request, sender, response = () => {}) => {
   if (request.method === 'remove-job') {
@@ -81,7 +89,7 @@ const messaging = (request, sender, response = () => {}) => {
       api.button.icon('active', request.tab.id);
       api.post.bg({
         method: 'reload-interface'
-      });
+      }, () => chrome.runtime.lastError);
       response();
     });
 
@@ -119,6 +127,35 @@ const messaging = (request, sender, response = () => {}) => {
     catch (e) {
       console.warn('Cannot add the new job to profiles', e);
     }
+
+    return true;
+  }
+  else if (request.method === 'search-for-profile-anyway') {
+    (async () => {
+      // Do we have a job for this tab
+      if (request.alarm) {
+        const profile = await api.storage.get('job-' + request.alarm.name);
+
+        return response({
+          active: true,
+          profile
+        });
+      }
+      // Do we have a profile for this tab
+      const profile = await new Promise(resolve => messaging({
+        method: 'search-for-profile',
+        url: request.url
+      }, {}, resolve));
+      if (profile) {
+        return response({profile});
+      }
+      // load defaults
+      api.storage.get({
+        'default-profile': defaults.profile
+      }).then(prefs => response({
+        profile: prefs['default-profile']
+      }));
+    })();
 
     return true;
   }

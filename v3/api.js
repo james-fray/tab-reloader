@@ -279,7 +279,11 @@ api.button = {
 };
 
 api.context = {
+  tab: 'TAB' in chrome.contextMenus.ContextType,
   add(options) {
+    const valids = Object.values(chrome.contextMenus.ContextType);
+    options.contexts = options.contexts.filter(s => valids.includes(s));
+
     chrome.contextMenus.create(options, () => {
       chrome.runtime.lastError;
     });
@@ -305,10 +309,10 @@ api.runtime = {
 api.permissions = {
   async request(o) {
     try {
-      const grantted = await chrome.permissions.contains(o);
-      if (grantted) {
-        return true;
-      }
+      // const grantted = await chrome.permissions.contains(o);
+      // if (grantted) {
+      //   return true;
+      // }
       return await chrome.permissions.request(o);
     }
     catch (e) {

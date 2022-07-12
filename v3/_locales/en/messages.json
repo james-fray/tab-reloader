@@ -227,8 +227,35 @@
   "bg_reload_tabs_right": {
     "message": "Tabs to the right"
   },
+  "bg_stop": {
+    "message": "Stop reloading"
+  },
   "bg_stop_all": {
-    "message": "Stop all reloading jobs"
+    "message": "All tabs"
+  },
+  "bg_no_reload": {
+    "message": "This tab"
+  },
+  "bg_reload_every": {
+    "message": "Reload tab"
+  },
+  "bg_reload_every_10s": {
+    "message": "Every 10 secs"
+  },
+  "bg_reload_every_30s": {
+    "message": "Every 30 secs"
+  },
+  "bg_reload_every_1m": {
+    "message": "Every minute"
+  },
+  "bg_reload_every_5m": {
+    "message": "Every 5 minutes"
+  },
+  "bg_reload_every_15m": {
+    "message": "Every 15 minutes"
+  },
+  "bg_reload_every_1h": {
+    "message": "Every hour"
   },
   "bg_restart": {
     "message": "Restart the extension"

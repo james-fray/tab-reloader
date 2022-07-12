@@ -2,6 +2,7 @@
   color-scheme: dark light;
 
   --bg: #fff;
+  --bg-desc: #e8e8e8;
   --fg: #4d5156;
   --bt: #4d5156;
 }
@@ -10,6 +11,7 @@
   body {
     --fg: #e7eaed;
     --bg: #202124;
+    --bg-desc: #2b2a33;
     --bt: #202124;
   }
 }
@@ -38,6 +40,7 @@ input {
 }
 textarea {
   width: 100%;
+  padding: 10px;
 }
 input[type=text] {
   padding: 5px;
@@ -65,7 +68,7 @@ a {
   color: #07c;
 }
 .desc {
-  background-color: #e8e8e8;
+  background-color: var(--bg-desc);
 }
 div.desc,
 .desc td {
@@ -109,4 +112,12 @@ div.desc,
 .disabled {
   opacity: 0.5;
   pointer-events: none;
+}
+.save {
+  text-align: center;
+  padding: 10px;
+  border: solid 1px var(--fg);
+}
+.top {
+  margin-top: 10px;
 }

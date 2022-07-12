@@ -210,6 +210,11 @@ body:not([data-enabled=true]) #timer {
   padding: 10px;
   margin-top: 5px;
 }
+#actives:empty ~ #timer > div {
+  margin-top: 0;
+  align-self: center;
+}
+
 #timer > svg {
   background: var(--bg);
   fill: var(--fg);

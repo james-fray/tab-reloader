@@ -8,6 +8,7 @@
 </head>
 
 <body>
+  <p class="save">Make sure to press the "Save Options" button!</p>
   <div class="grid-1">
     <input type="checkbox" id="badge">
     <label for="badge" data-i18n="options_badge"></label>
@@ -61,7 +62,7 @@
   <div for="desc-1" class="desc hide" style="margin: 5px 0">
     <span data-i18n="options_json_desc"></span>
   </div>
-  <div class="grid-1">
+  <div class="grid-1 top">
     <input type="checkbox" id="dynamic.json">
     <label for="dynamic.json"><span data-i18n="options_dynamic_json"></span> (<span id="desc-2" data-i18n="options_desc"></span>)</label>
   </div>
@@ -86,11 +87,11 @@
     <br>
     <span data-i18n="options_reset_desc"></span>
   </div>
-  <div style="margin-bottom: 5px">
+  <div class="top">
     <button id="export" data-i18n="options_export"></button>
     <button id="import" data-i18n="options_import"></button> - <button id="reset" data-i18n="options_reset"></button> - <button id="permission" data-i18n="options_permission"></button>
   </div>
-  <div>
+  <div class="top">
     <button id="opv" data-i18n="options_instruction"></button>
     <button id="ofq" data-i18n="options_ofq"></button>
     <button id="support" title="Support Development" data-i18n="options_support"></button> - <button id="save" data-i18n="options_save"></button>

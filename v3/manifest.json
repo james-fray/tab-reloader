@@ -1,9 +1,9 @@
 {
+  "manifest_version": 3,
   "name": "Tab Reloader (page auto refresh)",
   "description": "__MSG_description__",
   "default_locale": "en",
-  "version": "0.5.5",
-  "manifest_version": 2,
+  "version": "0.5.5.1",
   "permissions": [
     "storage",
     "tabs",
@@ -12,10 +12,10 @@
     "contextMenus",
     "idle"
   ],
-  "optional_permissions": [
+  "optional_host_permissions": [
     "<all_urls>"
   ],
-  "browser_action": {
+  "action": {
     "default_icon": {
       "16": "data/icons/disabled/16.png",
       "32": "data/icons/disabled/32.png"
@@ -24,15 +24,7 @@
     "default_title": "Tab Reloader"
   },
   "background": {
-    "persistent": false,
-    "scripts": [
-      "v2.js",
-      "api.js",
-      "defaults.js",
-      "reload.js",
-      "worker.js",
-      "context.js"
-    ]
+    "service_worker": "worker.js"
   },
   "homepage_url": "https://add0n.com/tab-reloader.html",
   "icons": {
@@ -49,6 +41,7 @@
     "open_in_tab": true
   },
   "commands": {
+    "_execute_action": {},
     "reload.all": {
       "description": "Reload all tabs"
     },
