@@ -1,9 +1,15 @@
 /* global api, tab, Behave, startup */
 
 // start or stop a job
-document.getElementById('enable').onclick = e => {
-  e.target.dataset.forced = e.shiftKey;
-};
+document.addEventListener('mousedown', e => {
+  document.body.dataset.forced = e.shiftKey;
+
+  // https://bugzilla.mozilla.org/show_bug.cgi?id=812389
+  if (api.firefox && e.target.getAttribute('for') === 'enable') {
+    document.getElementById('enable').click();
+  }
+});
+
 
 const remaining = (o, profile) => {
   let remaining = (o.scheduledTime - Date.now()) / 1000;
@@ -57,7 +63,7 @@ document.getElementById('enable').onchange = e => {
   if (e.target.checked) {
     api.post.bg({
       method: 'add-job',
-      profile: generate(e.target.dataset.forced === 'true'),
+      profile: generate(document.body.dataset.forced === 'true'),
       tab
     }, active);
   }

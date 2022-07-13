@@ -16,6 +16,9 @@ document.addEventListener('keydown', e => {
     document.getElementById('disable').dispatchEvent(new Event('click'));
   }
   else if (e.code === 'KeyS' && !enabled) {
+    e.preventDefault();
+    e.stopPropagation();
+    document.body.dataset.forced = e.shiftKey;
     document.getElementById('enable').click();
   }
   else if (e.code.startsWith('Digit') && meta && !enabled) {
