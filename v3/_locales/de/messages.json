@@ -39,7 +39,7 @@
     "message": "Ton abspielen, wenn der Inhalt sich ändert"
   },
   "popup_bw": {
-    "message": "Nicht neu laden, wenn die Adresse oder Titel folgendes enthält"
+    "message": "Nicht laden, wenn Adresse/Titel das enthält"
   },
   "popup_period": {
     "message": "Neu laden zwischen"
@@ -54,7 +54,7 @@
     "message": "Berechtigungen für diesen Tab erforderlich"
   },
   "popup_presets": {
-    "message": "Voreinstellungen"
+    "message": "Vorgaben"
   },
   "popup_forced": {
     "message": "Benutze die Umschalttaste (Shift), um Zeiten von weniger als 10 Sekunden zu erzwingen"
@@ -132,7 +132,7 @@
     "message": "Standardwert für \"Nach dem Reload bis zum Ende scrollen\""
   },
   "options_presets": {
-    "message": "Voreinstellungen"
+    "message": "Vorgaben"
   },
   "options_custom_jobs": {
     "message": "Benutzerdefinierte Aufträge"
@@ -205,6 +205,9 @@
   },
   "options_save": {
     "message": "Einstellungen speichern"
+  },
+  "options_save_reminder": {
+    "message": "Bitte nicht vergessen, die Einstellungen unten über den Button \"Einstellungen speichern\" zu sichern!"
   },
   "bg_reload_tabs": {
     "message": "Tabs neu laden"
