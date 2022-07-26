@@ -80,7 +80,6 @@ header > div:last-child {
   }
 }
 
-
 footer {
   z-index: 1;
 }
@@ -101,6 +100,7 @@ input[type=number] {
 }
 textarea {
   resize: vertical;
+  overflow: auto !important;
 }
 textarea:focus,
 input[type=text]:focus,
@@ -153,6 +153,13 @@ a:visited {
 }
 #enable:not(:checked) ~ [data-i18n="popup_stop"] {
   display: none;
+}
+
+@media screen and (max-width: 500px) {
+  label[for="enable"].button {
+    padding: 20px;
+    margin-bottom: 15px;
+  }
 }
 
 #options {
@@ -230,6 +237,13 @@ a:visited {
 #options[open] ~ #timer {
   align-items: center;
 }
+
+@media screen and (max-width: 500px) {
+  #timer {
+    align-items: center;
+  }
+}
+
 body:not([data-enabled=true]) #timer {
   display: none;
 }
@@ -293,6 +307,24 @@ body:not([data-enabled=true]) #timer {
 }
 #presets .entry:active {
   background-color: var(--bg-active);
+}
+
+@media screen and (max-width: 450px) {
+  #presets .entry:nth-child(7) {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  #presets .entry:nth-child(6) {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  #presets .entry:nth-child(5) {
+    display: none;
+  }
 }
 
 #save-as-json {

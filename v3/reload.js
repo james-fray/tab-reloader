@@ -295,6 +295,16 @@ api.tabs.loaded(d => {
         }).catch(error);
       }
       if (profile.code && profile['code-value'].trim()) {
+        // backward compatibility
+        const pre = `
+          Object.defineProperty(document, 'currentScript', {
+            value: {
+              dispatchEvent(e) {
+                post(e);
+              }
+            }
+          });
+        `;
         Promise.all([
           api.inject(tabId, {
             files: ['/data/scripts/interpreter/acorn.js']
@@ -310,6 +320,7 @@ api.tabs.loaded(d => {
             });
             interpreter.import('post', e => {
               const method = e.type || e;
+
               if (method === 'toggle-requested' || method === 'activate-tab') {
                 chrome.runtime.sendMessage({method});
               }
@@ -329,7 +340,7 @@ api.tabs.loaded(d => {
             interpreter.run(code);
           },
           // temporary convert "script.dispatchEvent" with "post" so that examples run
-          args: [profile['code-value'].replaceAll('script.dispatchEvent', 'post')]
+          args: [pre + profile['code-value']]
         })).catch(error);
       }
     }
