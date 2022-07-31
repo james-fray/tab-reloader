@@ -305,14 +305,11 @@ api.tabs.loaded(d => {
             }
           });
         `;
-        Promise.all([
-          api.inject(tabId, {
-            files: ['/data/scripts/interpreter/acorn.js']
-          }),
-          api.inject(tabId, {
-            files: ['/data/scripts/interpreter/sval.js']
-          })
-        ]).then(() => api.inject(tabId, {
+        api.inject(tabId, {
+          files: ['/data/scripts/interpreter/acorn.js']
+        }).then(() => api.inject(tabId, {
+          files: ['/data/scripts/interpreter/sval.js']
+        })).then(() => api.inject(tabId, {
           func: code => {
             const interpreter = new Sval({
               ecmaVer: 10,

@@ -301,8 +301,13 @@ api.commands = {
 
 api.runtime = {
   started(c) {
-    chrome.runtime.onStartup.addListener(c);
-    chrome.runtime.onInstalled.addListener(c);
+    if (api.firefox) {
+      c();
+    }
+    else {
+      chrome.runtime.onStartup.addListener(c);
+      chrome.runtime.onInstalled.addListener(c);
+    }
   }
 };
 
