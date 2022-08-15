@@ -80,6 +80,33 @@
   "popup_save_as_json": {
     "message": "Als benutzerdefinierten Auftrag speichern"
   },
+  "popup_saved": {
+    "message": "Saved!"
+  },
+  "popup_sound_1": {
+    "message": "Sound 1"
+  },
+  "popup_sound_2": {
+    "message": "Sound 2"
+  },
+  "popup_sound_3": {
+    "message": "Sound 3"
+  },
+  "popup_sound_4": {
+    "message": "Sound 4"
+  },
+  "popup_sound_5": {
+    "message": "Sound 5"
+  },
+  "popup_sound_6": {
+    "message": "Sound 6"
+  },
+  "popup_sound_7": {
+    "message": "Sound 7"
+  },
+  "popup_sound_8": {
+    "message": "Sound 8"
+  },
   "popup_test_sound": {
     "message": "Test"
   },
@@ -95,7 +122,7 @@
   "options_color": {
     "message": "Symbol Farbe:"
   },
-  "options_default": {
+  "options_defaults": {
     "message": "Standardwerte"
   },
   "options_default_time": {
@@ -205,6 +232,9 @@
   },
   "options_save": {
     "message": "Einstellungen speichern"
+  },
+  "options_saved": {
+    "message": "Options saved"
   },
   "options_save_reminder": {
     "message": "Bitte nicht vergessen, die Einstellungen unten über den Button \"Einstellungen speichern\" zu sichern!"

@@ -1,0 +1,299 @@
+{
+  "description": {
+    "message": "Удобная перезагрузка вкладок с настраиваемым временным интервалом для отдельных вкладок и многое другое!"
+  },
+  "popup_active": {
+    "message": "Не перезагружать, если вкладка активна"
+  },
+  "popup_configs": {
+    "message": "Настройки"
+  },
+  "popup_nofocus": {
+    "message": "Перезагружать, если окно не в фокусе"
+  },
+  "popup_cache": {
+    "message": "Использовать кэш (возвращать состояние)"
+  },
+  "popup_form": {
+    "message": "Обходить отправку формы"
+  },
+  "popup_offline": {
+    "message": "Не перезагружать при отсутствии интернета"
+  },
+  "popup_discarded": {
+    "message": "Не перезагружать при отмене загрузки"
+  },
+  "popup_randomize": {
+    "message": "Случайная задержка при первой перезагрузке"
+  },
+  "popup_nodiscard": {
+    "message": "Запретить отмену загрузки на вкладке"
+  },
+  "popup_ste": {
+    "message": "Прокрутить до конца после перезагрузки"
+  },
+  "popup_switch": {
+    "message": "Вызвать вкладку при изменении страницы"
+  },
+  "popup_sound": {
+    "message": "Проиграть звук при изменении страницы"
+  },
+  "popup_bw": {
+    "message": "Не перезагружать, если в адресе и названии"
+  },
+  "popup_period": {
+    "message": "Перезагружать между"
+  },
+  "popup_active_tabs": {
+    "message": "Активные вкладки"
+  },
+  "popup_enable": {
+    "message": "Перезагружать вкладку каждые"
+  },
+  "popup_permission": {
+    "message": "Требуется разрешение хоста вкладки"
+  },
+  "popup_presets": {
+    "message": "Шаблоны"
+  },
+  "popup_forced": {
+    "message": "Использовать клавишу Shift для принудительного интервала меньше 10 сек"
+  },
+  "popup_code": {
+    "message": "Запускать код JS"
+  },
+  "popup_variation": {
+    "message": "с разницей"
+  },
+  "popup_variation_hint": {
+    "message": "Установить разницу в процентах для случайного времени перезагрузки (применяется после первой перезагрузки)"
+  },
+  "popup_enable_keys": {
+    "message": "Клавиша 'S' - включить перезагрузку\nКлавиша 'Escape' - отключить перезагрузку\nКлавиши Shift + Escape - закрыть всплывающее окно\nКлавиши Ctrl/Command + 1/10 - выбрать шаблон"
+  },
+  "popup_start": {
+    "message": "Запустить"
+  },
+  "popup_stop": {
+    "message": "Остановить"
+  },
+  "popup_save_as_json": {
+    "message": "Сохранить как своё задание"
+  },
+  "popup_saved": {
+    "message": "Сохранено!"
+  },
+  "popup_sound_1": {
+    "message": "Звук 1"
+  },
+  "popup_sound_2": {
+    "message": "Звук 2"
+  },
+  "popup_sound_3": {
+    "message": "Звук 3"
+  },
+  "popup_sound_4": {
+    "message": "Звук 4"
+  },
+  "popup_sound_5": {
+    "message": "Звук 5"
+  },
+  "popup_sound_6": {
+    "message": "Звук 6"
+  },
+  "popup_sound_7": {
+    "message": "Звук 7"
+  },
+  "popup_sound_8": {
+    "message": "Звук 8"
+  },
+  "popup_test_sound": {
+    "message": "Тест"
+  },
+  "popup_rate": {
+    "message": "Оценить"
+  },
+  "options_title": {
+    "message": "Настройки :: Tab Reloader"
+  },
+  "options_badge": {
+    "message": "Отображать количество активных заданий на значке"
+  },
+  "options_color": {
+    "message": "Цвет значка:"
+  },
+  "options_defaults": {
+    "message": "Значения по умолчанию"
+  },
+  "options_default_time": {
+    "message": "Время перезагрузки по умолчанию:"
+  },
+  "options_default_variation": {
+    "message": "Разница перезагрузки по умолчанию:"
+  },
+  "options_pp_current": {
+    "message": "Значение по умолчанию \"Не перезагружать, если вкладка активна\""
+  },
+  "options_pp_nofocus": {
+    "message": "Значение по умолчанию \"Перезагружать, если окно не в фокусе\""
+  },
+  "options_pp_cache": {
+    "message": "Значение по умолчанию \"Использовать кэш (возвращать состояние)\""
+  },
+  "options_pp_form": {
+    "message": "Значение по умолчанию \"Обходить отправку формы\""
+  },
+  "options_pp_offline": {
+    "message": "Значение по умолчанию \"Не перезагружать при отсутствии интернета\""
+  },
+  "options_pp_discarded": {
+    "message": "Значение по умолчанию \"Не перезагружать при отмене загрузки\""
+  },
+  "options_pp_nodiscard": {
+    "message": "Значение по умолчанию \"Запретить отмену загрузки на вкладке\""
+  },
+  "options_pp_randomize": {
+    "message": "Значение по умолчанию \"Случайная задержка при первой перезагрузке\""
+  },
+  "options_pp_scroll_to_end": {
+    "message": "Значение по умолчанию \"Прокрутить до конца после перезагрузки\""
+  },
+  "options_presets": {
+    "message": "Шаблоны"
+  },
+  "options_custom_jobs": {
+    "message": "Свои задания"
+  },
+  "options_sample": {
+    "message": "Вставить образец"
+  },
+  "options_keywords": {
+    "message": "Поддерживаемые ключевые слова"
+  },
+  "options_events": {
+    "message": "Поддерживаемые события"
+  },
+  "options_desc": {
+    "message": "Переключить описание"
+  },
+  "options_json_desc": {
+    "message": "Вставить список доменов в формате JSON для автоматического обновления после каждого запуска. Если необходимо совпадение URL вместо всего домена, удалите ключ \"hostname\" и добавьте вместо него ключ \"url\". Для получения более подробной информации перейдите на страницу FAQ."
+  },
+  "options_dynamic_json": {
+    "message": "Всегда проверять установку заданий перезагрузки из объекта JSON при загрузке новой страницы."
+  },
+  "options_dynamic_json_desc": {
+    "message": "Если данная настройка включена, расширение устанавливает новое задание перезагрузки для новых страниц, совпадающих с одним из ключей в списке."
+  },
+  "options_policy": {
+    "message": "Политика перезагрузки"
+  },
+  "options_misc": {
+    "message": "Прочее"
+  },
+  "options_reassign": {
+    "message": "Пытаться назначить задание перезагрузки, если на новой вкладке уже выполняется активное."
+  },
+  "options_faqs": {
+    "message": "Открывать страницу FAQ при обновлении"
+  },
+  "options_tools": {
+    "message": "Инструменты"
+  },
+  "options_export_desc": {
+    "message": "Экспорт: Экспортировать все настройки в файл JSON и загрузить его в папку загрузки по умолчанию"
+  },
+  "options_import_desc": {
+    "message": "Импорт: Импортировать настройки из файла JSON (это перезапишет текущие настройки и перезапустит расширение)"
+  },
+  "options_reset_desc": {
+    "message": "Сброс: Сбросить настройки на значения по умолчанию"
+  },
+  "options_reset": {
+    "message": "Сброс значений"
+  },
+  "options_export": {
+    "message": "Экспорт"
+  },
+  "options_import": {
+    "message": "Импорт"
+  },
+  "options_permission": {
+    "message": "Разрешение хоста"
+  },
+  "options_instruction": {
+    "message": "Инструкция по использованию"
+  },
+  "options_ofq": {
+    "message": "Открыть страницу FAQ"
+  },
+  "options_support": {
+    "message": "Поддержать разработку"
+  },
+  "options_save": {
+    "message": "Сохранить настройки"
+  },
+  "options_saved": {
+    "message": "Настройки сохранены"
+  },
+  "options_save_reminder": {
+    "message": "Не забудьте нажать кнопку \"Сохранить настройки\"!"
+  },
+  "bg_reload_tabs": {
+    "message": "Перезагружать вкладки"
+  },
+  "bg_all_tabs": {
+    "message": "Все вкладки"
+  },
+  "bg_reload_all_discarded": {
+    "message": "Все вкладки с отменённой загрузкой"
+  },
+  "bg_reload_window": {
+    "message": "Все вкладки в текущем окне"
+  },
+  "bg_reload_window_discarded": {
+    "message": "Все вкладки с отменённой загрузкой в текущем окне"
+  },
+  "bg_reload_tabs_left": {
+    "message": "Вкладки слева"
+  },
+  "bg_reload_tabs_right": {
+    "message": "Вкладки справа"
+  },
+  "bg_stop": {
+    "message": "Остановить перезагрузку"
+  },
+  "bg_stop_all": {
+    "message": "Все вкладки"
+  },
+  "bg_no_reload": {
+    "message": "Эта вкладка"
+  },
+  "bg_reload_every": {
+    "message": "Перезагружать вкладку"
+  },
+  "bg_reload_every_10s": {
+    "message": "Каждые 10 сек"
+  },
+  "bg_reload_every_30s": {
+    "message": "Каждые 30 сек"
+  },
+  "bg_reload_every_1m": {
+    "message": "Каждую минуту"
+  },
+  "bg_reload_every_5m": {
+    "message": "Каждые 5 минут"
+  },
+  "bg_reload_every_15m": {
+    "message": "Каждые 15 минут"
+  },
+  "bg_reload_every_1h": {
+    "message": "Каждый час"
+  },
+  "bg_restart": {
+    "message": "Перезапустить расширение"
+  },
+  "bg_options": {
+    "message": "Настройки"
+  }
+}

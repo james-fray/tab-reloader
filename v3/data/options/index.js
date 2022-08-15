@@ -87,7 +87,7 @@ document.getElementById('save').addEventListener('click', () => {
       'dynamic.json': document.getElementById('dynamic.json').checked,
       'policy': JSON.parse(document.getElementById('policy').value.trim() || '{}')
     }, () => {
-      info.textContent = 'Options saved';
+      info.textContent = chrome.i18n.getMessage("options_saved");
       restore();
 
       if (badge) {

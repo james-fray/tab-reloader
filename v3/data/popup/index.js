@@ -148,7 +148,7 @@ document.getElementById('save-as-json').onclick = async e => {
         ...j
       });
       api.storage.set(prefs);
-      e.target.textContent = 'Saved!';
+      e.target.textContent = chrome.i18n.getMessage("popup_saved");
     }
     else {
       throw Error('Tab does not have a valid address');
