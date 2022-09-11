@@ -1,0 +1,299 @@
+{
+  "description": {
+    "message": "Зручний перезавантажувач із налаштовуваним часом перезавантаження окремих вкладок і більше!"
+  },
+  "popup_active": {
+    "message": "Не перезавантажувати, якщо вкладка активна"
+  },
+  "popup_configs": {
+    "message": "Параметри"
+  },
+  "popup_nofocus": {
+    "message": "Перезавантажувати, якщо вікно поза фокусом"
+  },
+  "popup_cache": {
+    "message": "Використовувати кеш під час перезавантаження (відновлювати стан)"
+  },
+  "popup_form": {
+    "message": "Обхід форми надсилання"
+  },
+  "popup_offline": {
+    "message": "Не перезавантажувати вкладку, якщо поза мережею"
+  },
+  "popup_discarded": {
+    "message": "Не перезавантажувати вкладку, якщо відмовлено"
+  },
+  "popup_randomize": {
+    "message": "Випадкова затримка для першого перезавантаження"
+  },
+  "popup_nodiscard": {
+    "message": "Запобігати припиненню завантаження вкладки"
+  },
+  "popup_ste": {
+    "message": "Прокрутити вниз після перезавантаження"
+  },
+  "popup_switch": {
+    "message": "Перемкнутися на вкладку, якщо вміст змінено"
+  },
+  "popup_sound": {
+    "message": "Відтворювати звук, якщо вміст змінено"
+  },
+  "popup_bw": {
+    "message": "Не перезавантажувати, якщо адреса або заголовок містить"
+  },
+  "popup_period": {
+    "message": "Перезавантажувати протягом"
+  },
+  "popup_active_tabs": {
+    "message": "Активні вкладки"
+  },
+  "popup_enable": {
+    "message": "Перезавантажувати цю вкладку кожні"
+  },
+  "popup_permission": {
+    "message": "Потрібен дозвіл власника вкладки"
+  },
+  "popup_presets": {
+    "message": "Шаблони"
+  },
+  "popup_forced": {
+    "message": "Використовувати клавішу Shift для примусових проміжків менших за 10 секунд"
+  },
+  "popup_code": {
+    "message": "Запускати код JS"
+  },
+  "popup_variation": {
+    "message": "з похибкою"
+  },
+  "popup_variation_hint": {
+    "message": "Вкажіть похибку у відсотках для випадковості часу перезавантаження (застосовується після першого перезавантаження)"
+  },
+  "popup_enable_keys": {
+    "message": "Клавіша 'S' дозволяє перезавантаження\nКлавіша 'Escape' вимикає перезавантаження\nКлавіші Shift + Escape, щоб закрити випадне вікно\nКлавіші Ctrl/Command + 1/10, щоб вибрати шаблон"
+  },
+  "popup_start": {
+    "message": "Розпочати перезавантаження"
+  },
+  "popup_stop": {
+    "message": "Зупинити перезавантаження"
+  },
+  "popup_save_as_json": {
+    "message": "Зберегти як власне завдання"
+  },
+  "popup_saved": {
+    "message": "Збережено!"
+  },
+  "popup_sound_1": {
+    "message": "Звук 1"
+  },
+  "popup_sound_2": {
+    "message": "Звук 2"
+  },
+  "popup_sound_3": {
+    "message": "Звук 3"
+  },
+  "popup_sound_4": {
+    "message": "Звук 4"
+  },
+  "popup_sound_5": {
+    "message": "Звук 5"
+  },
+  "popup_sound_6": {
+    "message": "Звук 6"
+  },
+  "popup_sound_7": {
+    "message": "Звук 7"
+  },
+  "popup_sound_8": {
+    "message": "Звук 8"
+  },
+  "popup_test_sound": {
+    "message": "Тест"
+  },
+  "popup_rate": {
+    "message": "Оціни мене"
+  },
+  "options_title": {
+    "message": "Сторінка параметрів :: Перезавантажувач вкладок"
+  },
+  "options_badge": {
+    "message": "Відображати загальну кількість активних завдань в області значка"
+  },
+  "options_color": {
+    "message": "Колір значка:"
+  },
+  "options_defaults": {
+    "message": "Типові"
+  },
+  "options_default_time": {
+    "message": "Типовий час перезавантаження:"
+  },
+  "options_default_variation": {
+    "message": "Типова похибка перезавантаження:"
+  },
+  "options_pp_current": {
+    "message": "Типове значення для \"Не перезавантажувати, якщо вкладка активна\""
+  },
+  "options_pp_nofocus": {
+    "message": "Типове значення для \"Перезавантажувати якщо вікно поза фокусом\""
+  },
+  "options_pp_cache": {
+    "message": "Типове значення для \"Використовувати кеш під час перезавантаження\""
+  },
+  "options_pp_form": {
+    "message": "Типове значення для \"Обхід форми надсилання\""
+  },
+  "options_pp_offline": {
+    "message": "Типове значення для \"Не перезавантажувати, якщо поза мережею\""
+  },
+  "options_pp_discarded": {
+    "message": "Типове значення для \"Не перезавантажувати, якщо відмовлено\""
+  },
+  "options_pp_nodiscard": {
+    "message": "Типове значення для \"Запобігати припиненню завантаження вкладки\""
+  },
+  "options_pp_randomize": {
+    "message": "Типове значення для \"Випадкова затримка для першого перезавантаження\""
+  },
+  "options_pp_scroll_to_end": {
+    "message": "Типове значення для \"Прокрутити вниз після перезавантаження\""
+  },
+  "options_presets": {
+    "message": "Заготовки"
+  },
+  "options_custom_jobs": {
+    "message": "Власні завдання"
+  },
+  "options_sample": {
+    "message": "Вставити зразок"
+  },
+  "options_keywords": {
+    "message": "Підтримувані ключові слова"
+  },
+  "options_events": {
+    "message": "Підтримувані події"
+  },
+  "options_desc": {
+    "message": "Перемкнути опис"
+  },
+  "options_json_desc": {
+    "message": "Перерахуйте імена хостів у форматі JSON, щоб задати автоматичне оновлення після кожного запуску. Якщо Вам потрібно зіставляти з URL замість назви хоста, вилучіть ключ \"hostname\" і долучіть натомість ключ \"url\". Читайте сторінку ЧаП для додаткових інструкцій."
+  },
+  "options_dynamic_json": {
+    "message": "Завжди перевіряти встановлення перезавантаження з об’єкта JSON під час завантаження нової сторінки."
+  },
+  "options_dynamic_json_desc": {
+    "message": "Якщо цей параметр увімкнено, розширення встановлює нове спеціальне перезавантаження для нових сторінок, які відповідають одному з ключів у списку."
+  },
+  "options_policy": {
+    "message": "Політика перезавантаження"
+  },
+  "options_misc": {
+    "message": "Різне"
+  },
+  "options_reassign": {
+    "message": "Спробувати призначити завдання перезавантаження, коли нова вкладка має активне перезавантаження."
+  },
+  "options_faqs": {
+    "message": "Відкривати сторінку ЧаП під час оновлень"
+  },
+  "options_tools": {
+    "message": "Засоби"
+  },
+  "options_export_desc": {
+    "message": "Експорт: Експортувати всі налаштування у файл JSON і завантажити його у типовий каталог завантаження"
+  },
+  "options_import_desc": {
+    "message": "Імпорт: Імпортувати налаштування з файлу JSON (це перезапише поточні налаштування і перезапустить розширення)"
+  },
+  "options_reset_desc": {
+    "message": "Скинути: Скинути налаштування до початкових значень"
+  },
+  "options_reset": {
+    "message": "Відновити типові"
+  },
+  "options_export": {
+    "message": "Експортувати"
+  },
+  "options_import": {
+    "message": "Імпортувати"
+  },
+  "options_permission": {
+    "message": "Дозвіл власника"
+  },
+  "options_instruction": {
+    "message": "Інструкція з використання"
+  },
+  "options_ofq": {
+    "message": "Відкрити сторінку ЧаП"
+  },
+  "options_support": {
+    "message": "Підтримка розробки"
+  },
+  "options_save": {
+    "message": "Зберегти параметри"
+  },
+  "options_saved": {
+    "message": "Параметри збережено"
+  },
+  "options_save_reminder": {
+    "message": "Переконайтеся, що натиснуто кнопку \"Зберегти параметри\"!"
+  },
+  "bg_reload_tabs": {
+    "message": "Перезавантажити вкладки"
+  },
+  "bg_all_tabs": {
+    "message": "Усі вкладки"
+  },
+  "bg_reload_all_discarded": {
+    "message": "Усі відхилені вкладки"
+  },
+  "bg_reload_window": {
+    "message": "Усі вкладки в поточному вікні"
+  },
+  "bg_reload_window_discarded": {
+    "message": "Усі відхилені вкладки в поточному вікні"
+  },
+  "bg_reload_tabs_left": {
+    "message": "Вкладки ліворуч"
+  },
+  "bg_reload_tabs_right": {
+    "message": "Вкладки праворуч"
+  },
+  "bg_stop": {
+    "message": "Зупинити перезавантаження"
+  },
+  "bg_stop_all": {
+    "message": "Усі вкладки"
+  },
+  "bg_no_reload": {
+    "message": "Ця вкладка"
+  },
+  "bg_reload_every": {
+    "message": "Перезавантажити вкладку"
+  },
+  "bg_reload_every_10s": {
+    "message": "Що 10 секунд"
+  },
+  "bg_reload_every_30s": {
+    "message": "Що 30 секунд"
+  },
+  "bg_reload_every_1m": {
+    "message": "Що хвилини"
+  },
+  "bg_reload_every_5m": {
+    "message": "Що 5 хвилин"
+  },
+  "bg_reload_every_15m": {
+    "message": "Що 15 хвилин"
+  },
+  "bg_reload_every_1h": {
+    "message": "Щогодини"
+  },
+  "bg_restart": {
+    "message": "Перезавантажити розширення"
+  },
+  "bg_options": {
+    "message": "Параметри"
+  }
+}
