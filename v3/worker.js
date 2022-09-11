@@ -274,6 +274,21 @@ api.storage.get({
 }).then(prefs => api.button.color(prefs.color));
 api.storage.changed(ps => ps.color && api.button.color(ps.color.newValue));
 
+/* make sure passed events are being fired */
+chrome.idle.onStateChanged.addListener(() => {
+  const now = Date.now();
+  chrome.alarms.getAll().then(os => {
+    for (const o of os) {
+      if (o.scheduledTime < now) {
+        chrome.alarms.create(o.name, {
+          when: now + Math.round(Math.random() * 1000),
+          periodInMinutes: o.periodInMinutes
+        });
+      }
+    }
+  });
+});
+
 /* FAQs & Feedback */
 {
   const {management, runtime: {onInstalled, setUninstallURL, getManifest}, storage, tabs} = chrome;

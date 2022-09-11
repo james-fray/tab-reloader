@@ -20,6 +20,7 @@ Tab Reloader provides a browser action' popup to set up a reloading job for each
 ### Links:
 
   * FAQs page: https://add0n.com/tab-reloader.html
+  * Usage Review: https://webextension.org/blog/2022/04/17/tab-reloader-extension.html
   * Chrome Webstore: https://chrome.google.com/webstore/detail/tab-reloader-page-auto-re/dejobinhdiimklegodgbmbifijpppopn
   * Firefox add-ons: https://addons.mozilla.org/en-US/firefox/addon/tab-reloader/
   * Opera addons: https://addons.opera.com/en/extensions/details/tab-reloader/
