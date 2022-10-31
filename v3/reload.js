@@ -295,49 +295,50 @@ api.tabs.loaded(d => {
         }).catch(error);
       }
       if (profile.code && profile['code-value'].trim()) {
-        // backward compatibility
-        const pre = `
-          Object.defineProperty(document, 'currentScript', {
-            value: {
-              dispatchEvent(e) {
-                post(e);
-              }
-            }
-          });
-        `;
+        const id = 'scr-' + Math.random();
         api.inject(tabId, {
-          files: ['/data/scripts/interpreter/acorn.js']
-        }).then(() => api.inject(tabId, {
-          files: ['/data/scripts/interpreter/sval.js']
-        })).then(() => api.inject(tabId, {
-          func: code => {
-            const interpreter = new Sval({
-              ecmaVer: 10,
-              sandBox: false
-            });
-            interpreter.import('post', e => {
-              const method = e.type || e;
+          func: id => {
+            const span = document.createElement('span');
+            span.id = id;
+            span.addEventListener('post', e => chrome.runtime.sendMessage(e.detail));
 
-              if (method === 'toggle-requested' || method === 'activate-tab') {
-                chrome.runtime.sendMessage({method});
-              }
-              else if (method === 'delay-for') {
-                chrome.runtime.sendMessage({
-                  method,
-                  delay: Number(e.detail)
-                });
-              }
-              else if (method === 'play-sound') {
-                chrome.runtime.sendMessage({
-                  method,
-                  src: e.detail
-                });
-              }
-            });
-            interpreter.run(code);
+            document.documentElement.append(span);
           },
-          // temporary convert "script.dispatchEvent" with "post" so that examples run
-          args: [pre + profile['code-value']]
+          args: [id]
+        }).then(() => api.inject(tabId, {
+          world: 'MAIN',
+          func: (id, code) => {
+            const span = document.getElementById(id);
+            span.remove();
+            const s = document.createElement('script');
+            s.textContent = code;
+
+            const post = detail => span.dispatchEvent(new CustomEvent('post', {
+              detail
+            }));
+
+            const error = e => post({
+              method: 'show-error',
+              message: e.message
+            });
+            window.addEventListener('error', error);
+
+            s.addEventListener('toggle-requested', () => post({method: 'toggle-requested'}));
+            s.addEventListener('activate-tab', () => post({method: 'activate-tab'}));
+            s.addEventListener('delay-for', e => post({
+              method: 'delay-for',
+              delay: Number(e.detail)
+            }));
+            s.addEventListener('play-sound', e => post({
+              method: 'play-sound',
+              src: e.detail
+            }));
+            document.body.append(s);
+            s.remove();
+
+            window.removeEventListener('error', error);
+          },
+          args: [id, profile['code-value']]
         })).catch(error);
       }
     }

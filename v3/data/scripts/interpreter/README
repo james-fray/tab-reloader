@@ -1,9 +1,0 @@
-https://github.com/Siubaak/sval/releases/tag/0.4.8
-
-https://unpkg.com/acorn@8.6.0/dist/acorn.js
-md5: cf6ff8417aaa5fc5c234fa089661d1bc
-
-manual build
-1. npm install acorn
-2. md5 node_modules/acorn/dist/acorn.js
-

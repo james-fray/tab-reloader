@@ -172,6 +172,13 @@ const messaging = (request, sender, response = () => {}) => {
     });
     return true;
   }
+  else if (request.method === 'show-error') { // user command
+    const id = sender.tab.id;
+
+    api.button.icon('error', id);
+    api.button.badge('E', id);
+    api.button.tooltip(request.message, id);
+  }
   else if (request.method === 'toggle-requested') { // user command
     const id = sender.tab.id;
 
@@ -273,21 +280,6 @@ api.storage.get({
   color: defaults['badge-color']
 }).then(prefs => api.button.color(prefs.color));
 api.storage.changed(ps => ps.color && api.button.color(ps.color.newValue));
-
-/* make sure passed events are being fired */
-chrome.idle.onStateChanged.addListener(() => {
-  const now = Date.now();
-  chrome.alarms.getAll().then(os => {
-    for (const o of os) {
-      if (o.scheduledTime < now) {
-        chrome.alarms.create(o.name, {
-          when: now + Math.round(Math.random() * 1000),
-          periodInMinutes: o.periodInMinutes
-        });
-      }
-    }
-  });
-});
 
 /* FAQs & Feedback */
 {
