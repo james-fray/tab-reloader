@@ -4,7 +4,6 @@
 document.addEventListener('change', e => {
   if (e.target.checked && e.target.dataset.permission === 'true') {
     const url = tab.url;
-    console.log(url, url.replace(/^https*/, '*'));
 
     if (tab.url.startsWith('http')) {
       api.permissions.request({
