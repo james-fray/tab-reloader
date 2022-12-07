@@ -60,7 +60,16 @@
     "message": "Use Shift key to force periods less than 10 seconds"
   },
   "popup_code": {
-    "message": "Run JS code"
+    "message": "Run JS Code"
+  },
+  "popup_code_desc": {
+    "message": "Run this JS code after each reload"
+  },
+  "popup_pre_code": {
+    "message": "Run Policy Code"
+  },
+  "popup_pre_code_desc": {
+    "message": "If defined, the function must set \"document.currentScript.dataset.continue = true\" for reloading to happen"
   },
   "popup_variation": {
     "message": "with variation"

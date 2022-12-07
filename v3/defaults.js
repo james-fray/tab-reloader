@@ -18,7 +18,9 @@ defaults.profile = {
   'blocked-words': '',
   'blocked-period': '00:00:00 - 23:59:59',
   'code': false,
-  'code-value': ''
+  'code-value': '',
+  'pre-code': false,
+  'pre-code-value': ''
 };
 
 defaults.presets = [

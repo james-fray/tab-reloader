@@ -54,7 +54,9 @@ const generate = (forced = false) => {
     'blocked-words': document.getElementById('blocked-words').value,
     'blocked-period': document.getElementById('blocked-period').value,
     'code': document.getElementById('code').checked,
-    'code-value': document.getElementById('code-value').value
+    'code-value': document.getElementById('code-value').value,
+    'pre-code': document.getElementById('pre-code').checked,
+    'pre-code-value': document.getElementById('pre-code-value').value
   };
 };
 
@@ -111,6 +113,12 @@ new Behave({
   softTabs: true,
   tabSize: 2
 });
+new Behave({
+  textarea: document.getElementById('pre-code-value'),
+  replaceTab: true,
+  softTabs: true,
+  tabSize: 2
+});
 
 // reload
 api.post.fired(async request => {
@@ -141,6 +149,13 @@ document.getElementById('save-as-json').onclick = async e => {
         j.code = '';
       }
       delete j['code-value'];
+      if (j['pre-code'] && j['pre-code-value']) {
+        j['pre-code'] = j['pre-code-value'];
+      }
+      else {
+        j['pre-code'] = '';
+      }
+      delete j['pre-code-value'];
       // remove old entries
       prefs.json = prefs.json.filter(o => o.hostname !== hostname);
       prefs.json.push({
@@ -148,7 +163,7 @@ document.getElementById('save-as-json').onclick = async e => {
         ...j
       });
       api.storage.set(prefs);
-      e.target.textContent = chrome.i18n.getMessage("popup_saved");
+      e.target.textContent = chrome.i18n.getMessage('popup_saved');
     }
     else {
       throw Error('Tab does not have a valid address');

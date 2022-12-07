@@ -1,4 +1,4 @@
-/* global api, messaging, Sval */
+/* global api, messaging */
 
 const custom = (tab, json) => {
   for (const o of json) {
@@ -24,6 +24,10 @@ const custom = (tab, json) => {
       if (o.code) {
         profile['code-value'] = o.code;
         profile.code = true;
+      }
+      if (o['pre-code']) {
+        profile['pre-code-value'] = o['pre-code'];
+        profile['pre-code'] = true;
       }
 
       delete o.dd;
@@ -204,6 +208,33 @@ api.alarms.fired(async o => {
         }
       }
     }
+
+    if (profile['pre-code']) {
+      const code = profile['pre-code-value'];
+
+      try {
+        const [{result}] = await api.inject(tabId, {
+          world: 'MAIN',
+          func: code => {
+            const s = document.createElement('script');
+            s.textContent = code;
+            document.body.append(s);
+
+            return s.dataset.continue;
+          },
+          args: [code]
+        });
+
+        if (result !== 'true') {
+          return skip(`Policy Code return "${result}"`);
+        }
+      }
+      catch (e) {
+        console.warn(e);
+        return skip(`Policy Code Failed "${e.message}"`);
+      }
+    }
+
     api.tabs.reload(tab, options, profile.form);
   }
   else {
