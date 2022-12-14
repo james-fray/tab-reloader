@@ -219,6 +219,12 @@ api.alarms.fired(async o => {
             const s = document.createElement('script');
             s.textContent = code;
             document.body.append(s);
+            s.remove();
+
+            // Firefox workaround (v3tov2 project)
+            if (document.currentScript) {
+              document.currentScript.dataset.result = s.dataset.continue;
+            }
 
             return s.dataset.continue;
           },
