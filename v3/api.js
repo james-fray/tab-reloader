@@ -221,7 +221,8 @@ api.tabs = {
     chrome.webNavigation.onDOMContentLoaded.addListener(d => {
       if (d.frameId === 0) {
         if (api.firefox) {
-          setTimeout(c, 100, d);
+          clearTimeout(c.id);
+          c.id = setTimeout(c, 100, d);
         }
         else {
           c(d);

@@ -6,8 +6,14 @@ document.addEventListener('change', e => {
     const url = tab.url;
 
     if (tab.url.startsWith('http')) {
+      let origin = url.replace(/^https*/, '*');
+      try {
+        origin = '*://' + (new URL(tab.url)).hostname + '/';
+      }
+      catch (e) {}
+
       api.permissions.request({
-        origins: [url.replace(/^https*/, '*')]
+        origins: [origin]
       }).then(granted => {
         if (granted === false) {
           setTimeout(() => e.target.checked = false, 500);

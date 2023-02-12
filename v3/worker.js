@@ -212,8 +212,24 @@ const messaging = (request, sender, response = () => {}) => {
       audio.play();
     }
     catch (e) {
-      console.warn(e);
+      try {
+        const args = new URLSearchParams();
+        args.set('volume', request.volume || 1);
+        args.set('src', request.src);
+
+        chrome.offscreen.createDocument({
+          url: '/data/sounds/play.html?' + args.toString(),
+          reasons: ['AUDIO_PLAYBACK'],
+          justification: 'play alert on content change'
+        }).catch(e => console.warn(e));
+      }
+      catch (ee) {
+        console.warn(e, ee);
+      }
     }
+  }
+  else if (request.method === 'close-document') {
+    chrome.offscreen.closeDocument();
   }
   else if (request.method === 'delay-for') {
     const id = sender.tab.id;
@@ -238,6 +254,7 @@ const messaging = (request, sender, response = () => {}) => {
     crypto.subtle.digest('SHA-256', msgBuffer).then(hashBuffer => {
       const hashArray = Array.from(new Uint8Array(hashBuffer));
       const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
+      console.log(hashBuffer, hashArray, request.message, hashHex);
       response(hashHex);
     });
     return true;
