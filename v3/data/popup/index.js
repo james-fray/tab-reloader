@@ -121,13 +121,14 @@ new Behave({
 });
 
 // reload
-api.post.fired(async request => {
+api.post.fired(request => {
   if (request.method === 'reload-interface') {
-    const o = await api.alarms.get(tab.id.toString());
-    // location.reload();
-    for (const c of startup) {
-      c(o, false);
-    }
+    api.alarms.get(tab.id.toString()).then(o => {
+      // location.reload();
+      for (const c of startup) {
+        c(o, false);
+      }
+    });
   }
 });
 
