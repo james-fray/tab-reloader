@@ -15,7 +15,6 @@
 
   // crypto.subtle is not available on http
   const content = e.innerText || '';
-  console.log('content', content);
 
   chrome.runtime.sendMessage({
     method: 'sha256',
@@ -23,8 +22,6 @@
   }, hash => {
     if (hash) { // Firefox sometimes does not return valid hash
       const oh = sessionStorage.getItem('tab-reloader-hash-' + href);
-
-      console.log(oh, hash, document.readyState);
 
       if (hash && oh && oh !== hash) {
         if (window.switch) {

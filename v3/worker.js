@@ -254,7 +254,6 @@ const messaging = (request, sender, response = () => {}) => {
     crypto.subtle.digest('SHA-256', msgBuffer).then(hashBuffer => {
       const hashArray = Array.from(new Uint8Array(hashBuffer));
       const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
-      console.log(hashBuffer, hashArray, request.message, hashHex);
       response(hashHex);
     });
     return true;
