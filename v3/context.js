@@ -131,10 +131,13 @@ api.runtime.started(() => {
         alarm
       }, {}, r => {
         r.profile.period = period;
-        messaging({
-          method: 'add-job',
-          tab,
-          profile: r.profile
+
+        api.tabs.active().then(tabs => {
+          messaging({
+            method: 'add-jobs',
+            tabs,
+            profile: r.profile
+          });
         });
       }));
     }
@@ -172,19 +175,24 @@ api.runtime.started(() => {
       tabs.forEach(tab => api.tabs.reload(tab, {bypassCache: true}));
     }
     else if (info.menuItemId === 'no.reload') {
-      messaging({
-        'reason': 'user-request',
-        'method': 'remove-job',
-        'id': tab.id,
-        'skip-echo': true
-      });
+      api.tabs.active().then(tabs => {
+        messaging({
+          'reason': 'user-request',
+          'method': 'remove-jobs',
+          'ids': tabs.map(t => t.id),
+          'skip-echo': true
+        });
+      })
     }
     else if (info.menuItemId === 'stop.all') {
-      api.alarms.forEach(o => messaging({
-        reason: 'context-stop-all',
-        method: 'remove-job',
-        id: Number(o.name.replace('job-', ''))
-      }));
+      api.alarms.keys().then(names => {
+        const ids = names.map(name => Number(name.replace('job-', '')));
+        messaging({
+          reason: 'context-stop-all',
+          method: 'remove-jobs',
+          ids
+        });
+      });
     }
     else if (info.menuItemId === 'restart') {
       chrome.runtime.reload();

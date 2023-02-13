@@ -11,122 +11,145 @@ if (typeof URLPattern === 'undefined') {
 
 
 const messaging = (request, sender, response = () => {}) => {
-  if (request.method === 'remove-job') {
-    const id = request.id.toString();
-
+  if (request.method === 'remove-jobs') {
+    // remove the jobs
     setTimeout(async () => {
-      const profile = await api.storage.get('job-' + id);
-      // keep track of jobs that are not removed by the user
-      if (profile) {
-        if (
-          request.reason === 'tab-removed' ||
-          request.reason === 'tab-not-found-on-window-removed' ||
-          request.reason === 'tab-not-found-on-popup' ||
-          request.reason === 'tab-not-found-on-alarm'
-        ) {
-          api.storage.get({
-            'removed.jobs': {}
-          }).then(prefs => {
-            // remove old profiles
-            Object.entries(prefs['removed.jobs']).forEach(([key, o]) => {
-              if (Date.now() - o.timestamp > defaults['removed.jobs']) {
-                delete prefs['removed.jobs'][key];
-              }
-            });
-            // add new one
-            prefs['removed.jobs'][api.clean.href(profile.href)] = {
-              reason: request.reason,
-              profile,
-              timestamp: Date.now()
-            };
-            api.storage.set(prefs);
-          });
-        }
+      // get profiles before clearing the storage
+      const map = new Map();
+      for (const id of request.ids) {
+        const profile = await api.storage.get('job-' + id);
+        map.set(id.toString(), profile);
       }
-      // allow discarding
-      if (profile && profile.nodiscard) {
-        api.tabs.update(request.id, {
-          autoDiscardable: true
-        });
+
+      // remove job
+      for (const e of request.ids) {
+        const id = e.toString();
+        await api.alarms.remove(id);
+        api.button.icon('disabled', Number(id));
       }
-      // remove the job
-      await api.alarms.remove(id);
-      await api.storage.remove('job-' + id);
+      await api.storage.remove(...request.ids.map(id => 'job-' + id));
       await api.alarms.count().then(c => api.button.badge(c));
+
       if (request['skip-echo'] !== true) {
         api.post.bg({
           method: 'reload-interface'
         }, () => chrome.runtime.lastError);
       }
       response();
-    }, 0);
-    api.button.icon('disabled', request.id);
+
+      // allow discarding
+      for (const [id, profile] of map.entries()) {
+        if (profile && profile.nodiscard) {
+          api.tabs.update(Number(id), {
+            autoDiscardable: true
+          });
+        }
+      }
+
+      // keep track of jobs that are not removed by the user
+      if (
+        request.reason === 'tab-removed' ||
+        request.reason === 'tab-not-found-on-window-removed' ||
+        request.reason === 'tab-not-found-on-popup' ||
+        request.reason === 'tab-not-found-on-alarm'
+      ) {
+        api.storage.get({
+          'removed.jobs': {}
+        }).then(prefs => {
+          for (const id of request.ids) {
+            const profile = map.get(id.toString());
+
+            if (profile) {
+              // add new one
+              prefs['removed.jobs'][api.clean.href(profile.href)] = {
+                reason: request.reason,
+                profile,
+                timestamp: Date.now()
+              };
+            }
+          }
+          // remove old profiles
+          Object.entries(prefs['removed.jobs']).forEach(([key, o]) => {
+            if (Date.now() - o.timestamp > defaults['removed.jobs']) {
+              delete prefs['removed.jobs'][key];
+            }
+          });
+          api.storage.set(prefs);
+        });
+      }
+    });
 
     return true;
   }
-  else if (request.method === 'add-job') {
-    const profile = Object.assign({}, defaults.profile, request.profile, {
-      timestamp: Date.now(),
-      href: request.tab.url
+  else if (request.method === 'add-jobs') {
+    const g = Object.assign({}, defaults.profile, request.profile, {
+      timestamp: Date.now()
     });
 
-    const name = request.tab.id.toString();
-    const period = Math.max(1, api.convert.secods(api.convert.str2obj(profile.period)));
+    const period = Math.max(1, api.convert.secods(api.convert.str2obj(g.period)));
     const when = Date.now() + (request.now ? 100 : (
-      profile.randomize ? parseInt(Math.random() * period * 1000) : period * 1000
+      g.randomize ? parseInt(Math.random() * period * 1000) : period * 1000
     ));
 
     setTimeout(async () => {
-      await api.storage.set({
-        ['job-' + name]: profile
-      });
-      await api.alarms.add(name, {
-        when,
-        // only used as backup. The extension sets a new alarm
-        periodInMinutes: Math.max(1, period / 60)
-      });
+      const storage = {};
+      for (const tab of request.tabs) {
+        const name = tab.id.toString();
+        storage['job-' + name] = Object.assign({
+          href: tab.url
+        }, g);
+        await api.alarms.add(name, {
+          when,
+          // only used as backup. The extension sets a new alarm
+          periodInMinutes: Math.max(1, period / 60)
+        });
+        api.button.icon('active', tab.id);
+        // no discard
+        if (g.nodiscard) {
+          api.tabs.update(tab.id, {
+            autoDiscardable: false
+          });
+        }
+      }
+      await api.storage.set(storage);
       api.alarms.count().then(c => api.button.badge(c));
-      api.button.icon('active', request.tab.id);
+
       api.post.bg({
         method: 'reload-interface'
       }, () => chrome.runtime.lastError);
       response();
     });
 
-    // no discard
-    if (profile.nodiscard) {
-      api.tabs.update(request.tab.id, {
-        autoDiscardable: false
-      });
-    }
-
     // keep in profiles
-    try {
-      const {hostname} = new URL(request.tab.url);
+    api.storage.get({
+      profiles: {}
+    }).then(prefs => {
+      for (const tab of request.tabs) {
+        try {
+          const {hostname} = new URL(tab.url);
 
-      if (hostname) {
-        api.storage.get({
-          profiles: {}
-        }).then(prefs => {
-          prefs.profiles[hostname] = profile;
-
-          const profiles = Object.entries(prefs.profiles);
-          if (profiles.length > defaults['max-number-of-profiles']) {
-            const keys = profiles.sort((a, b) => a[1].timestamp - b[1].timestamp)
-              .slice(0, profiles.length - defaults['max-number-of-profiles']).map(a => a[0]);
-
-            for (const key of keys) {
-              delete prefs.profiles[key];
-            }
+          if (hostname) {
+            prefs.profiles[hostname] = Object.assign({
+              href: tab.url
+            }, g);
           }
-
-          api.storage.set(prefs);
-        });
+        }
+        catch (e) {
+          console.warn('Cannot add the new job to profiles', e);
+        }
       }
-    }
-    catch (e) {
-      console.warn('Cannot add the new job to profiles', e);
-    }
+      const profiles = Object.entries(prefs.profiles);
+      if (profiles.length > defaults['max-number-of-profiles']) {
+        const keys = profiles.sort((a, b) => a[1].timestamp - b[1].timestamp)
+          .slice(0, profiles.length - defaults['max-number-of-profiles']).map(a => a[0]);
+
+        for (const key of keys) {
+          delete prefs.profiles[key];
+        }
+      }
+
+      api.storage.set(prefs);
+    });
 
     return true;
   }
@@ -186,8 +209,8 @@ const messaging = (request, sender, response = () => {}) => {
       if (o) {
         messaging({
           reason: 'script-request',
-          method: 'remove-job',
-          id
+          method: 'remove-jobs',
+          ids: [id]
         });
       }
       else {
@@ -195,9 +218,9 @@ const messaging = (request, sender, response = () => {}) => {
           method: 'search-for-profile',
           url: sender.tab.url
         }, {}, v => messaging({
-          method: 'add-job',
+          method: 'add-jobs',
           profile: v || {},
-          tab: sender.tab
+          tabs: [sender.tab]
         }));
       }
     });
@@ -268,8 +291,8 @@ api.tabs.removed((id, info) => {
   if (info.isWindowClosing === false) {
     messaging({
       reason: 'tab-removed',
-      method: 'remove-job',
-      id
+      method: 'remove-jobs',
+      ids: [id]
     });
   }
 });
@@ -278,14 +301,20 @@ api.tabs.removed((id, info) => {
   sometimes api.tabs.remove(..., false) is not being called when the tab is the only child
 */
 api.tabs.removed(() => setTimeout(() => {
-  api.alarms.forEach(async o => {
-    const tabId = Number(o.name);
-    const tab = await api.tabs.get(tabId);
-    if (!tab) {
+  api.alarms.keys().then(async names => {
+    const ids = [];
+    for (const name of names) {
+      const tabId = Number(name);
+      const tab = await api.tabs.get(tabId);
+      if (!tab) {
+        ids.push(tabId);
+      }
+    }
+    if (ids.length) {
       messaging({
         reason: 'tab-not-found-on-window-removed',
-        method: 'remove-job',
-        id: tabId
+        method: 'remove-jobs',
+        ids
       });
     }
   });

@@ -48,7 +48,7 @@
     "message": "Active Tabs"
   },
   "popup_enable": {
-    "message": "Reload this tab every"
+    "message": "Reload selected tabs every"
   },
   "popup_permission": {
     "message": "Tab's host permission is required"
@@ -249,7 +249,7 @@
     "message": "Make sure to press the \"Save Options\" button!"
   },
   "bg_reload_tabs": {
-    "message": "Reload tabs"
+    "message": "Reload tabs once"
   },
   "bg_all_tabs": {
     "message": "All tabs"
@@ -276,10 +276,10 @@
     "message": "All tabs"
   },
   "bg_no_reload": {
-    "message": "This tab"
+    "message": "Selected tabs"
   },
   "bg_reload_every": {
-    "message": "Reload tab"
+    "message": "Reload selected tabs"
   },
   "bg_reload_every_10s": {
     "message": "Every 10 secs"

@@ -60,21 +60,21 @@ const generate = (forced = false) => {
   };
 };
 
-document.getElementById('enable').onchange = e => {
+document.getElementById('enable').onchange = async e => {
   // register
   if (e.target.checked) {
     api.post.bg({
-      method: 'add-job',
+      method: 'add-jobs',
       profile: generate(document.body.dataset.forced === 'true'),
-      tab
+      tabs: await api.tabs.active()
     }, active);
   }
   // unregister
   else {
     api.post.bg({
       'reason': 'user-request',
-      'method': 'remove-job',
-      'id': tab.id,
+      'method': 'remove-jobs',
+      'ids': (await api.tabs.active()).map(t => t.id),
       'skip-echo': true
     });
   }

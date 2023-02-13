@@ -35,7 +35,7 @@ const profile = prefs => {
   }
 };
 
-startup.push(async alarm => {
+startup.push(alarm => {
   api.post.bg({
     method: 'search-for-profile-anyway',
     alarm,
@@ -49,15 +49,15 @@ startup.push(async alarm => {
     profile(r.profile);
   });
 });
-startup.push(async (o, firstRun) => {
+startup.push((o, firstRun) => {
   if (firstRun === false && !o) {
     disable();
   }
 });
 
 /* init */
-api.tabs.active().then(async t => {
-  tab = t;
+api.tabs.active().then(async tabs => {
+  tab = tabs.filter(t => t.active).shift();
   const o = await api.alarms.get(tab.id.toString());
 
   for (const c of startup) {

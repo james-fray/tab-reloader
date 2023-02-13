@@ -38,9 +38,9 @@ const custom = (tab, json) => {
       delete o.url;
 
       messaging({
-        method: 'add-job',
+        method: 'add-jobs',
         profile,
-        tab
+        tabs: [tab]
       });
       return true;
     }
@@ -256,14 +256,14 @@ api.alarms.fired(async o => {
       });
       messaging({
         reason: tabs.length ? 'alarm-replace' : 'tab-not-found-on-alarm',
-        method: 'remove-job',
-        id: tabId
+        method: 'remove-jobs',
+        ids: [tabId]
       });
       if (tabs.length) {
         messaging({
-          method: 'add-job',
+          method: 'add-jobs',
           profile,
-          tab: tabs[0],
+          tabs: [tabs[0]],
           now: true
         });
       }
@@ -298,9 +298,9 @@ api.tabs.loaded(d => {
       else {
         profile.href = d.url;
         messaging({
-          method: 'add-job',
+          method: 'add-jobs',
           profile,
-          tab: await api.tabs.get(tabId)
+          tabs: [await api.tabs.get(tabId)]
         });
       }
 
@@ -398,9 +398,9 @@ api.tabs.loaded(d => {
         const o = prefs['removed.jobs'][href];
         if (o) {
           messaging({
-            method: 'add-job',
+            method: 'add-jobs',
             profile: o.profile,
-            tab
+            tabs: [tab]
           });
           delete prefs['removed.jobs'][href];
 
@@ -433,17 +433,17 @@ const restore = async () => {
       const o = await api.alarms.get(tabId + '');
       if (!o) {
         messaging({
-          method: 'add-job',
+          method: 'add-jobs',
           profile,
-          tab
+          tabs: [tab]
         });
       }
     }
     else {
       await new Promise(resolve => messaging({
         reason: 'restore-tab-not-found',
-        method: 'remove-job',
-        id: tabId
+        method: 'remove-jobs',
+        ids: [tabId]
       }, undefined, resolve));
       profiles.push(profile);
     }
@@ -460,9 +460,9 @@ const restore = async () => {
         const o = await api.alarms.get(tab.id.toString());
         if (!o) {
           await new Promise(resolve => messaging({
-            method: 'add-job',
+            method: 'add-jobs',
             profile,
-            tab
+            tabs: [tab]
           }, undefined, resolve));
           break;
         }

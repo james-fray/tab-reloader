@@ -18,8 +18,8 @@ api.storage = {
   set(prefs) {
     return new Promise(resolve => chrome.storage.local.set(prefs, resolve));
   },
-  remove(key) {
-    chrome.storage.local.remove(key);
+  remove(...keys) {
+    chrome.storage.local.remove(keys);
   },
   changed(c) {
     chrome.storage.onChanged.addListener(c);
@@ -170,12 +170,11 @@ api.post = {
 };
 
 api.tabs = {
-  async active() {
-    const [tab] = await chrome.tabs.query({
-      active: true,
+  active() {
+    return chrome.tabs.query({
+      highlighted: true,
       currentWindow: true
     });
-    return tab;
   },
   activate(tabId) {
     return Promise.all([

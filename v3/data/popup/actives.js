@@ -3,6 +3,7 @@
 {
   const cache = {};
 
+  const ids = [];
   api.alarms.forEach(async o => {
     const tabId = Number(o.name);
     const tab = await api.tabs.get(tabId);
@@ -30,17 +31,21 @@
       }
     }
     else {
-      api.post.bg({
-        reason: 'tab-not-found-on-popup',
-        method: 'remove-job',
-        id: tabId
-      });
+      ids.push(tabId);
     }
   }).then(() => {
+    if (ids.length) {
+      api.post.bg({
+        reason: 'tab-not-found-on-popup',
+        method: 'remove-jobs',
+        ids
+      });
+    }
+
     if (Object.keys(cache)) {
       let timer;
       const once = () => {
-        api.alarms.forEach(async o => {
+        api.alarms.forEach(o => {
           const tabId = Number(o.name);
 
           if (cache[tabId]) {
