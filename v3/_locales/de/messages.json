@@ -12,7 +12,7 @@
     "message": "Neu laden, wenn das Fenster keinen Fokus hat"
   },
   "popup_cache": {
-    "message": "Cache beim Reload verwenden (Zustand wiederherstellen)"
+    "message": "Cache verwenden (Status wiederherstellen)"
   },
   "popup_form": {
     "message": "Übertragung von Formularen umgehen"
@@ -24,13 +24,13 @@
     "message": "Tab nicht neu laden, wenn er entladen wurde"
   },
   "popup_randomize": {
-    "message": "Zufällige Verzögerung beim ersten Neu-Laden"
+    "message": "Zufällige Verzögerung beim ersten Neuladen"
   },
   "popup_nodiscard": {
     "message": "Verhindern, dass der Tab entladen wird"
   },
   "popup_ste": {
-    "message": "Nach dem Reload bis zum Ende scrollen"
+    "message": "Nach dem Neuladen bis zum Ende blättern"
   },
   "popup_switch": {
     "message": "Zum Tab wechseln, wenn der Inhalt sich ändert"
@@ -48,7 +48,7 @@
     "message": "Aktive Tabs"
   },
   "popup_enable": {
-    "message": "Diesen Tab neu laden, alle"
+    "message": "Gewählte Tabs neu laden, alle "
   },
   "popup_permission": {
     "message": "Berechtigungen für diesen Tab erforderlich"
@@ -60,13 +60,31 @@
     "message": "Benutze die Umschalttaste (Shift), um Zeiten von weniger als 10 Sekunden zu erzwingen"
   },
   "popup_code": {
-    "message": "JS-Code ausführen"
+    "message": "JS Code ausführen"
+  },
+  "popup_code_desc": {
+    "message": "JS Code nach jedem Neuladen ausführen"
+  },
+  "popup_pre_code": {
+    "message": "Policy Code ausführen"
+  },
+  "popup_pre_code_desc": {
+    "message": "Falls definiert, muss die Funktion \"document.currentScript.dataset.continue = true\" gesetzt sein, damit ein Neuladen möglich ist"
+  },
+  "popup_pre_code_example_1": {
+    "message": "Nur neu laden, wenn die Seite das Wort \"hello\" enthält"
+  },
+  "popup_pre_code_example_2": {
+    "message": "Seite zufällig neu laden mit einer Rate von 50%"
+  },
+  "popup_pre_code_example_3": {
+    "message": "Seite nur neu laden, wenn sie sichtbar ist"
   },
   "popup_variation": {
     "message": "mit Variation"
   },
   "popup_variation_hint": {
-    "message": "Variation in Prozent setzen, um Tabs zufällig neu zu laden (gilt nach dem ersten Reload)"
+    "message": "Variation in Prozent setzen, um Tabs zufällig neu zu laden (gilt nach dem ersten Laden)"
   },
   "popup_enable_keys": {
     "message": "'S'-Taste zum Aktivieren des Reloads\\n'ESC'-Taste zum Deaktivieren des Reloads\\nUmschalttaste + ESC-Taste zum Schließen des Einstellungs-Fensters\\nStrg + 1 bis 10-Tasten zum Auswählen einer Voreinstellung"
@@ -81,31 +99,31 @@
     "message": "Als benutzerdefinierten Auftrag speichern"
   },
   "popup_saved": {
-    "message": "Saved!"
+    "message": "Gespeichert!"
   },
   "popup_sound_1": {
-    "message": "Sound 1"
+    "message": "Ton 1"
   },
   "popup_sound_2": {
-    "message": "Sound 2"
+    "message": "Ton 2"
   },
   "popup_sound_3": {
-    "message": "Sound 3"
+    "message": "Ton 3"
   },
   "popup_sound_4": {
-    "message": "Sound 4"
+    "message": "Ton 4"
   },
   "popup_sound_5": {
-    "message": "Sound 5"
+    "message": "Ton 5"
   },
   "popup_sound_6": {
-    "message": "Sound 6"
+    "message": "Ton 6"
   },
   "popup_sound_7": {
-    "message": "Sound 7"
+    "message": "Ton 7"
   },
   "popup_sound_8": {
-    "message": "Sound 8"
+    "message": "Ton 8"
   },
   "popup_test_sound": {
     "message": "Test"
@@ -126,10 +144,10 @@
     "message": "Standardwerte"
   },
   "options_default_time": {
-    "message": "Standard Reload Zeit"
+    "message": "Voreingestellte Zeit für das Neuladen:"
   },
   "options_default_variation": {
-    "message": "Standardwert für die Variation der Reload Zeit "
+    "message": "Voreingestellte Variation für das Neuladen: "
   },
   "options_pp_current": {
     "message": "Standardwert für \"Nicht neu laden, wenn der Tab aktiv ist\""
@@ -138,7 +156,7 @@
     "message": "Standardwert für \"Neu laden, wenn das Fenster keinen Fokus hat\""
   },
   "options_pp_cache": {
-    "message": "Standardwert für \"Cache beim Reload verwenden\""
+    "message": "Standardwert für \"Cache beim Neuladen verwenden\""
   },
   "options_pp_form": {
     "message": "Standardwert für \"Übertragung von Formularen umgehen\""
@@ -153,10 +171,10 @@
     "message": "Standardwert für \"Verhindern, dass der Tab entladen wird\""
   },
   "options_pp_randomize": {
-    "message": "Standardwert für \"Zufällige Verzögerung beim ersten Neu-Laden\""
+    "message": "Standardwert für \"Zufällige Verzögerung beim ersten Neuladen\""
   },
   "options_pp_scroll_to_end": {
-    "message": "Standardwert für \"Nach dem Reload bis zum Ende scrollen\""
+    "message": "Standardwert für \"Nach dem Neuladen bis zum Ende blättern\""
   },
   "options_presets": {
     "message": "Vorgaben"
@@ -234,13 +252,13 @@
     "message": "Einstellungen speichern"
   },
   "options_saved": {
-    "message": "Options saved"
+    "message": "Einstellungen gespeichert!"
   },
   "options_save_reminder": {
     "message": "Bitte nicht vergessen, die Einstellungen unten über den Button \"Einstellungen speichern\" zu sichern!"
   },
   "bg_reload_tabs": {
-    "message": "Tabs neu laden"
+    "message": "Tabs einmal neu laden"
   },
   "bg_all_tabs": {
     "message": "Alle Tabs"
@@ -267,10 +285,10 @@
     "message": "Alle Tabs"
   },
   "bg_no_reload": {
-    "message": "Dieser Tab"
+    "message": "Gewählte Tabs"
   },
   "bg_reload_every": {
-    "message": "Tab neu laden"
+    "message": "Gewählte Tabs neu laden"
   },
   "bg_reload_every_10s": {
     "message": "Alle 10s"
