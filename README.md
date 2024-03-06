@@ -1,4 +1,4 @@
-Tab Reloader provides a browser action' popup to set up a reloading job for each browser tab with a custom period ranging from 10 seconds to 1 month. The extension also has a badge number which indicates the number of active reloading jobs. You can see the list of all tabs with active reloading jobs in the browser action's popup
+Tab Reloader provides a browser action' popup to set up a reloading job for each browser tab with a custom period ranging from 10 seconds to 1 month. The extension also has a badge number which indicates the number of active reloading jobs. You can see the list of all tabs with active reloading jobs in the browser action's popup.
 
 ### YouTube Preview
 [![YouTube Preview](https://img.youtube.com/vi/zAhQlorZZTc/0.jpg)](https://www.youtube.com/watch?v=zAhQlorZZTc)
@@ -19,7 +19,7 @@ Tab Reloader provides a browser action' popup to set up a reloading job for each
 
 ### Links:
 
-  * FAQs page: https://add0n.com/tab-reloader.html
+  * FAQs page: https://webextension.org/listing/tab-reloader.html
   * Usage Review: https://webextension.org/blog/2022/04/17/tab-reloader-extension.html
   * Chrome Webstore: https://chrome.google.com/webstore/detail/tab-reloader-page-auto-re/dejobinhdiimklegodgbmbifijpppopn
   * Firefox add-ons: https://addons.mozilla.org/en-US/firefox/addon/tab-reloader/
