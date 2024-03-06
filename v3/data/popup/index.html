@@ -78,10 +78,22 @@
       <label for="blocked-period"><a data-href="faq29" data-i18n="popup_period" target="_blank"></a></label>
       <input type="text" id="blocked-period" placeholder="start (hh:mm:ss) - end (hh:mm:ss), ...">
       <input type="checkbox" id="code" data-permission=true>
-      <label for="code"><span data-i18n="popup_code"></span><span class="permission" data-i18n="popup_permission" data-i18n-value="title"> (!)</span></label>
+      <label for="code">
+        <a data-href="faq26" target="_blank" data-i18n="popup_code"></a>
+        <span class="permission" data-i18n="popup_permission" data-i18n-value="title"> (!)</span>
+      </label>
       <textarea id="code-value" rows="3" data-i18n="popup_code_desc" data-i18n-value="placeholder"></textarea>
       <input type="checkbox" id="pre-code" data-permission=true>
-      <label for="pre-code"><a data-href="faq30" target="_blank" data-i18n="popup_pre_code"></a><span class="permission" data-i18n="popup_permission" data-i18n-value="title"> (!)</span></label>
+      <label for="pre-code">
+        <a data-href="faq30" target="_blank" data-i18n="popup_pre_code"></a>
+        <span class="permission" data-i18n="popup_permission" data-i18n-value="title"> (!)</span>
+        <select id="pre-code-inset-example">
+          <option value="0">-</option>
+          <option value="1" data-i18n="popup_pre_code_example_1"></option>
+          <option value="2" data-i18n="popup_pre_code_example_2"></option>
+          <option value="3" data-i18n="popup_pre_code_example_3"></option>
+        </select>
+      </label>
       <textarea id="pre-code-value" rows="3" data-i18n="popup_pre_code_desc" data-i18n-value="placeholder"></textarea>
     </div>
   </details>

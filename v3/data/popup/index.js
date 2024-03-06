@@ -199,3 +199,20 @@ for (const a of [...document.querySelectorAll('[data-href]')]) {
     a.href = chrome.runtime.getManifest().homepage_url + '#' + a.dataset.href;
   }
 }
+// pre-code exmaple
+document.getElementById('pre-code-inset-example').onchange = e => {
+  let code = '';
+  if (e.target.value === '1') {
+    code = `document.currentScript.dataset.continue = document.body.innerText.includes("hello");`;
+  }
+  else if (e.target.value === '2') {
+    code = `document.currentScript.dataset.continue = Math.random() < 0.5;`;
+  }
+  else if (e.target.value === '3') {
+    code = `document.currentScript.dataset.continue = document.visibilityState === 'visible';`;
+  }
+  if (code) {
+    document.getElementById('pre-code-value').value = code;
+  }
+  e.target.value = 0;
+};

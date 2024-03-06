@@ -344,3 +344,13 @@ body:not([data-enabled=true]) #timer {
     text-decoration: line-through;
   }
 }
+
+label[for="pre-code"] {
+  display: flex;
+  gap: var(--gap);
+    align-items: center;
+}
+#pre-code-inset-example {
+  width: 16px;
+  height: 10px;
+}

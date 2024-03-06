@@ -71,6 +71,15 @@
   "popup_pre_code_desc": {
     "message": "If defined, the function must set \"document.currentScript.dataset.continue = true\" for reloading to happen"
   },
+  "popup_pre_code_example_1": {
+    "message": "Reload only if the page contains \"hello\" word"
+  },
+  "popup_pre_code_example_2": {
+    "message": "Reload the page randomly at 50% rate"
+  },
+  "popup_pre_code_example_3": {
+    "message": "Reload the page only if it is visible"
+  },
   "popup_variation": {
     "message": "with variation"
   },
