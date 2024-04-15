@@ -12,6 +12,7 @@ defaults.profile = {
   'nodiscard': false,
   'randomize': false,
   'scroll-to-end': false,
+  'visual-countdown': false,
   'switch': false,
   'sound': false,
   'sound-value': 1,

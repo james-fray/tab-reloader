@@ -34,6 +34,7 @@ const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('pp-nodiscard').checked = prefs['default-profile'].nodiscard;
   document.getElementById('pp-randomize').checked = prefs['default-profile'].randomize;
   document.getElementById('pp-scroll-to-end').checked = prefs['default-profile']['scroll-to-end'];
+  document.getElementById('pp-visual-countdown').checked = prefs['default-profile']['visual-countdown'];
 });
 restore();
 
@@ -69,7 +70,8 @@ document.getElementById('save').addEventListener('click', () => {
     'discarded': document.getElementById('pp-discarded').checked,
     'nodiscard': document.getElementById('pp-nodiscard').checked,
     'randomize': document.getElementById('pp-randomize').checked,
-    ['scroll-to-end']: document.getElementById('pp-scroll-to-end').checked
+    ['scroll-to-end']: document.getElementById('pp-scroll-to-end').checked,
+    ['visual-countdown']: document.getElementById('pp-visual-countdown').checked
   });
 
   if (badge === false) {

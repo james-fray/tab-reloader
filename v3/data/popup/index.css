@@ -216,6 +216,7 @@ a:visited {
   grid-template-columns: min-content 1fr min-content 1fr;
   grid-gap: var(--gap);
   align-items: center;
+  margin-bottom: calc(3 * var(--gap));
 }
 .tree *,
 .four * {
@@ -353,4 +354,8 @@ label[for="pre-code"] {
 #pre-code-inset-example {
   width: 16px;
   height: 10px;
+}
+
+.permission {
+  cursor: pointer;
 }

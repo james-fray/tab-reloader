@@ -48,6 +48,7 @@ const generate = (forced = false) => {
     'nodiscard': document.getElementById('nodiscard').checked,
     'randomize': document.getElementById('randomize').checked,
     'scroll-to-end': document.getElementById('scroll-to-end').checked,
+    'visual-countdown': document.getElementById('visual-countdown').checked,
     'switch': document.getElementById('switch').checked,
     'sound': document.getElementById('sound').checked,
     'sound-value': document.getElementById('sound-value').value,

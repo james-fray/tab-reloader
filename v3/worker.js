@@ -37,6 +37,13 @@ const messaging = (request, sender, response = () => {}) => {
       }
       response();
 
+      // remove counters
+      for (const e of request.ids) {
+        chrome.tabs.sendMessage(Number(e), {
+          method: 'kill-counter'
+        }, () => chrome.runtime.lastError);
+      }
+
       // allow discarding
       for (const [id, profile] of map.entries()) {
         if (profile && profile.nodiscard) {
@@ -87,7 +94,9 @@ const messaging = (request, sender, response = () => {}) => {
     });
 
     const period = Math.max(1, api.convert.secods(api.convert.str2obj(g.period)));
-    const when = Date.now() + (request.now ? 100 : (
+
+    // on "visual-countdown", we need to refresh the page to install the counter
+    const when = Date.now() + ((request.now || request.profile['visual-countdown']) ? 100 : (
       g.randomize ? parseInt(Math.random() * period * 1000) : period * 1000
     ));
 

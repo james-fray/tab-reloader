@@ -1,0 +1,44 @@
+body {
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  background-color: #fff;
+  color: #4d5156;
+  display: grid;
+  place-items: center;
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  margin: 0;
+  border: solid 1px #d6d9dc;
+  background-color: #f9fafa;
+}
+#cbc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14vw;
+}
+input[type=radio] {
+  position: absolute;
+  opacity: 0.2;
+  cursor: pointer;
+  margin: 0;
+}
+input[type=radio]:checked {
+  opacity: 1;
+}
+#tl {
+  top: 5px;
+  left: 5px;
+}
+#tr {
+  top: 5px;
+  right: 5px;
+}
+#bl {
+  bottom: 5px;
+  left: 5px;
+}
+#br {
+  bottom: 5px;
+  right: 5px;
+}

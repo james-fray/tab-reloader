@@ -65,5 +65,9 @@
     "stop.all": {
       "description": "Stop all Reloading Jobs"
     }
-  }
+  },
+  "web_accessible_resources": [{
+    "resources": ["/data/counter/index.html"],
+    "matches": ["*://*/*"]
+  }]
 }

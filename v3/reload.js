@@ -315,14 +315,25 @@ api.tabs.loaded(d => {
           files: ['/data/scripts/ste.js']
         }).catch(error);
       }
+      if (profile['visual-countdown']) {
+        api.inject(tabId, {
+          func: (tabId, period) => {
+            self.tabId = tabId;
+            self.period = period;
+          },
+          args: [tabId, profile.period]
+        }).then(() => api.inject(tabId, {
+          files: ['/data/scripts/vcd.js']
+        })).catch(error);
+      }
       if (profile.switch) {
         api.inject(tabId, {
-          func: () => window.switch = true
+          func: () => self.switch = true
         }).catch(error);
       }
       if (profile.sound) {
         api.inject(tabId, {
-          func: src => window.src = src,
+          func: src => self.src = src,
           args: [chrome.runtime.getURL('/data/sounds/' + profile['sound-value'] + '.mp3')]
         }).catch(error);
       }

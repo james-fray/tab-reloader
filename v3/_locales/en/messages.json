@@ -131,6 +131,9 @@
   "popup_rate": {
     "message": "Rate Me"
   },
+  "popup_vcd": {
+    "message": "Display visual countdown"
+  },
   "options_title": {
     "message": "Options Page :: Tab Reloader"
   },
@@ -175,6 +178,9 @@
   },
   "options_pp_scroll_to_end": {
     "message": "Default value for \"Scroll to the end after reload\""
+  },
+  "options_pp_visual_countdown": {
+    "message": "Default value for \"Display visual countdown\""
   },
   "options_presets": {
     "message": "Presets"
