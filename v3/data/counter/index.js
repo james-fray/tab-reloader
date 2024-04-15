@@ -5,12 +5,12 @@ const args = new URLSearchParams(location.search);
 const tabId = args.get('tabId');
 const period = args.get('period');
 
-const remaining = (o, period) => {
+const remaining = (o, p) => {
   let remaining = (o.scheduledTime - Date.now()) / 1000;
 
-  if (remaining < 0 && period) {
+  if (remaining < 0 && p) {
     const period = api.convert.secods(
-      api.convert.str2obj(period)
+      api.convert.str2obj(p)
     );
     while (period > 0 && remaining < 0) {
       remaining += period;

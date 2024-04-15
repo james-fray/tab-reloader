@@ -98,6 +98,9 @@
   "popup_save_as_json": {
     "message": "Save as a Custom Job"
   },
+  "popup_save_as_json_desc": {
+    "message": "Use Shift + Click to match against the full URL instead of the hostname.\nUse Ctrl + Click or Command + Click to match against the full URL excluding parameters."
+  },
   "popup_saved": {
     "message": "Saved!"
   },

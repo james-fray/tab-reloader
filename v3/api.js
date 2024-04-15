@@ -126,7 +126,7 @@ api.match = (key = '', str = '', parent = undefined) => {
     }
   }
   else {
-    return str.indexOf(key) !== -1;
+    return str.includes(key);
   }
 };
 

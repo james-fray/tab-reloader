@@ -4,12 +4,7 @@ const custom = (tab, json) => {
   for (const o of json) {
     let match = false;
     if (o.url) {
-      if (/^\w{2}:/.test(o.url)) {
-        match = api.match(o.url, tab.url);
-      }
-      else {
-        match = api.match('pt:' + o.url, tab.url);
-      }
+      match = api.match(o.url, tab.url);
     }
     else if (o.hostname) {
       match = api.match('ht:' + o.hostname, tab.url);

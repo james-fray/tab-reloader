@@ -136,7 +136,7 @@ api.post.fired(request => {
 // save as policy
 document.getElementById('save-as-json').onclick = async e => {
   try {
-    const {hostname} = new URL(tab.url);
+    const {hostname, origin, pathname} = new URL(tab.url);
     if (hostname) {
       const prefs = await api.storage.get({
         'json': []
@@ -158,12 +158,24 @@ document.getElementById('save-as-json').onclick = async e => {
         j['pre-code'] = '';
       }
       delete j['pre-code-value'];
-      // remove old entries
-      prefs.json = prefs.json.filter(o => o.hostname !== hostname);
-      prefs.json.push({
-        hostname,
-        ...j
-      });
+      if (e.shiftKey || e.ctrlKey || e.metaKey) {
+        const url = e.shiftKey ? tab.url : (origin + pathname);
+
+        // remove old entries (only match with url)
+        prefs.json = prefs.json.filter(o => o.url !== url);
+        prefs.json.push({
+          url,
+          ...j
+        });
+      }
+      else {
+        // remove old entries (only match with hostname)
+        prefs.json = prefs.json.filter(o => o.hostname !== hostname);
+        prefs.json.push({
+          hostname,
+          ...j
+        });
+      }
       api.storage.set(prefs);
       e.target.textContent = chrome.i18n.getMessage('popup_saved');
     }
