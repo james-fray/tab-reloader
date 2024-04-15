@@ -47,7 +47,7 @@
   const observe = request => {
     if (request.method === 'kill-counter') {
       remove();
-      chrome.runtime.removeListener(observe);
+      chrome.runtime.onMessage.removeListener(observe);
       chrome.storage.onChanged.removeListener(position);
     }
   };

@@ -95,8 +95,7 @@ const messaging = (request, sender, response = () => {}) => {
 
     const period = Math.max(1, api.convert.secods(api.convert.str2obj(g.period)));
 
-    // on "visual-countdown", we need to refresh the page to install the counter
-    const when = Date.now() + ((request.now || request.profile['visual-countdown']) ? 100 : (
+    const when = Date.now() + (request.now ? 100 : (
       g.randomize ? parseInt(Math.random() * period * 1000) : period * 1000
     ));
 
@@ -113,6 +112,10 @@ const messaging = (request, sender, response = () => {}) => {
           periodInMinutes: Math.max(1, period / 60)
         });
         api.button.icon('active', tab.id);
+        // countdown
+        if (request.profile['visual-countdown']) {
+          api.tabs.countdown(tab.id, request.profile.period).catch(e => console.error(e));
+        }
         // no discard
         if (g.nodiscard) {
           api.tabs.update(tab.id, {

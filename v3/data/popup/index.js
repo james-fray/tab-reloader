@@ -10,7 +10,6 @@ document.addEventListener('mousedown', e => {
   }
 });
 
-
 const remaining = (o, profile) => {
   let remaining = (o.scheduledTime - Date.now()) / 1000;
   if (remaining < 0 && profile) {

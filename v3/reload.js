@@ -106,6 +106,17 @@ const schedule = (time, prefs) => {
   return rs.some(a => a) === false;
 };
 
+// custom countdown for a tab
+api.tabs.countdown = (tabId, period) => api.inject(tabId, {
+  func: (tabId, period) => {
+    self.tabId = tabId;
+    self.period = period;
+  },
+  args: [tabId, period]
+}).then(() => api.inject(tabId, {
+  files: ['/data/scripts/vcd.js']
+}));
+
 api.alarms.fired(async o => {
   const tabId = Number(o.name);
   if (isNaN(tabId)) {
@@ -311,15 +322,7 @@ api.tabs.loaded(d => {
         }).catch(error);
       }
       if (profile['visual-countdown']) {
-        api.inject(tabId, {
-          func: (tabId, period) => {
-            self.tabId = tabId;
-            self.period = period;
-          },
-          args: [tabId, profile.period]
-        }).then(() => api.inject(tabId, {
-          files: ['/data/scripts/vcd.js']
-        })).catch(error);
+        api.tabs.countdown(tabId, profile.period).catch(error);
       }
       if (profile.switch) {
         api.inject(tabId, {
