@@ -12,7 +12,7 @@
     "message": "Neu laden, wenn das Fenster keinen Fokus hat"
   },
   "popup_cache": {
-    "message": "Cache verwenden (Status wiederherstellen)"
+    "message": "Cache beim Neuladen verwenden (Stand wiederherstellen)"
   },
   "popup_form": {
     "message": "Übertragung von Formularen umgehen"
@@ -39,7 +39,7 @@
     "message": "Ton abspielen, wenn der Inhalt sich ändert"
   },
   "popup_bw": {
-    "message": "Nicht laden, wenn Adresse/Titel das enthält"
+    "message": "Nicht neu laden, wenn Adresse/Titel das enthält"
   },
   "popup_period": {
     "message": "Neu laden zwischen"
@@ -84,7 +84,7 @@
     "message": "mit Variation"
   },
   "popup_variation_hint": {
-    "message": "Variation in Prozent setzen, um Tabs zufällig neu zu laden (gilt nach dem ersten Laden)"
+    "message": "Variation in Prozent, um Tabs zufällig neu zu laden (gilt nach dem ersten Neuladen)"
   },
   "popup_enable_keys": {
     "message": "'S'-Taste zum Aktivieren des Reloads\\n'ESC'-Taste zum Deaktivieren des Reloads\\nUmschalttaste + ESC-Taste zum Schließen des Einstellungs-Fensters\\nStrg + 1 bis 10-Tasten zum Auswählen einer Voreinstellung"
@@ -97,6 +97,9 @@
   },
   "popup_save_as_json": {
     "message": "Als benutzerdefinierten Auftrag speichern"
+  },
+  "popup_save_as_json_desc": {
+    "message": "Verwenden Sie die Shift + Mausklick, um einen Abgleich mit der vollständigen URL anstelle des Hostnamens durchzuführen.\nVerwenden Sie Strg + Mausklick oder Command + Mausklick, um einen Abgleich mit der vollständigen URL ohne Parameter durchzuführen."
   },
   "popup_saved": {
     "message": "Gespeichert!"
@@ -130,6 +133,9 @@
   },
   "popup_rate": {
     "message": "Bewerte mich"
+  },
+  "popup_vcd": {
+    "message": "Visuellen Countdown anzeigen"
   },
   "options_title": {
     "message": "Einstellungen :: Tab Reloader"
@@ -175,6 +181,9 @@
   },
   "options_pp_scroll_to_end": {
     "message": "Standardwert für \"Nach dem Neuladen bis zum Ende blättern\""
+  },
+  "options_pp_visual_countdown": {
+    "message": "Standardwert für \"Visuellen Countdown anzeigen\""
   },
   "options_presets": {
     "message": "Vorgaben"
