@@ -1,21 +1,39 @@
+:root {
+  color-scheme: light dark;
+
+  --bg: #fff;
+  --fg: #444;
+  --border-color: #d9d9d9;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark light;
+
+    --bg: #202124;
+    --fg: #b5bec6;
+    --border-color: #494c50;
+  }
+}
+
 body {
   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-  background-color: #fff;
-  color: #4d5156;
+  background-color: var(--bg);
+  accent-color: var(--bg);
+  color: var(--fg);
   display: grid;
   place-items: center;
   width: 100vw;
   height: 100vh;
   box-sizing: border-box;
   margin: 0;
-  border: solid 1px #d6d9dc;
-  background-color: #f0f0f2;
+  border: solid 1px var(--border-color);
 }
 #cbc {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14vw;
+  font-size: 20vw;
 }
 input[type=radio] {
   position: absolute;
