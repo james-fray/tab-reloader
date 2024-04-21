@@ -71,6 +71,15 @@
   "popup_pre_code_desc": {
     "message": "Om detta aktiveras måste funktionen ange \"document.currentScript.dataset.continue = true\" för att kunna ladda om"
   },
+  "popup_pre_code_example_1": {
+    "message": "Ladda om när sidan innehåller ordet \"hello\""
+  },
+  "popup_pre_code_example_2": {
+    "message": "Ladda om slumpartat med ett intervall på 50 %"
+  },
+  "popup_pre_code_example_3": {
+    "message": "Ladda om när sidan är synlig"
+  },
   "popup_variation": {
     "message": "med variation på"
   },
@@ -88,6 +97,9 @@
   },
   "popup_save_as_json": {
     "message": "Spara som ett anpassat jobb"
+  },
+  "popup_save_as_json_desc": {
+    "message": "Shift + klicka för att matcha fullständiga webbadressen istället för värdnamnet.\nCtrl/Kmd + klicka för att matcha fullständiga webbadressen exklusive parametrar."
   },
   "popup_saved": {
     "message": "Sparades!"
@@ -121,6 +133,9 @@
   },
   "popup_rate": {
     "message": "Betygsätt"
+  },
+  "popup_vcd": {
+    "message": "Visa visuell nedräkning"
   },
   "options_title": {
     "message": "Alternativ :: Tab Reloader"
@@ -166,6 +181,9 @@
   },
   "options_pp_scroll_to_end": {
     "message": "Standardvärde för \"Skrolla längst ned efter omladdning\""
+  },
+  "options_pp_visual_countdown": {
+    "message": "Standardvärde för \"Visa visuell nedräkning\""
   },
   "options_presets": {
     "message": "Förval"
