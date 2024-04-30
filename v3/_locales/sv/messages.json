@@ -1,0 +1,326 @@
+{
+  "description": {
+    "message": "En lättanvänd flikomladdare med anpassad omladdningstid för individuella flikar och mer!"
+  },
+  "popup_active": {
+    "message": "Ladda inte om när fliken är aktiv"
+  },
+  "popup_configs": {
+    "message": "Inställningar"
+  },
+  "popup_nofocus": {
+    "message": "Ladda om när fönstret saknar fokus"
+  },
+  "popup_cache": {
+    "message": "Anv. cache vid omladdning (återställ tillståndet)"
+  },
+  "popup_form": {
+    "message": "Kringgå formulärinlämning"
+  },
+  "popup_offline": {
+    "message": "Ladda inte om fliken när uppkoppling saknas"
+  },
+  "popup_discarded": {
+    "message": "Ladda inte om fliken när den är slängd"
+  },
+  "popup_randomize": {
+    "message": "Slumpa fördröjning vid första omladdningen"
+  },
+  "popup_nodiscard": {
+    "message": "Förhindra fliken från att slängas"
+  },
+  "popup_ste": {
+    "message": "Skrolla längst ned efter omladdning"
+  },
+  "popup_switch": {
+    "message": "Byt till fliken när innehållet förändras"
+  },
+  "popup_sound": {
+    "message": "Spela upp ljud när innehållet förändras"
+  },
+  "popup_bw": {
+    "message": "Ladda inte om när adress/titel innehåller"
+  },
+  "popup_period": {
+    "message": "Ladda om mellan"
+  },
+  "popup_active_tabs": {
+    "message": "Aktiva flikar"
+  },
+  "popup_enable": {
+    "message": "Ladda om valda flikar efter"
+  },
+  "popup_permission": {
+    "message": "Värdbehörighet för fliken krävs"
+  },
+  "popup_presets": {
+    "message": "Förval"
+  },
+  "popup_forced": {
+    "message": "Använd Shift-tangenten för att tvinga perioder mindre än 10 sekunder"
+  },
+  "popup_code": {
+    "message": "Kör JS-kod"
+  },
+  "popup_code_desc": {
+    "message": "Kör denna JS-kod efter varje omladdning"
+  },
+  "popup_pre_code": {
+    "message": "Kör policykod"
+  },
+  "popup_pre_code_desc": {
+    "message": "Om detta aktiveras måste funktionen ange \"document.currentScript.dataset.continue = true\" för att kunna ladda om"
+  },
+  "popup_pre_code_example_1": {
+    "message": "Ladda om när sidan innehåller ordet \"hello\""
+  },
+  "popup_pre_code_example_2": {
+    "message": "Ladda om slumpartat med ett intervall på 50 %"
+  },
+  "popup_pre_code_example_3": {
+    "message": "Ladda om när sidan är synlig"
+  },
+  "popup_variation": {
+    "message": "med variation på"
+  },
+  "popup_variation_hint": {
+    "message": "Ange variation i procent för att slumpa omladdningstiden (tillämpas efter första omladdningen)"
+  },
+  "popup_enable_keys": {
+    "message": "Aktivera omladdning med S-tangenten\nInaktivera omladdning med Escape-tangenten\nStäng popup med Shift + Escape-tangenten\nVälj ett förval med Ctrl/Command + 1/10-tangenterna"
+  },
+  "popup_start": {
+    "message": "Starta omladdning"
+  },
+  "popup_stop": {
+    "message": "Stoppa omladdning"
+  },
+  "popup_save_as_json": {
+    "message": "Spara som ett anpassat jobb"
+  },
+  "popup_save_as_json_desc": {
+    "message": "Shift + klicka för att matcha fullständiga webbadressen istället för värdnamnet.\nCtrl/Kmd + klicka för att matcha fullständiga webbadressen exklusive parametrar."
+  },
+  "popup_saved": {
+    "message": "Sparades!"
+  },
+  "popup_sound_1": {
+    "message": "Ljud 1"
+  },
+  "popup_sound_2": {
+    "message": "Ljud 2"
+  },
+  "popup_sound_3": {
+    "message": "Ljud 3"
+  },
+  "popup_sound_4": {
+    "message": "Ljud 4"
+  },
+  "popup_sound_5": {
+    "message": "Ljud 5"
+  },
+  "popup_sound_6": {
+    "message": "Ljud 6"
+  },
+  "popup_sound_7": {
+    "message": "Ljud 7"
+  },
+  "popup_sound_8": {
+    "message": "Ljud 8"
+  },
+  "popup_test_sound": {
+    "message": "Testa"
+  },
+  "popup_rate": {
+    "message": "Betygsätt"
+  },
+  "popup_vcd": {
+    "message": "Visa visuell nedräkning"
+  },
+  "options_title": {
+    "message": "Alternativ :: Tab Reloader"
+  },
+  "options_badge": {
+    "message": "Visa totala antalet aktiva jobb inuti ikonen"
+  },
+  "options_color": {
+    "message": "Ikonfärg:"
+  },
+  "options_defaults": {
+    "message": "Standardvärden"
+  },
+  "options_default_time": {
+    "message": "Standardvärde för omladdningstid:"
+  },
+  "options_default_variation": {
+    "message": "Standardvärde för varierad omladdningstid:"
+  },
+  "options_pp_current": {
+    "message": "Standardvärde för \"Ladda inte om när fliken är aktiv\""
+  },
+  "options_pp_nofocus": {
+    "message": "Standardvärde för \"Ladda om när fönstret saknar fokus\""
+  },
+  "options_pp_cache": {
+    "message": "Standardvärde för \"Använd cache vid omladdning\""
+  },
+  "options_pp_form": {
+    "message": "Standardvärde för \"Kringgå formulärinlämning\""
+  },
+  "options_pp_offline": {
+    "message": "Standardvärde för \"Ladda inte om fliken när uppkoppling saknas\""
+  },
+  "options_pp_discarded": {
+    "message": "Standardvärde för \"Ladda inte om fliken när den är slängd\""
+  },
+  "options_pp_nodiscard": {
+    "message": "Standardvärde för \"Förhindra fliken från att slängas\""
+  },
+  "options_pp_randomize": {
+    "message": "Standardvärde för \"Slumpa fördröjning vid första omladdningen\""
+  },
+  "options_pp_scroll_to_end": {
+    "message": "Standardvärde för \"Skrolla längst ned efter omladdning\""
+  },
+  "options_pp_visual_countdown": {
+    "message": "Standardvärde för \"Visa visuell nedräkning\""
+  },
+  "options_presets": {
+    "message": "Förval"
+  },
+  "options_custom_jobs": {
+    "message": "Anpassade jobb"
+  },
+  "options_sample": {
+    "message": "infoga ett exempel"
+  },
+  "options_keywords": {
+    "message": "nyckelord som stöds"
+  },
+  "options_events": {
+    "message": "händelser som stöds"
+  },
+  "options_desc": {
+    "message": "visa/dölj beskrivning"
+  },
+  "options_json_desc": {
+    "message": "Lista med värdnamn i JSON-format för att ange en automatiskt omladdning efter varje uppstart. Om du behöver matcha webbadresser i stället för värdnamn tar du bort nyckeln \"hostname\" och lägger i stället till nyckeln \"url\". Läs sidan med frågor och svar för fler instruktioner."
+  },
+  "options_dynamic_json": {
+    "message": "Kontrollera alltid för att installera omladdningsjobb från JSON-objektet när en ny sida läses in."
+  },
+  "options_dynamic_json_desc": {
+    "message": "När detta alternativ aktiveras kommer tillägget installera ett nytt anpassat omladdningsjobb för nya sidor som matchar en av nycklarna i listan."
+  },
+  "options_policy": {
+    "message": "Omladdningspolicy"
+  },
+  "options_misc": {
+    "message": "Övrigt"
+  },
+  "options_reassign": {
+    "message": "Försök tilldela ett omladdningsjobb för en ny flik som tidigare har haft ett aktivt omladdningsjobb."
+  },
+  "options_faqs": {
+    "message": "Öppna sidan med frågor och svar vid uppdateringar"
+  },
+  "options_tools": {
+    "message": "Verktyg"
+  },
+  "options_export_desc": {
+    "message": "Exportera: Exportera alla inställningar till en JSON-fil och ladda ned den till standardmappen för nedladdningar"
+  },
+  "options_import_desc": {
+    "message": "Importera: Importera inställningar från en JSON-fil (detta överstrider nuvarande inställningar och startar om tillägget)"
+  },
+  "options_reset_desc": {
+    "message": "Återställ: Återställ inställningar till fabriksinställningarna"
+  },
+  "options_reset": {
+    "message": "Standardvärden"
+  },
+  "options_export": {
+    "message": "Exportera"
+  },
+  "options_import": {
+    "message": "Importera"
+  },
+  "options_permission": {
+    "message": "Värdbehörighet"
+  },
+  "options_instruction": {
+    "message": "Användningsinstruktioner"
+  },
+  "options_ofq": {
+    "message": "Frågor och svar"
+  },
+  "options_support": {
+    "message": "Stöd utvecklingen"
+  },
+  "options_save": {
+    "message": "Spara alternativ"
+  },
+  "options_saved": {
+    "message": "Alternativ sparades"
+  },
+  "options_save_reminder": {
+    "message": "Se till att klicka på knappen \"Spara alternativ\"!"
+  },
+  "bg_reload_tabs": {
+    "message": "Ladda om flikar en gång"
+  },
+  "bg_all_tabs": {
+    "message": "Alla flikar"
+  },
+  "bg_reload_all_discarded": {
+    "message": "Alla slängda flikar"
+  },
+  "bg_reload_window": {
+    "message": "Alla flikar i aktuellt fönster"
+  },
+  "bg_reload_window_discarded": {
+    "message": "Alla slängda flikar i aktuellt fönster"
+  },
+  "bg_reload_tabs_left": {
+    "message": "Flikar åt vänster"
+  },
+  "bg_reload_tabs_right": {
+    "message": "Flikar åt höger"
+  },
+  "bg_stop": {
+    "message": "Sluta ladda om"
+  },
+  "bg_stop_all": {
+    "message": "Alla flikar"
+  },
+  "bg_no_reload": {
+    "message": "Valda flikar"
+  },
+  "bg_reload_every": {
+    "message": "Ladda om valda flikar"
+  },
+  "bg_reload_every_10s": {
+    "message": "Var 10:e sekund"
+  },
+  "bg_reload_every_30s": {
+    "message": "Var 30:e sekund"
+  },
+  "bg_reload_every_1m": {
+    "message": "Varje minut"
+  },
+  "bg_reload_every_5m": {
+    "message": "Var 5:e minut"
+  },
+  "bg_reload_every_15m": {
+    "message": "Var 15:e minut"
+  },
+  "bg_reload_every_1h": {
+    "message": "Varje timme"
+  },
+  "bg_restart": {
+    "message": "Starta om tillägget"
+  },
+  "bg_options": {
+    "message": "Alternativ"
+  }
+}
