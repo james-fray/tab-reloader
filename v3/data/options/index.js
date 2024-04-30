@@ -22,7 +22,7 @@ const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('json').value = JSON.stringify(prefs.json, null, '  ');
   document.getElementById('dynamic.json').checked = prefs['dynamic.json'];
   document.getElementById('policy').value = JSON.stringify(prefs.policy, null, '  ');
-  document.getElementById('presets').value = prefs.presets.slice(0, 6).map(o => api.convert.obj2str(o)).join(', ');
+  document.getElementById('presets').value = prefs.presets.map(o => api.convert.obj2str(o)).join(', ');
   document.getElementById('pp-period').value = prefs['default-profile'].period;
   document.getElementById('pp-variation').value = prefs['default-profile'].variation;
   document.getElementById('pp-current').checked = prefs['default-profile'].current;

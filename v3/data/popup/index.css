@@ -277,6 +277,11 @@ body:not([data-enabled=true]) #timer {
   margin-top: 5px;
   overflow: hidden;
 }
+#presets-body {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  flex: 1;
+}
 #actives {
   overflow: auto;
   gap: 5px;

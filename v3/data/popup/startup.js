@@ -9,16 +9,18 @@ api.storage.get({
 }).then(({presets}) => {
   const f = document.createDocumentFragment();
 
-  presets.slice(0, 6).forEach((preset, n) => {
+  presets.forEach((preset, n) => {
     const span = document.createElement('span');
     span.textContent = api.convert.obj2str(preset);
     span.preset = preset;
     span.classList.add('entry');
-    span.title = 'Ctrl/Command + ' + (n + 1);
+    if (n < 10) {
+      span.title = 'Ctrl/Command + ' + (n + 1);
+    }
     f.appendChild(span);
   });
 
-  document.getElementById('presets').appendChild(f);
+  document.getElementById('presets-body').appendChild(f);
 });
 document.getElementById('presets').onclick = e => {
   if (e.target.preset) {
