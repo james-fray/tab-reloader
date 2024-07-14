@@ -500,16 +500,21 @@ const restore = async () => {
 api.runtime.started(() => restore());
 
 /* make sure timeouts are OK */
+api.sync = () => {
+  const now = Date.now();
+  api.alarms.forEach(o => {
+    if (o.scheduledTime < now) {
+      console.log(o);
+
+      api.alarms.add(o.name, {
+        when: now + Math.round(Math.random() * 1000),
+        periodInMinutes: o.periodInMinutes
+      });
+    }
+  });
+};
 api.idle.fired(state => {
   if (state === 'active') {
-    const now = Date.now();
-    api.alarms.forEach(o => {
-      if (o.scheduledTime < now) {
-        api.alarms.add(o.name, {
-          when: now + Math.round(Math.random() * 1000),
-          periodInMinutes: o.periodInMinutes
-        });
-      }
-    });
+    api.sync();
   }
 });

@@ -293,6 +293,9 @@ const messaging = (request, sender, response = () => {}) => {
     });
     return true;
   }
+  else if (request.method === 'synchronous-timings') {
+    api.sync();
+  }
 };
 
 api.post.fired(messaging);
