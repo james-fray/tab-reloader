@@ -4,6 +4,28 @@ const api = {
   firefox: /Firefox/.test(navigator.userAgent)
 };
 
+api.notify = (tabId, e, badge = 'E', color = 'red') => {
+  chrome.action.setTitle({
+    tabId,
+    title: e.message || e
+  });
+  chrome.action.setBadgeBackgroundColor({
+    tabId,
+    color
+  });
+  chrome.action.setBadgeText({
+    tabId,
+    text: badge
+  });
+  chrome.scripting.executeScript({
+    target: {
+      tabId
+    },
+    func: msg => alert(msg),
+    args: [e.message || e]
+  }).catch(() => {});
+};
+
 api.storage = {
   get(prefs) {
     return new Promise(resolve => chrome.storage.local.get(prefs, ps => {
@@ -299,17 +321,33 @@ api.commands = {
   }
 };
 
-api.runtime = {
-  started(c) {
-    if (api.firefox) {
-      c();
+{
+  const requests = new Set();
+  api.runtime = {
+    started(c) {
+      requests.add(c);
     }
-    else {
-      chrome.runtime.onStartup.addListener(c);
-      chrome.runtime.onInstalled.addListener(c);
+  };
+  const once = (...args) => {
+    if (once.done) {
+      return;
     }
-  }
-};
+    once.done = true;
+
+    for (const r of requests) {
+      try {
+        r(...args);
+      }
+      catch (e) {
+        console.error('Cannot start', r);
+      }
+    }
+    requests.clear();
+  };
+
+  chrome.runtime.onStartup.addListener(once);
+  chrome.runtime.onInstalled.addListener(once);
+}
 
 api.permissions = {
   async request(o) {

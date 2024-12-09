@@ -1,6 +1,8 @@
 /* global api, defaults */
 
-self.importScripts('api.js', 'defaults.js', 'reload.js', 'context.js');
+if (typeof importScripts !== 'undefined') {
+  self.importScripts('api.js', 'defaults.js', 'reload.js', 'context.js');
+}
 
 // Firefox
 if (typeof URLPattern === 'undefined') {
@@ -345,8 +347,7 @@ api.storage.changed(ps => ps.color && api.button.color(ps.color.newValue));
 {
   const {management, runtime: {onInstalled, setUninstallURL, getManifest}, storage, tabs} = chrome;
   if (navigator.webdriver !== true) {
-    const page = getManifest().homepage_url;
-    const {name, version} = getManifest();
+    const {homepage_url: page, name, version} = getManifest();
     onInstalled.addListener(({reason, previousVersion}) => {
       management.getSelf(({installType}) => installType === 'normal' && storage.local.get({
         'faqs': true,

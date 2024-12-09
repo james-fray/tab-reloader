@@ -3,7 +3,7 @@
   "name": "Tab Reloader (page auto refresh)",
   "description": "__MSG_description__",
   "default_locale": "en",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "permissions": [
     "storage",
     "tabs",
@@ -12,7 +12,8 @@
     "contextMenus",
     "idle",
     "scripting",
-    "offscreen"
+    "offscreen",
+    "declarativeNetRequestWithHostAccess"
   ],
   "optional_host_permissions": [
     "<all_urls>"
@@ -26,7 +27,10 @@
     "default_title": "Tab Reloader"
   },
   "background": {
-    "service_worker": "worker.js"
+    "service_worker": "worker.js",
+    "scripts": [
+      "api.js", "defaults.js", "reload.js", "context.js", "worker.js"
+    ]
   },
   "homepage_url": "https://webextension.org/listing/tab-reloader.html",
   "icons": {
@@ -69,5 +73,11 @@
   "web_accessible_resources": [{
     "resources": ["/data/counter/index.html"],
     "matches": ["*://*/*"]
-  }]
+  }],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "jid0-bnmfwWw2w2w4e4edvcdDbnMhdVg@jetpack",
+      "strict_min_version": "128.0"
+    }
+  }
 }

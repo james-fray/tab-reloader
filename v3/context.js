@@ -4,116 +4,133 @@ api.runtime.started(() => {
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_every'),
     id: 'reload.every',
-    contexts: ['action', 'browser_action', 'tab']
+    contexts: ['action', 'tab']
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_every_10s'),
     id: 'reload.every.00:00:10',
-    contexts: ['action', 'browser_action', 'tab'],
+    contexts: ['action', 'tab'],
     parentId: 'reload.every'
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_every_30s'),
     id: 'reload.every.00:00:30',
-    contexts: ['action', 'browser_action', 'tab'],
+    contexts: ['action', 'tab'],
     parentId: 'reload.every'
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_every_1m'),
     id: 'reload.every.00:01:00',
-    contexts: ['action', 'browser_action', 'tab'],
+    contexts: ['action', 'tab'],
     parentId: 'reload.every'
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_every_5m'),
     id: 'reload.every.00:05:00',
-    contexts: ['action', 'browser_action', 'tab'],
+    contexts: ['action', 'tab'],
     parentId: 'reload.every'
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_every_15m'),
     id: 'reload.every.00:15:00',
-    contexts: ['action', 'browser_action', 'tab'],
+    contexts: ['action', 'tab'],
     parentId: 'reload.every'
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_every_1h'),
     id: 'reload.every.01:00:00',
-    contexts: ['action', 'browser_action', 'tab'],
+    contexts: ['action', 'tab'],
     parentId: 'reload.every'
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_tabs'),
     id: 'reload',
-    contexts: ['action', 'browser_action', 'tab']
+    contexts: ['action', 'tab']
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_all_tabs'),
     id: 'reload.all',
-    contexts: ['action', 'browser_action', 'tab'],
+    contexts: ['action', 'tab'],
     parentId: 'reload'
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_all_discarded'),
     id: 'reload.all.discarded',
-    contexts: ['action', 'browser_action', 'tab'],
+    contexts: ['action', 'tab'],
     parentId: 'reload'
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_window'),
     id: 'reload.window',
-    contexts: ['action', 'browser_action', 'tab'],
+    contexts: ['action', 'tab'],
     parentId: 'reload'
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_window_discarded'),
     id: 'reload.window.discarded',
-    contexts: ['action', 'browser_action', 'tab'],
+    contexts: ['action', 'tab'],
     parentId: 'reload'
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_tabs_left'),
     id: 'reload.tabs.left',
-    contexts: ['action', 'browser_action', 'tab'],
+    contexts: ['action', 'tab'],
     parentId: 'reload'
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_tabs_right'),
     id: 'reload.tabs.right',
-    contexts: ['action', 'browser_action', 'tab'],
+    contexts: ['action', 'tab'],
     parentId: 'reload'
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_stop'),
     id: 'stop',
-    contexts: ['action', 'browser_action', 'tab']
+    contexts: ['action', 'tab']
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_no_reload'),
     id: 'no.reload',
-    contexts: ['action', 'browser_action', 'tab'],
+    contexts: ['action', 'tab'],
     parentId: 'stop'
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_stop_all'),
     id: 'stop.all',
-    contexts: ['action', 'browser_action', 'tab'],
+    contexts: ['action', 'tab'],
     parentId: 'stop'
   });
   api.context.add({
-    contexts: ['action', 'browser_action', 'tab'],
+    title: chrome.i18n.getMessage('bg_csp'),
+    id: 'csp',
+    contexts: ['action', 'tab']
+  });
+  api.context.add({
+    title: chrome.i18n.getMessage('bg_csp_remove'),
+    id: 'csp.remove',
+    contexts: ['action', 'tab'],
+    parentId: 'csp'
+  });
+  api.context.add({
+    title: chrome.i18n.getMessage('bg_csp_reset'),
+    id: 'csp.reset',
+    contexts: ['action', 'tab'],
+    parentId: 'csp'
+  });
+  api.context.add({
+    contexts: ['action', 'tab'],
     type: 'separator'
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_restart'),
     id: 'restart',
-    contexts: ['action', 'browser_action', 'tab']
+    contexts: ['action', 'tab']
   });
   if (api.firefox) {
     api.context.add({
       title: chrome.i18n.getMessage('bg_options'),
       id: 'options',
-      contexts: ['action', 'browser_action']
+      contexts: ['action']
     });
   }
 });
@@ -182,7 +199,7 @@ api.runtime.started(() => {
           'ids': tabs.map(t => t.id),
           'skip-echo': true
         });
-      })
+      });
     }
     else if (info.menuItemId === 'stop.all') {
       api.alarms.keys().then(names => {
@@ -196,6 +213,67 @@ api.runtime.started(() => {
     }
     else if (info.menuItemId === 'restart') {
       chrome.runtime.reload();
+    }
+    else if (info.menuItemId === 'csp.remove') {
+      if (tab.url.startsWith('http')) {
+        let origin = tab.url.replace(/^https*/, '*');
+        try {
+          origin = '*://' + (new URL(tab.url)).hostname + '/';
+        }
+        catch (e) {}
+
+        api.permissions.request({
+          origins: [origin]
+        }).then(async granted => {
+          if (granted) {
+            try {
+              const [{result}] = await api.inject(tab.id, {
+                world: 'MAIN',
+                func: msg => {
+                  return confirm(msg);
+                },
+                args: [chrome.i18n.getMessage('bg_msg_3')]
+              });
+              if (result === true) {
+                await chrome.declarativeNetRequest.updateSessionRules({
+                  removeRuleIds: [tab.id],
+                  addRules: [{
+                    id: tab.id,
+                    action: {
+                      type: 'modifyHeaders',
+                      responseHeaders: [{
+                        header: 'Content-Security-Policy',
+                        operation: 'remove'
+                      }]
+                    },
+                    condition: {
+                      tabIds: [tab.id],
+                      urlFilter: '*/*/*',
+                      resourceTypes: ['main_frame']
+                    }
+                  }]
+                });
+              }
+            }
+            catch (e) {
+              console.error(e);
+              api.notify(tab.id, e);
+            }
+          }
+          else {
+            api.notify(tab.id, chrome.i18n.getMessage('bg_msg_2'));
+          }
+        }).catch(e => api.notify(tab.id, e));
+      }
+      else {
+        api.notify(tab.id, chrome.i18n.getMessage('bg_msg_1'));
+      }
+    }
+    else if (info.menuItemId === 'csp.reset') {
+      chrome.declarativeNetRequest.updateSessionRules({
+        removeRuleIds: [tab.id],
+        addRules: []
+      });
     }
   };
   api.context.fired(observe);

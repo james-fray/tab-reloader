@@ -7,7 +7,7 @@ const period = args.get('period');
 
 
 let isReloading = false;
-window.addEventListener('beforeunload', () => {
+addEventListener('beforeunload', () => {
   isReloading = true;
 });
 

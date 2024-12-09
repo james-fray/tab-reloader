@@ -293,6 +293,15 @@
   "bg_stop_all": {
     "message": "All tabs"
   },
+  "bg_csp": {
+    "message": "Content Security Policy"
+  },
+  "bg_csp_remove": {
+    "message": "Remove CSP Protection for this tab (allow inline script execution)"
+  },
+  "bg_csp_reset": {
+    "message": "Reset to Default"
+  },
   "bg_no_reload": {
     "message": "Selected tabs"
   },
@@ -322,5 +331,35 @@
   },
   "bg_options": {
     "message": "Options"
+  },
+  "bg_msg_1": {
+    "message": "Tab does not have a valid address"
+  },
+  "bg_msg_2": {
+    "message": "Permission to access this hostname is not granted"
+  },
+  "bg_msg_3": {
+    "message": "Warning: Removing the Content Security Policy (CSP) can make the website vulnerable to security risks, such as cross-site scripting (XSS) attacks.\n\nAre you sure you want to proceed?"
+  },
+  "commands_reload_all": {
+    "message": "Reload all tabs"
+  },
+  "commands_reload_all_discarded": {
+    "message": "Reload all discarded tabs"
+  },
+  "commands_reload_window": {
+    "message": "Reload all tabs in the current window"
+  },
+  "commands_reload_window_discarded": {
+    "message": "Reload all discarded tabs in the current window"
+  },
+  "commands_reload_tabs_left": {
+    "message": "Reload tabs to the left"
+  },
+  "commands_reload_tabs_right": {
+    "message": "Reload tabs to the right"
+  },
+  "commands_stop": {
+    "message": "Stop all Reloading Jobs"
   }
 }
