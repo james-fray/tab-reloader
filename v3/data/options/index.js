@@ -11,7 +11,8 @@ const config = {
   'dynamic.json': false,
   'policy': {},
   'presets': defaults.presets,
-  'default-profile': defaults.profile
+  'default-profile': defaults.profile,
+  'disabled-menu-items': []
 };
 
 const restore = () => chrome.storage.local.get(config, prefs => {
@@ -35,6 +36,16 @@ const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('pp-randomize').checked = prefs['default-profile'].randomize;
   document.getElementById('pp-scroll-to-end').checked = prefs['default-profile']['scroll-to-end'];
   document.getElementById('pp-visual-countdown').checked = prefs['default-profile']['visual-countdown'];
+  document.getElementById('reload.all').checked = prefs['disabled-menu-items'].includes('reload.all');
+  document.getElementById('reload.all.discarded').checked =
+    prefs['disabled-menu-items'].includes('reload.all.discarded');
+  document.getElementById('reload.window').checked = prefs['disabled-menu-items'].includes('reload.window');
+  document.getElementById('reload.window.discarded').checked =
+    prefs['disabled-menu-items'].includes('reload.window.discarded');
+  document.getElementById('reload.tabs.left').checked = prefs['disabled-menu-items'].includes('reload.tabs.left');
+  document.getElementById('reload.tabs.right').checked = prefs['disabled-menu-items'].includes('reload.tabs.right');
+  document.getElementById('no.reload').checked = prefs['disabled-menu-items'].includes('no.reload');
+  document.getElementById('stop.all').checked = prefs['disabled-menu-items'].includes('stop.all');
 });
 restore();
 
@@ -77,6 +88,14 @@ document.getElementById('save').addEventListener('click', () => {
   if (badge === false) {
     api.button.badge('');
   }
+
+  // update ui
+  for (const e of document.querySelectorAll('#disabled_items input')) {
+    chrome.contextMenus.update(e.id, {
+      enabled: e.checked === false
+    });
+  }
+
   try {
     chrome.storage.local.set({
       badge,
@@ -87,9 +106,10 @@ document.getElementById('save').addEventListener('click', () => {
       'removed.jobs.enabled': document.getElementById('removed.jobs.enabled').checked,
       'json': JSON.parse(document.getElementById('json').value.trim() || '[]'),
       'dynamic.json': document.getElementById('dynamic.json').checked,
-      'policy': JSON.parse(document.getElementById('policy').value.trim() || '{}')
+      'policy': JSON.parse(document.getElementById('policy').value.trim() || '{}'),
+      'disabled-menu-items': [...document.querySelectorAll('#disabled_items input:checked')].map(e => e.id)
     }, () => {
-      info.textContent = chrome.i18n.getMessage("options_saved");
+      info.textContent = chrome.i18n.getMessage('options_saved');
       restore();
 
       if (badge) {
@@ -98,7 +118,7 @@ document.getElementById('save').addEventListener('click', () => {
         });
       }
       else {
-        chrome.browserAction.setBadgeText({
+        chrome.action.setBadgeText({
           text: ''
         });
       }

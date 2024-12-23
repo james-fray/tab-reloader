@@ -266,6 +266,9 @@
   "options_save_reminder": {
     "message": "Make sure to press the \"Save Options\" button!"
   },
+  "options_disables": {
+    "message": "Disable Context Menu Items"
+  },
   "bg_reload_tabs": {
     "message": "Reload tabs once"
   },

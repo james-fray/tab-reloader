@@ -58,6 +58,43 @@
     <textarea rows="2" id="presets"></textarea>
   </div>
   <div>
+    <h1 data-i18n="options_disables"></h1>
+    <div class="grid-1" id="disabled_items">
+      <input type="checkbox" id="reload.all">
+      <label for="reload.all">
+        <span data-i18n="bg_reload_tabs"></span> -> <span data-i18n="bg_all_tabs"></span>
+      </label>
+      <input type="checkbox" id="reload.all.discarded">
+      <label for="reload.all.discarded">
+        <span data-i18n="bg_reload_tabs"></span> -> <span data-i18n="bg_reload_all_discarded"></span>
+      </label>
+      <input type="checkbox" id="reload.window">
+      <label for="reload.window">
+        <span data-i18n="bg_reload_tabs"></span> -> <span data-i18n="bg_reload_window"></span>
+      </label>
+      <input type="checkbox" id="reload.window.discarded">
+      <label for="reload.window.discarded">
+        <span data-i18n="bg_reload_tabs"></span> -> <span data-i18n="bg_reload_window_discarded"></span>
+      </label>
+      <input type="checkbox" id="reload.tabs.left">
+      <label for="reload.tabs.left">
+        <span data-i18n="bg_reload_tabs"></span> -> <span data-i18n="bg_reload_tabs_left"></span>
+      </label>
+      <input type="checkbox" id="reload.tabs.right">
+      <label for="reload.tabs.right">
+        <span data-i18n="bg_reload_tabs"></span> -> <span data-i18n="bg_reload_tabs_right"></span>
+      </label>
+      <input type="checkbox" id="no.reload">
+      <label for="no.reload">
+        <span data-i18n="bg_stop"></span> -> <span data-i18n="bg_no_reload"></span>
+      </label>
+      <input type="checkbox" id="stop.all">
+      <label for="stop.all">
+        <span data-i18n="bg_stop"></span> -> <span data-i18n="bg_all_tabs"></span>
+      </label>
+    </div>
+  </div>
+  <div>
     <h1><a data-href="faq11" target="_blank" data-i18n="options_custom_jobs"></a></h1> (<span id="example" data-i18n="options_sample"></span>, <span id="keywords" data-i18n="options_keywords"></span>, <span id="events" data-i18n="options_events"></span>, <span id="desc-1" data-i18n="options_desc"></span>)
   </div>
   <textarea rows="6" id="json"></textarea>
@@ -78,7 +115,6 @@
     <input type="checkbox" id="faqs">
     <label for="faqs" data-i18n="options_faqs"></label>
   </div>
-  <div id="explore"></div>
   <div>
     <h1 data-i18n="options_tools"></h1> (<span id="desc-4" data-i18n="options_desc"></span>)
   </div>
@@ -104,6 +140,5 @@
   <script src="/api.js"></script>
   <script src="../locale.js"></script>
   <script src="index.js"></script>
-  <script async src="matched/matched.js"></script>
 </body>
 </html>

@@ -1,6 +1,10 @@
 /* global api, messaging */
 
-api.runtime.started(() => {
+api.runtime.started(async () => {
+  const prefs = await api.storage.get({
+    'disabled-menu-items': []
+  });
+
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_every'),
     id: 'reload.every',
@@ -51,37 +55,43 @@ api.runtime.started(() => {
     title: chrome.i18n.getMessage('bg_all_tabs'),
     id: 'reload.all',
     contexts: ['action', 'tab'],
-    parentId: 'reload'
+    parentId: 'reload',
+    enabled: prefs['disabled-menu-items'].includes('reload.all') === false
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_all_discarded'),
     id: 'reload.all.discarded',
     contexts: ['action', 'tab'],
-    parentId: 'reload'
+    parentId: 'reload',
+    enabled: prefs['disabled-menu-items'].includes('reload.all.discarded') === false
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_window'),
     id: 'reload.window',
     contexts: ['action', 'tab'],
-    parentId: 'reload'
+    parentId: 'reload',
+    enabled: prefs['disabled-menu-items'].includes('reload.window') === false
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_window_discarded'),
     id: 'reload.window.discarded',
     contexts: ['action', 'tab'],
-    parentId: 'reload'
+    parentId: 'reload',
+    enabled: prefs['disabled-menu-items'].includes('reload.window.discarded') === false
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_tabs_left'),
     id: 'reload.tabs.left',
     contexts: ['action', 'tab'],
-    parentId: 'reload'
+    parentId: 'reload',
+    enabled: prefs['disabled-menu-items'].includes('reload.tabs.left') === false
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_tabs_right'),
     id: 'reload.tabs.right',
     contexts: ['action', 'tab'],
-    parentId: 'reload'
+    parentId: 'reload',
+    enabled: prefs['disabled-menu-items'].includes('reload.tabs.right') === false
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_stop'),
@@ -92,13 +102,15 @@ api.runtime.started(() => {
     title: chrome.i18n.getMessage('bg_no_reload'),
     id: 'no.reload',
     contexts: ['action', 'tab'],
-    parentId: 'stop'
+    parentId: 'stop',
+    enabled: prefs['disabled-menu-items'].includes('no.reload') === false
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_stop_all'),
     id: 'stop.all',
     contexts: ['action', 'tab'],
-    parentId: 'stop'
+    parentId: 'stop',
+    enabled: prefs['disabled-menu-items'].includes('stop.all') === false
   });
   api.context.add({
     title: chrome.i18n.getMessage('bg_csp'),
@@ -279,6 +291,6 @@ api.runtime.started(() => {
   api.context.fired(observe);
 
   api.commands.fired((menuItemId, tab) => observe({
-    menuItemId
+    menuItemId: menuItemId.replace(/_/g, '.') // Edge does not accept "." for a command
   }, tab));
 }
