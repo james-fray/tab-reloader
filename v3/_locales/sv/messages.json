@@ -231,7 +231,7 @@
     "message": "Exportera: Exportera alla inställningar till en JSON-fil och ladda ned den till standardmappen för nedladdningar"
   },
   "options_import_desc": {
-    "message": "Importera: Importera inställningar från en JSON-fil (detta överstrider nuvarande inställningar och startar om tillägget)"
+    "message": "Importera: Importera inställningar från en JSON-fil (detta överskrider nuvarande inställningar och startar om tillägget)"
   },
   "options_reset_desc": {
     "message": "Återställ: Återställ inställningar till fabriksinställningarna"
@@ -266,6 +266,9 @@
   "options_save_reminder": {
     "message": "Se till att klicka på knappen \"Spara alternativ\"!"
   },
+  "options_disables": {
+    "message": "Inaktivera alternativ i högerklicksmenyn"
+  },
   "bg_reload_tabs": {
     "message": "Ladda om flikar en gång"
   },
@@ -292,6 +295,15 @@
   },
   "bg_stop_all": {
     "message": "Alla flikar"
+  },
+  "bg_csp": {
+    "message": "Innehållssäkerhetsprincip (CSP)"
+  },
+  "bg_csp_remove": {
+    "message": "Ta bort CSP-skydd för denna flik (tillåt att infogade skript körs)"
+  },
+  "bg_csp_reset": {
+    "message": "Återställ till standard"
   },
   "bg_no_reload": {
     "message": "Valda flikar"
@@ -322,5 +334,35 @@
   },
   "bg_options": {
     "message": "Alternativ"
+  },
+  "bg_msg_1": {
+    "message": "Fliken har en ogiltig adress"
+  },
+  "bg_msg_2": {
+    "message": "Behörighet att komma åt detta värdnamn beviljades inte"
+  },
+  "bg_msg_3": {
+    "message": "Varning: Om innehållssäkerhetsprincipen (CSP) tas bort kan webbplatsen bli sårbar för säkerhetsrisker, t.ex. attacker med skriptkörning över flera webbplatser (XSS).\n\nÄr du säker på att du vill fortsätta?"
+  },
+  "commands_reload_all": {
+    "message": "Ladda om alla flikar"
+  },
+  "commands_reload_all_discarded": {
+    "message": "Ladda om alla slängda flikar"
+  },
+  "commands_reload_window": {
+    "message": "Ladda om alla flikar i aktuellt fönster"
+  },
+  "commands_reload_window_discarded": {
+    "message": "Ladda om alla slängda flikar i aktuellt fönster"
+  },
+  "commands_reload_tabs_left": {
+    "message": "Ladda om flikar åt vänster"
+  },
+  "commands_reload_tabs_right": {
+    "message": "Ladda om flikar åt höger"
+  },
+  "commands_stop": {
+    "message": "Stoppa alla omladdningsjobb"
   }
 }
