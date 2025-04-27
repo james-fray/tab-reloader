@@ -154,7 +154,12 @@ api.match = (key = '', str = '', parent = undefined) => {
 
 api.idle = {
   fired(c) {
-    chrome.idle.onStateChanged.addListener(c);
+    if (chrome.idle) {
+      chrome.idle.onStateChanged.addListener(c);
+    }
+    else {
+      console.error('"chrome.idle" is not supported');
+    }
   }
 };
 
@@ -301,10 +306,12 @@ api.button = {
 };
 
 api.context = {
-  tab: 'TAB' in chrome.contextMenus.ContextType,
+  tab: chrome.contextMenus.ContextType ? 'TAB' in chrome.contextMenus.ContextType : true,
   add(options) {
-    const valids = Object.values(chrome.contextMenus.ContextType);
-    options.contexts = options.contexts.filter(s => valids.includes(s));
+    if (chrome.contextMenus.ContextType) {
+      const valids = Object.values(chrome.contextMenus.ContextType);
+      options.contexts = options.contexts.filter(s => valids.includes(s));
+    }
 
     chrome.contextMenus.create(options, () => {
       chrome.runtime.lastError;

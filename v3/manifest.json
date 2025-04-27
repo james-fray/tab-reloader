@@ -47,7 +47,9 @@
     "open_in_tab": true
   },
   "commands": {
-    "_execute_action": {},
+    "_execute_action": {
+      "description": "Execute Action"
+    },
     "reload_all": {
       "description": "Reload all tabs"
     },
@@ -71,7 +73,7 @@
     }
   },
   "web_accessible_resources": [{
-    "resources": ["/data/counter/index.html"],
+    "resources": ["data/counter/index.html"],
     "matches": ["*://*/*"]
   }],
   "browser_specific_settings": {
