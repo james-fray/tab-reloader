@@ -426,7 +426,7 @@ const restore = async () => {
     ...Object.keys(await api.storage.get(null)).filter(n => n.startsWith('job-')).map(s => Number(s.slice(4))),
     ...(await api.alarms.keys()).map(Number)
   ]);
-  const profiles = [];
+  const profiles = new Set();
 
   for (const tabId of jobs) {
     const tab = await api.tabs.get(tabId);
@@ -449,29 +449,34 @@ const restore = async () => {
         method: 'remove-jobs',
         ids: [tabId]
       }, undefined, resolve));
-      profiles.push(profile);
+      if (profile && profile.href) {
+        profiles.add(profile);
+      }
     }
   }
   // see if we can find an identical tab for the missed profiles
   for (const profile of profiles) {
-    if (profile && profile.href) {
-      const tabs = await api.tabs.query({
-        url: api.clean.href(profile.href)
-      });
-      // find the first tab with no job
-      for (const tab of tabs) {
-        // make sure this tab does not have an active job
-        const o = await api.alarms.get(tab.id.toString());
-        if (!o) {
-          await new Promise(resolve => messaging({
-            method: 'add-jobs',
-            profile,
-            tabs: [tab]
-          }, undefined, resolve));
-          break;
-        }
+    const tabs = await api.tabs.query({
+      url: api.clean.href(profile.href)
+    });
+    // find the first tab with no job
+    for (const tab of tabs) {
+      // make sure this tab does not have an active job
+      const o = await api.alarms.get(tab.id.toString());
+      if (!o) {
+        profiles.delete(profile);
+        await new Promise(resolve => messaging({
+          method: 'add-jobs',
+          profile,
+          tabs: [tab]
+        }, undefined, resolve));
+        break;
       }
     }
+  }
+  //
+  if (profiles.size) {
+    console.info('[Missed Jobs after Restart]', profiles);
   }
 
   // check custom jobs
@@ -492,15 +497,28 @@ const restore = async () => {
   // done
   api.alarms.count().then(c => api.button.badge(c));
 };
-api.runtime.started(() => restore());
+// restore with delay
+api.runtime.started(async () => {
+  const prefs = await api.storage.get({
+    'startup-restore-delay': 5000
+  });
+  api.alarms.add('startup-restore', {
+    when: Date.now() + prefs['startup-restore-delay']
+  }, true);
 
-/* make sure timeouts are OK */
+  // register only on startup call
+  api.alarms.fired(o => {
+    if (o.name === 'startup-restore') {
+      restore();
+    }
+  }, true);
+});
+
+/* make sure timers are current */
 api.sync = () => {
   const now = Date.now();
   api.alarms.forEach(o => {
     if (o.scheduledTime < now) {
-      console.log(o);
-
       api.alarms.add(o.name, {
         when: now + Math.round(Math.random() * 1000),
         periodInMinutes: o.periodInMinutes

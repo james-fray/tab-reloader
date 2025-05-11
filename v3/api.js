@@ -164,7 +164,11 @@ api.idle = {
 };
 
 api.alarms = {
-  add(name, o) {
+  INTERNAL: 'INT',
+  add(name, o, internal = false) {
+    if (internal) {
+      name = api.alarms.INTERNAL + '::' + name;
+    }
     return chrome.alarms.create(name, o);
   },
   remove(name) {
@@ -173,17 +177,42 @@ api.alarms = {
   get(id) {
     return chrome.alarms.get(id);
   },
-  fired(c) {
-    chrome.alarms.onAlarm.addListener(c);
+  fired(c, internal = false) {
+    chrome.alarms.onAlarm.addListener(o => {
+      if (internal === false) {
+        if (o.name.startsWith(api.alarms.INTERNAL) === false) {
+          c(o);
+        }
+      }
+      else {
+        if (o.name.startsWith(api.alarms.INTERNAL)) {
+          c(o);
+        }
+      }
+    });
   },
-  count() {
-    return chrome.alarms.getAll().then(os => os.length);
+  /* methods that exclude internal alarms */
+  async count() {
+    const os = await chrome.alarms.getAll();
+    const osf = os.filter(o => o.name.startsWith(api.alarms.INTERNAL) === false);
+    return osf.length;
   },
-  keys() {
-    return chrome.alarms.getAll().then(os => os.map(o => o.name));
+  async keys() {
+    const os = await chrome.alarms.getAll();
+    const osf = os.filter(o => o.name.startsWith(api.alarms.INTERNAL) === false);
+    return osf.map(o => o.name);
   },
-  forEach(c) {
-    return chrome.alarms.getAll().then(os => Promise.all(os.map(o => c(o))));
+  async forEach(c, threads = true) {
+    const os = await chrome.alarms.getAll();
+    const osf = os.filter(o => o.name.startsWith(api.alarms.INTERNAL) === false);
+    if (threads) {
+      return Promise.all(osf.map(o => c(o)));
+    }
+    else {
+      for (const o of osf) {
+        await c(o);
+      }
+    }
   }
 };
 
