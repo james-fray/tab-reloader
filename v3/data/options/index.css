@@ -35,7 +35,8 @@ button {
   font-size: inherit;
 }
 textarea,
-input {
+input[type=text],
+input[type=number] {
   border: solid 1px rgba(0, 0, 0, 0.25);
   color: var(--fg);
 }
@@ -100,10 +101,10 @@ div.desc,
   grid-gap: 5px;
 }
 .grid-1 {
-  grid-template-columns: 24px 1fr;
+  grid-template-columns: min-content 1fr;
 }
 .grid-3 {
-  grid-template-columns: 24px 1fr 60px;
+  grid-template-columns: min-content 1fr 60px;
 }
 #color,
 #history_timeout {

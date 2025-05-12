@@ -186,7 +186,10 @@ api.alarms = {
       }
       else {
         if (o.name.startsWith(api.alarms.INTERNAL)) {
-          c(o);
+          c({
+            ...o,
+            name: o.name.slice(api.alarms.INTERNAL.length + 2)
+          });
         }
       }
     });

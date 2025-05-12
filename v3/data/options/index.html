@@ -23,12 +23,12 @@
     <div class="grid-1">
       <span></span>
       <div>
-        <span data-i18n="options_default_time"></span>
+        <label for="pp-period" data-i18n="options_default_time"></label>
         <input type="text" id="pp-period">
       </div>
       <span></span>
       <div>
-        <span data-i18n="options_default_variation"></span>
+        <label for="pp-variation" data-i18n="options_default_variation"></label>
         <input type="number" id="pp-variation" min="0" max="100">
       </div>
       <input type="checkbox" id="pp-current">
@@ -110,6 +110,12 @@
   <textarea rows="6" id="policy"></textarea>
   <h1 data-i18n="options_misc"></h1>
   <div class="grid-1">
+    <span></span>
+    <div>
+      <label for="startup-restore-delay" data-i18n="options_startup_restore_delay"></label>
+      <input type="number" id="startup-restore-delay">
+      (<a data-href="faq33" target="_blank" data-i18n="options_help"></a>)
+    </div>
     <input type="checkbox" id="removed.jobs.enabled">
     <label for="removed.jobs.enabled" data-i18n="options_reassign"></label>
     <input type="checkbox" id="faqs">

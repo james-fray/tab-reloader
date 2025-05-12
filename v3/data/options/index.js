@@ -12,7 +12,8 @@ const config = {
   'policy': {},
   'presets': defaults.presets,
   'default-profile': defaults.profile,
-  'disabled-menu-items': []
+  'disabled-menu-items': [],
+  'startup-restore-delay': 5000
 };
 
 const restore = () => chrome.storage.local.get(config, prefs => {
@@ -46,6 +47,7 @@ const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('reload.tabs.right').checked = prefs['disabled-menu-items'].includes('reload.tabs.right');
   document.getElementById('no.reload').checked = prefs['disabled-menu-items'].includes('no.reload');
   document.getElementById('stop.all').checked = prefs['disabled-menu-items'].includes('stop.all');
+  document.getElementById('startup-restore-delay').value = Math.round(prefs['startup-restore-delay'] / 1000);
 });
 restore();
 
@@ -96,6 +98,11 @@ document.getElementById('save').addEventListener('click', () => {
     });
   }
 
+  let delay = document.getElementById('startup-restore-delay').valueAsNumber;
+  if (isNaN(delay)) {
+    delay = 5;
+  }
+
   try {
     chrome.storage.local.set({
       badge,
@@ -107,7 +114,8 @@ document.getElementById('save').addEventListener('click', () => {
       'json': JSON.parse(document.getElementById('json').value.trim() || '[]'),
       'dynamic.json': document.getElementById('dynamic.json').checked,
       'policy': JSON.parse(document.getElementById('policy').value.trim() || '{}'),
-      'disabled-menu-items': [...document.querySelectorAll('#disabled_items input:checked')].map(e => e.id)
+      'disabled-menu-items': [...document.querySelectorAll('#disabled_items input:checked')].map(e => e.id),
+      'startup-restore-delay': delay * 1000
     }, () => {
       info.textContent = chrome.i18n.getMessage('options_saved');
       restore();

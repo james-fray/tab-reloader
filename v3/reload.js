@@ -474,9 +474,30 @@ const restore = async () => {
       }
     }
   }
-  //
+  console.log(profiles.size);
+  // Try to restore remaining not found jobs by registering "tabs.onUpdated" once for a period of a defined seconds
+  // This tracking is only registered once after browser startup and get destroyed either by worker or timeout.
   if (profiles.size) {
-    console.info('[Missed Jobs after Restart]', profiles);
+    console.info('[Missed Jobs found after Restart]', profiles);
+    const track = async (id, info, tab) => {
+      for (const profile of profiles) {
+        if (tab.url && tab.url.startsWith(api.clean.href(profile.href))) {
+          // make sure this tab does not have an active job
+          const o = await api.alarms.get(tab.id.toString());
+          if (!o) {
+            profiles.delete(profile);
+            messaging({
+              method: 'add-jobs',
+              profile,
+              tabs: [tab]
+            });
+            return;
+          }
+        }
+      }
+    };
+    chrome.tabs.onUpdated.addListener(track);
+    setTimeout(() => chrome.tabs.onUpdated.removeListener(track), 20000);
   }
 
   // check custom jobs
@@ -502,16 +523,18 @@ api.runtime.started(async () => {
   const prefs = await api.storage.get({
     'startup-restore-delay': 5000
   });
-  api.alarms.add('startup-restore', {
-    when: Date.now() + prefs['startup-restore-delay']
-  }, true);
+  if (prefs['startup-restore-delay'] > 0) {
+    api.alarms.add('startup-restore', {
+      when: Date.now() + prefs['startup-restore-delay']
+    }, true);
 
-  // register only on startup call
-  api.alarms.fired(o => {
-    if (o.name === 'startup-restore') {
-      restore();
-    }
-  }, true);
+    // register only on startup call
+    api.alarms.fired(o => {
+      if (o.name === 'startup-restore') {
+        restore();
+      }
+    }, true);
+  }
 });
 
 /* make sure timers are current */

@@ -269,6 +269,12 @@
   "options_disables": {
     "message": "Disable Context Menu Items"
   },
+  "options_startup_restore_delay": {
+    "message": "Delay in seconds to restart previous jobs after restart:"
+  },
+  "options_help": {
+    "message": "Lean More"
+  },
   "bg_reload_tabs": {
     "message": "Reload tabs once"
   },
