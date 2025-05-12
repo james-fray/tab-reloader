@@ -269,6 +269,12 @@
   "options_disables": {
     "message": "Inaktivera alternativ i högerklicksmenyn"
   },
+  "options_startup_restore_delay": {
+    "message": "Fördröjning i sekunder innan tidigare jobb startas om efter omstart:"
+  },
+  "options_help": {
+    "message": "Läs mer"
+  },
   "bg_reload_tabs": {
     "message": "Ladda om flikar en gång"
   },
