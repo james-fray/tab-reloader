@@ -273,7 +273,7 @@
     "message": "Delay in seconds to restart previous jobs after restart:"
   },
   "options_help": {
-    "message": "Lean More"
+    "message": "Learn More"
   },
   "bg_reload_tabs": {
     "message": "Reload tabs once"
