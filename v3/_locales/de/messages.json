@@ -12,7 +12,7 @@
     "message": "Neu laden, wenn das Fenster keinen Fokus hat"
   },
   "popup_cache": {
-    "message": "Cache beim Neuladen verwenden (Stand wiederherstellen)"
+    "message": "Cache verwenden (Zustand wiederherstellen)"
   },
   "popup_form": {
     "message": "Übertragung von Formularen umgehen"
@@ -33,13 +33,13 @@
     "message": "Nach dem Neuladen bis zum Ende blättern"
   },
   "popup_switch": {
-    "message": "Zum Tab wechseln, wenn der Inhalt sich ändert"
+    "message": "Zum Tab wechseln bei Änderungen"
   },
   "popup_sound": {
-    "message": "Ton abspielen, wenn der Inhalt sich ändert"
+    "message": "Ton abspielen, wenn Inhalt sich ändert"
   },
   "popup_bw": {
-    "message": "Nicht neu laden, wenn Adresse/Titel das enthält"
+    "message": "Nicht neu laden, wenn Adresse/Titel enthält"
   },
   "popup_period": {
     "message": "Neu laden zwischen"
@@ -48,7 +48,7 @@
     "message": "Aktive Tabs"
   },
   "popup_enable": {
-    "message": "Gewählte Tabs neu laden, alle "
+    "message": "Tab-Auswahl neu laden, alle "
   },
   "popup_permission": {
     "message": "Berechtigungen für diesen Tab erforderlich"
@@ -69,7 +69,7 @@
     "message": "Policy Code ausführen"
   },
   "popup_pre_code_desc": {
-    "message": "Falls definiert, muss die Funktion \"document.currentScript.dataset.continue = true\" gesetzt sein, damit ein Neuladen möglich ist"
+    "message": "Falls definiert, muss Funktion \"document.currentScript.dataset.continue = true\" gesetzt sein, damit Neuladen möglich ist"
   },
   "popup_pre_code_example_1": {
     "message": "Nur neu laden, wenn die Seite das Wort \"hello\" enthält"
@@ -162,7 +162,7 @@
     "message": "Standardwert für \"Neu laden, wenn das Fenster keinen Fokus hat\""
   },
   "options_pp_cache": {
-    "message": "Standardwert für \"Cache beim Neuladen verwenden\""
+    "message": "Standardwert für \"Cache beim Neuladen\""
   },
   "options_pp_form": {
     "message": "Standardwert für \"Übertragung von Formularen umgehen\""
@@ -266,6 +266,15 @@
   "options_save_reminder": {
     "message": "Bitte nicht vergessen, die Einstellungen unten über den Button \"Einstellungen speichern\" zu sichern!"
   },
+  "options_disables": {
+    "message": "Kontextmenüeinträge deaktivieren"
+  },
+  "options_startup_restore_delay": {
+    "message": "Verzögerung in Sekunden um früherer Aufträge, nach einem Neustart, erneut zu starten:"
+  },
+  "options_help": {
+    "message": "Erfahren Sie mehr"
+  },
   "bg_reload_tabs": {
     "message": "Tabs einmal neu laden"
   },
@@ -292,6 +301,15 @@
   },
   "bg_stop_all": {
     "message": "Alle Tabs"
+  },
+  "bg_csp": {
+    "message": "Content Security Policy - Sicherheitskonzept"
+  },
+  "bg_csp_remove": {
+    "message": "CSP Schutz für diesen Tab entfernen (Inline-Skriptausführung erlauben)"
+  },
+  "bg_csp_reset": {
+    "message": "Zurück auf Standard setzen"
   },
   "bg_no_reload": {
     "message": "Gewählte Tabs"
@@ -322,5 +340,35 @@
   },
   "bg_options": {
     "message": "Einstellungen"
+  },
+  "bg_msg_1": {
+    "message": "Tab hat keine gültige Adresse"
+  },
+  "bg_msg_2": {
+    "message": "Keine Zugriffsberechtigung für diesen Hostnamen"
+  },
+  "bg_msg_3": {
+    "message": "Warnung: Das Entfernen der Content Security Policy (CSP) kann die Website anfällig für Sicherheitsrisiken machen, wie z. B. Cross-Site-Scripting (XSS)-Angriffe.\n\nSind Sie sicher, dass Sie fortfahren möchten?"
+  },
+  "commands_reload_all": {
+    "message": "Alle Tabs neu laden"
+  },
+  "commands_reload_all_discarded": {
+    "message": "Alle verworfenen Tabs neu laden"
+  },
+  "commands_reload_window": {
+    "message": "Alle Tabs im aktuellen Fenster neu laden"
+  },
+  "commands_reload_window_discarded": {
+    "message": "Alle verworfenen Tabs im aktuellen Fenster neu laden"
+  },
+  "commands_reload_tabs_left": {
+    "message": "Linke Tabs neu laden"
+  },
+  "commands_reload_tabs_right": {
+    "message": "Rechte Tabs neu laden"
+  },
+  "commands_stop": {
+    "message": "Alle Reload Aufräge stoppen"
   }
 }

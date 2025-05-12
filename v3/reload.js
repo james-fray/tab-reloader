@@ -474,7 +474,6 @@ const restore = async () => {
       }
     }
   }
-  console.log(profiles.size);
   // Try to restore remaining not found jobs by registering "tabs.onUpdated" once for a period of a defined seconds
   // This tracking is only registered once after browser startup and get destroyed either by worker or timeout.
   if (profiles.size) {
