@@ -11,6 +11,7 @@ defaults.profile = {
   'discarded': false,
   'nodiscard': false,
   'randomize': false,
+  'skip-auto-add': false,
   'scroll-to-end': false,
   'visual-countdown': false,
   'switch': false,

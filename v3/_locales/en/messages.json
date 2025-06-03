@@ -26,6 +26,9 @@
   "popup_randomize": {
     "message": "Random delay on the first reload"
   },
+  "popup_skip_auto_add": {
+    "message": "Don't auto-start if closed without ending"
+  },
   "popup_nodiscard": {
     "message": "Prevent the tab from discarding"
   },

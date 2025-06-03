@@ -67,8 +67,8 @@ const messaging = (request, sender, response = () => {}) => {
         }).then(prefs => {
           for (const id of request.ids) {
             const profile = map.get(id.toString());
-
-            if (profile) {
+            // do not add a job that is explicitly being forbidden
+            if (profile && profile['skip-auto-add'] !== true) {
               // add new one
               prefs['removed.jobs'][api.clean.href(profile.href)] = {
                 reason: request.reason,

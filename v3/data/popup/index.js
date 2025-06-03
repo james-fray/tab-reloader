@@ -46,6 +46,7 @@ const generate = (forced = false) => {
     'discarded': document.getElementById('discarded').checked,
     'nodiscard': document.getElementById('nodiscard').checked,
     'randomize': document.getElementById('randomize').checked,
+    'skip-auto-add': document.getElementById('skip-auto-add').checked,
     'scroll-to-end': document.getElementById('scroll-to-end').checked,
     'visual-countdown': document.getElementById('visual-countdown').checked,
     'switch': document.getElementById('switch').checked,
