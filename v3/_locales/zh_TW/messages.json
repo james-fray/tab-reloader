@@ -1,0 +1,377 @@
+{
+  "description": {
+    "message": "簡單易用的分頁重整工具，支援自訂重整間隔、單獨分頁設定等進階功能！"
+  },
+  "popup_active": {
+    "message": "分頁作用中時不重整"
+  },
+  "popup_configs": {
+    "message": "設定"
+  },
+  "popup_nofocus": {
+    "message": "視窗未聚焦時重整"
+  },
+  "popup_cache": {
+    "message": "重整時使用快取（還原狀態）"
+  },
+  "popup_form": {
+    "message": "略過表單提交提示"
+  },
+  "popup_offline": {
+    "message": "離線時不重整分頁"
+  },
+  "popup_discarded": {
+    "message": "分頁已捨棄時不重整"
+  },
+  "popup_randomize": {
+    "message": "首次重整加入隨機延遲"
+  },
+  "popup_skip_auto_add": {
+    "message": "未手動結束時停止自動啟動"
+  },
+  "popup_nodiscard": {
+    "message": "防止分頁被自動捨棄"
+  },
+  "popup_ste": {
+    "message": "重整後自動捲動至底部"
+  },
+  "popup_switch": {
+    "message": "內容有變更時自動切換至該分頁"
+  },
+  "popup_sound": {
+    "message": "內容有變更時播放提示音"
+  },
+  "popup_bw": {
+    "message": "網址或標題包含下列內容時不重整"
+  },
+  "popup_period": {
+    "message": "重整區間"
+  },
+  "popup_active_tabs": {
+    "message": "作用中分頁"
+  },
+  "popup_enable": {
+    "message": "每隔以下時間重整所選分頁"
+  },
+  "popup_permission": {
+    "message": "需要分頁網址權限"
+  },
+  "popup_presets": {
+    "message": "預設方案"
+  },
+  "popup_forced": {
+    "message": "按住 Shift 強制設置小於10秒的間隔"
+  },
+  "popup_code": {
+    "message": "執行 JS 程式碼"
+  },
+  "popup_code_desc": {
+    "message": "每次重整後執行此 JS 程式碼"
+  },
+  "popup_pre_code": {
+    "message": "執行條件程式碼"
+  },
+  "popup_pre_code_desc": {
+    "message": "如有定義，必須設定 \"document.currentScript.dataset.continue = true\" 才會重整"
+  },
+  "popup_pre_code_example_1": {
+    "message": "僅當頁面包含 \"hello\" 字時才重整"
+  },
+  "popup_pre_code_example_2": {
+    "message": "以50%機率隨機重整頁面"
+  },
+  "popup_pre_code_example_3": {
+    "message": "僅當頁面可見時才重整"
+  },
+  "popup_variation": {
+    "message": "變化幅度"
+  },
+  "popup_variation_hint": {
+    "message": "設定百分比變化，隨機調整重整時間（首重整後生效）"
+  },
+  "popup_enable_keys": {
+    "message": "'S' 啟用重整\\n'Esc' 停用重整\\nShift+Esc 關閉彈窗\\nCtrl/Command+1-10 選擇預設"
+  },
+  "popup_start": {
+    "message": "開始重整"
+  },
+  "popup_stop": {
+    "message": "停止重整"
+  },
+  "popup_save_as_json": {
+    "message": "儲存為自訂任務"
+  },
+  "popup_save_as_json_desc": {
+    "message": "Shift+點擊：以完整網址比對\\nCtrl/Command+點擊：以不含參數的網址比對"
+  },
+  "popup_saved": {
+    "message": "已儲存！"
+  },
+  "popup_sound_1": {
+    "message": "提示音1"
+  },
+  "popup_sound_2": {
+    "message": "提示音2"
+  },
+  "popup_sound_3": {
+    "message": "提示音3"
+  },
+  "popup_sound_4": {
+    "message": "提示音4"
+  },
+  "popup_sound_5": {
+    "message": "提示音5"
+  },
+  "popup_sound_6": {
+    "message": "提示音6"
+  },
+  "popup_sound_7": {
+    "message": "提示音7"
+  },
+  "popup_sound_8": {
+    "message": "提示音8"
+  },
+  "popup_test_sound": {
+    "message": "測試"
+  },
+  "popup_rate": {
+    "message": "評分"
+  },
+  "popup_vcd": {
+    "message": "顯示倒數計時"
+  },
+  "options_title": {
+    "message": "設定頁面 :: 分頁重整器"
+  },
+  "options_badge": {
+    "message": "在圖示徽章顯示啟用任務數"
+  },
+  "options_color": {
+    "message": "徽章顏色："
+  },
+  "options_defaults": {
+    "message": "預設值"
+  },
+  "options_default_time": {
+    "message": "預設重整間隔："
+  },
+  "options_default_variation": {
+    "message": "預設變化幅度："
+  },
+  "options_pp_current": {
+    "message": "「分頁作用中時不重整」預設值"
+  },
+  "options_pp_nofocus": {
+    "message": "「視窗未聚焦時重整」預設值"
+  },
+  "options_pp_cache": {
+    "message": "「重整時使用快取」預設值"
+  },
+  "options_pp_form": {
+    "message": "「略過表單提交提示」預設值"
+  },
+  "options_pp_offline": {
+    "message": "「離線時不重整」預設值"
+  },
+  "options_pp_discarded": {
+    "message": "「分頁已捨棄時不重整」預設值"
+  },
+  "options_pp_nodiscard": {
+    "message": "「防止分頁被自動捨棄」預設值"
+  },
+  "options_pp_randomize": {
+    "message": "「首次重整加入隨機延遲」預設值"
+  },
+  "options_pp_scroll_to_end": {
+    "message": "「重整後自動捲動至底部」預設值"
+  },
+  "options_pp_visual_countdown": {
+    "message": "「顯示倒數計時」預設值"
+  },
+  "options_presets": {
+    "message": "預設方案"
+  },
+  "options_custom_jobs": {
+    "message": "自訂任務"
+  },
+  "options_sample": {
+    "message": "插入範例"
+  },
+  "options_keywords": {
+    "message": "支援關鍵字"
+  },
+  "options_events": {
+    "message": "支援事件"
+  },
+  "options_desc": {
+    "message": "切換說明"
+  },
+  "options_json_desc": {
+    "message": "用 JSON 格式列出網址主機，可在啟動後自動重整。若需依據完整網址比對，請移除 \"hostname\" 並改用 \"url\"。詳情請參閱常見問題。"
+  },
+  "options_dynamic_json": {
+    "message": "新分頁載入時自動比對 JSON 並安裝重整任務"
+  },
+  "options_dynamic_json_desc": {
+    "message": "啟用後，會為比對到的頁面自動安裝自訂重整任務"
+  },
+  "options_policy": {
+    "message": "重整條件"
+  },
+  "options_misc": {
+    "message": "其他"
+  },
+  "options_reassign": {
+    "message": "新分頁如有舊任務則嘗試重新分配"
+  },
+  "options_faqs": {
+    "message": "更新時開啟常見問題"
+  },
+  "options_tools": {
+    "message": "工具"
+  },
+  "options_export_desc": {
+    "message": "匯出：將所有設定存為 JSON 檔並下載"
+  },
+  "options_import_desc": {
+    "message": "匯入：由 JSON 檔還原設定（將覆蓋當前設定並重啟擴充功能）"
+  },
+  "options_reset_desc": {
+    "message": "重設：還原所有設定至預設值"
+  },
+  "options_reset": {
+    "message": "重設預設值"
+  },
+  "options_export": {
+    "message": "匯出"
+  },
+  "options_import": {
+    "message": "匯入"
+  },
+  "options_permission": {
+    "message": "網址權限"
+  },
+  "options_instruction": {
+    "message": "使用說明"
+  },
+  "options_ofq": {
+    "message": "開啟常見問題"
+  },
+  "options_support": {
+    "message": "支持開發"
+  },
+  "options_save": {
+    "message": "儲存設定"
+  },
+  "options_saved": {
+    "message": "設定已儲存"
+  },
+  "options_save_reminder": {
+    "message": "請務必點擊「儲存設定」按鈕！"
+  },
+  "options_disables": {
+    "message": "停用右鍵選單"
+  },
+  "options_startup_restore_delay": {
+    "message": "重啟後恢復任務延遲時間（秒）："
+  },
+  "options_help": {
+    "message": "了解更多"
+  },
+  "bg_reload_tabs": {
+    "message": "僅重整這些分頁一次"
+  },
+  "bg_all_tabs": {
+    "message": "全部分頁"
+  },
+  "bg_reload_all_discarded": {
+    "message": "全部已捨棄分頁"
+  },
+  "bg_reload_window": {
+    "message": "當前視窗全部分頁"
+  },
+  "bg_reload_window_discarded": {
+    "message": "當前視窗全部已捨棄分頁"
+  },
+  "bg_reload_tabs_left": {
+    "message": "左側分頁"
+  },
+  "bg_reload_tabs_right": {
+    "message": "右側分頁"
+  },
+  "bg_stop": {
+    "message": "停止重整"
+  },
+  "bg_stop_all": {
+    "message": "全部分頁"
+  },
+  "bg_csp": {
+    "message": "內容安全政策"
+  },
+  "bg_csp_remove": {
+    "message": "移除本分頁的 CSP 防護（允許內嵌指令碼執行）"
+  },
+  "bg_csp_reset": {
+    "message": "還原預設"
+  },
+  "bg_no_reload": {
+    "message": "已選分頁"
+  },
+  "bg_reload_every": {
+    "message": "定時重整所選分頁"
+  },
+  "bg_reload_every_10s": {
+    "message": "每10秒"
+  },
+  "bg_reload_every_30s": {
+    "message": "每30秒"
+  },
+  "bg_reload_every_1m": {
+    "message": "每分鐘"
+  },
+  "bg_reload_every_5m": {
+    "message": "每5分鐘"
+  },
+  "bg_reload_every_15m": {
+    "message": "每15分鐘"
+  },
+  "bg_reload_every_1h": {
+    "message": "每小時"
+  },
+  "bg_restart": {
+    "message": "重啟擴充功能"
+  },
+  "bg_options": {
+    "message": "設定"
+  },
+  "bg_msg_1": {
+    "message": "分頁網址無效"
+  },
+  "bg_msg_2": {
+    "message": "未取得此網址的存取權"
+  },
+  "bg_msg_3": {
+    "message": "警告：移除內容安全政策（CSP）可能使網站有安全風險（如跨站指令碼攻擊）。\n\n確定要繼續嗎？"
+  },
+  "commands_reload_all": {
+    "message": "重整全部分頁"
+  },
+  "commands_reload_all_discarded": {
+    "message": "重整全部已捨棄分頁"
+  },
+  "commands_reload_window": {
+    "message": "重整當前視窗全部分頁"
+  },
+  "commands_reload_window_discarded": {
+    "message": "重整當前視窗全部已捨棄分頁"
+  },
+  "commands_reload_tabs_left": {
+    "message": "重整左側分頁"
+  },
+  "commands_reload_tabs_right": {
+    "message": "重整右側分頁"
+  },
+  "commands_stop": {
+    "message": "停止所有重整任務"
+  }
+}

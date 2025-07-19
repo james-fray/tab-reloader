@@ -1,0 +1,377 @@
+{
+  "description": {
+    "message": "简单易用的标签页刷新工具，支持自定义刷新间隔、独立标签页设置等高级功能！"
+  },
+  "popup_active": {
+    "message": "标签页激活时不刷新"
+  },
+  "popup_configs": {
+    "message": "设置"
+  },
+  "popup_nofocus": {
+    "message": "窗口未聚焦时刷新"
+  },
+  "popup_cache": {
+    "message": "刷新时使用缓存（恢复状态）"
+  },
+  "popup_form": {
+    "message": "绕过表单提交提示"
+  },
+  "popup_offline": {
+    "message": "离线时不刷新标签页"
+  },
+  "popup_discarded": {
+    "message": "标签页已卸载时不刷新"
+  },
+  "popup_randomize": {
+    "message": "首次刷新添加随机延迟"
+  },
+  "popup_skip_auto_add": {
+    "message": "未手动停止时禁用自动启动"
+  },
+  "popup_nodiscard": {
+    "message": "防止标签页被卸载"
+  },
+  "popup_ste": {
+    "message": "刷新后滚动至页面底部"
+  },
+  "popup_switch": {
+    "message": "内容变化时自动切换至该标签页"
+  },
+  "popup_sound": {
+    "message": "内容变化时播放提示音"
+  },
+  "popup_bw": {
+    "message": "地址或标题包含以下内容时不刷新"
+  },
+  "popup_period": {
+    "message": "刷新时间范围"
+  },
+  "popup_active_tabs": {
+    "message": "活动标签页"
+  },
+  "popup_enable": {
+    "message": "每间隔以下时间刷新选定标签页"
+  },
+  "popup_permission": {
+    "message": "需要标签页的域名权限"
+  },
+  "popup_presets": {
+    "message": "预设方案"
+  },
+  "popup_forced": {
+    "message": "使用 Shift 键强制设置小于10秒的间隔"
+  },
+  "popup_code": {
+    "message": "执行JS代码"
+  },
+  "popup_code_desc": {
+    "message": "每次刷新后执行此JS代码"
+  },
+  "popup_pre_code": {
+    "message": "执行策略代码"
+  },
+  "popup_pre_code_desc": {
+    "message": "若定义此函数，必须设置 \"document.currentScript.dataset.continue = true\" 才会执行刷新"
+  },
+  "popup_pre_code_example_1": {
+    "message": "仅当页面包含 \"hello\" 时刷新"
+  },
+  "popup_pre_code_example_2": {
+    "message": "按50%概率随机刷新页面"
+  },
+  "popup_pre_code_example_3": {
+    "message": "仅当页面可见时刷新"
+  },
+  "popup_variation": {
+    "message": "浮动范围"
+  },
+  "popup_variation_hint": {
+    "message": "设置百分比浮动随机刷新时间（首次刷新后生效）"
+  },
+  "popup_enable_keys": {
+    "message": "'S'键启用刷新\\n'Esc'键禁用刷新\\nShift+Esc关闭弹窗\\nCtrl/Command+1-10选择预设"
+  },
+  "popup_start": {
+    "message": "开始刷新"
+  },
+  "popup_stop": {
+    "message": "停止刷新"
+  },
+  "popup_save_as_json": {
+    "message": "保存为自定义任务"
+  },
+  "popup_save_as_json_desc": {
+    "message": "Shift+点击：按完整URL匹配（非域名）\\nCtrl/Command+点击：按排除参数的URL匹配"
+  },
+  "popup_saved": {
+    "message": "已保存！"
+  },
+  "popup_sound_1": {
+    "message": "提示音1"
+  },
+  "popup_sound_2": {
+    "message": "提示音2"
+  },
+  "popup_sound_3": {
+    "message": "提示音3"
+  },
+  "popup_sound_4": {
+    "message": "提示音4"
+  },
+  "popup_sound_5": {
+    "message": "提示音5"
+  },
+  "popup_sound_6": {
+    "message": "提示音6"
+  },
+  "popup_sound_7": {
+    "message": "提示音7"
+  },
+  "popup_sound_8": {
+    "message": "提示音8"
+  },
+  "popup_test_sound": {
+    "message": "测试"
+  },
+  "popup_rate": {
+    "message": "给我评分"
+  },
+  "popup_vcd": {
+    "message": "显示视觉倒计时"
+  },
+  "options_title": {
+    "message": "选项设置 :: 标签页刷新器"
+  },
+  "options_badge": {
+    "message": "在徽章区域显示活动任务总数"
+  },
+  "options_color": {
+    "message": "徽章颜色："
+  },
+  "options_defaults": {
+    "message": "默认设置"
+  },
+  "options_default_time": {
+    "message": "默认刷新间隔："
+  },
+  "options_default_variation": {
+    "message": "默认浮动范围："
+  },
+  "options_pp_current": {
+    "message": "\"标签页激活时不刷新\"默认值"
+  },
+  "options_pp_nofocus": {
+    "message": "\"窗口未聚焦时刷新\"默认值"
+  },
+  "options_pp_cache": {
+    "message": "\"刷新时使用缓存\"默认值"
+  },
+  "options_pp_form": {
+    "message": "\"绕过表单提交提示\"默认值"
+  },
+  "options_pp_offline": {
+    "message": "\"离线时不刷新\"默认值"
+  },
+  "options_pp_discarded": {
+    "message": "\"标签页已卸载时不刷新\"默认值"
+  },
+  "options_pp_nodiscard": {
+    "message": "\"防止标签页被卸载\"默认值"
+  },
+  "options_pp_randomize": {
+    "message": "\"首次刷新添加随机延迟\"默认值"
+  },
+  "options_pp_scroll_to_end": {
+    "message": "\"刷新后滚动至页面底部\"默认值"
+  },
+  "options_pp_visual_countdown": {
+    "message": "\"显示视觉倒计时\"默认值"
+  },
+  "options_presets": {
+    "message": "预设方案"
+  },
+  "options_custom_jobs": {
+    "message": "自定义任务"
+  },
+  "options_sample": {
+    "message": "插入示例"
+  },
+  "options_keywords": {
+    "message": "支持的关键词"
+  },
+  "options_events": {
+    "message": "支持的事件"
+  },
+  "options_desc": {
+    "message": "切换描述"
+  },
+  "options_json_desc": {
+    "message": "使用JSON格式列出域名以设置启动后自动刷新。若需URL匹配（非域名），请移除\"hostname\"键并添加\"url\"键。详见常见问题解答。"
+  },
+  "options_dynamic_json": {
+    "message": "新页面加载时始终检查JSON对象以安装刷新任务"
+  },
+  "options_dynamic_json_desc": {
+    "message": "启用后，将为匹配列表中任意键的新页面安装自定义刷新任务"
+  },
+  "options_policy": {
+    "message": "刷新策略"
+  },
+  "options_misc": {
+    "message": "其他设置"
+  },
+  "options_reassign": {
+    "message": "新标签页曾有过活动任务时尝试重新分配"
+  },
+  "options_faqs": {
+    "message": "更新时打开常见问题页面"
+  },
+  "options_tools": {
+    "message": "工具"
+  },
+  "options_export_desc": {
+    "message": "导出：将设置保存为JSON文件并下载至默认目录"
+  },
+  "options_import_desc": {
+    "message": "导入：从JSON文件恢复设置（将覆盖当前设置并重启扩展）"
+  },
+  "options_reset_desc": {
+    "message": "重置：恢复为出厂设置"
+  },
+  "options_reset": {
+    "message": "重置默认值"
+  },
+  "options_export": {
+    "message": "导出"
+  },
+  "options_import": {
+    "message": "导入"
+  },
+  "options_permission": {
+    "message": "域名权限"
+  },
+  "options_instruction": {
+    "message": "使用说明"
+  },
+  "options_ofq": {
+    "message": "打开常见问题页面"
+  },
+  "options_support": {
+    "message": "支持开发"
+  },
+  "options_save": {
+    "message": "保存选项"
+  },
+  "options_saved": {
+    "message": "选项已保存"
+  },
+  "options_save_reminder": {
+    "message": "请务必点击\"保存选项\"按钮！"
+  },
+  "options_disables": {
+    "message": "禁用右键菜单项"
+  },
+  "options_startup_restore_delay": {
+    "message": "重启后恢复任务的延迟时间(秒)："
+  },
+  "options_help": {
+    "message": "了解更多"
+  },
+  "bg_reload_tabs": {
+    "message": "一次性刷新标签页"
+  },
+  "bg_all_tabs": {
+    "message": "所有标签页"
+  },
+  "bg_reload_all_discarded": {
+    "message": "所有已卸载标签页"
+  },
+  "bg_reload_window": {
+    "message": "当前窗口所有标签页"
+  },
+  "bg_reload_window_discarded": {
+    "message": "当前窗口所有已卸载标签页"
+  },
+  "bg_reload_tabs_left": {
+    "message": "左侧标签页"
+  },
+  "bg_reload_tabs_right": {
+    "message": "右侧标签页"
+  },
+  "bg_stop": {
+    "message": "停止刷新"
+  },
+  "bg_stop_all": {
+    "message": "所有标签页"
+  },
+  "bg_csp": {
+    "message": "内容安全策略"
+  },
+  "bg_csp_remove": {
+    "message": "移除此标签页的CSP保护（允许内联脚本执行）"
+  },
+  "bg_csp_reset": {
+    "message": "重置为默认"
+  },
+  "bg_no_reload": {
+    "message": "选定标签页"
+  },
+  "bg_reload_every": {
+    "message": "定时刷新选定标签页"
+  },
+  "bg_reload_every_10s": {
+    "message": "每10秒"
+  },
+  "bg_reload_every_30s": {
+    "message": "每30秒"
+  },
+  "bg_reload_every_1m": {
+    "message": "每分钟"
+  },
+  "bg_reload_every_5m": {
+    "message": "每5分钟"
+  },
+  "bg_reload_every_15m": {
+    "message": "每15分钟"
+  },
+  "bg_reload_every_1h": {
+    "message": "每小时"
+  },
+  "bg_restart": {
+    "message": "重启扩展"
+  },
+  "bg_options": {
+    "message": "选项"
+  },
+  "bg_msg_1": {
+    "message": "标签页地址无效"
+  },
+  "bg_msg_2": {
+    "message": "未获得此域名的访问权限"
+  },
+  "bg_msg_3": {
+    "message": "警告：移除内容安全策略(CSP)可能导致网站遭受安全风险（如跨站脚本攻击）。\n\n确定要继续吗？"
+  },
+  "commands_reload_all": {
+    "message": "刷新所有标签页"
+  },
+  "commands_reload_all_discarded": {
+    "message": "刷新所有已卸载标签页"
+  },
+  "commands_reload_window": {
+    "message": "刷新当前窗口所有标签页"
+  },
+  "commands_reload_window_discarded": {
+    "message": "刷新当前窗口所有已卸载标签页"
+  },
+  "commands_reload_tabs_left": {
+    "message": "刷新左侧标签页"
+  },
+  "commands_reload_tabs_right": {
+    "message": "刷新右侧标签页"
+  },
+  "commands_stop": {
+    "message": "停止所有刷新任务"
+  }
+}
