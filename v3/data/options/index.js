@@ -37,6 +37,7 @@ const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('pp-randomize').checked = prefs['default-profile'].randomize;
   document.getElementById('pp-scroll-to-end').checked = prefs['default-profile']['scroll-to-end'];
   document.getElementById('pp-visual-countdown').checked = prefs['default-profile']['visual-countdown'];
+  document.getElementById('pp-stop-on-address-change').checked = prefs['default-profile']['stop-on-address-change'];
   document.getElementById('reload.all').checked = prefs['disabled-menu-items'].includes('reload.all');
   document.getElementById('reload.all.discarded').checked =
     prefs['disabled-menu-items'].includes('reload.all.discarded');
@@ -83,8 +84,9 @@ document.getElementById('save').addEventListener('click', () => {
     'discarded': document.getElementById('pp-discarded').checked,
     'nodiscard': document.getElementById('pp-nodiscard').checked,
     'randomize': document.getElementById('pp-randomize').checked,
-    ['scroll-to-end']: document.getElementById('pp-scroll-to-end').checked,
-    ['visual-countdown']: document.getElementById('pp-visual-countdown').checked
+    'scroll-to-end': document.getElementById('pp-scroll-to-end').checked,
+    'visual-countdown': document.getElementById('pp-visual-countdown').checked,
+    'stop-on-address-change': document.getElementById('pp-stop-on-address-change').checked
   });
 
   if (badge === false) {

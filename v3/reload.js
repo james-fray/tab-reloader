@@ -297,6 +297,15 @@ api.tabs.loaded(d => {
         });
       }
       else {
+        if (profile['stop-on-address-change']) {
+          messaging({
+            reason: 'address-changed',
+            method: 'remove-jobs',
+            ids: [tabId]
+          });
+          return;
+        }
+
         profile.href = d.url;
         messaging({
           method: 'add-jobs',

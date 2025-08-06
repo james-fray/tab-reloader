@@ -14,6 +14,7 @@ defaults.profile = {
   'skip-auto-add': false,
   'scroll-to-end': false,
   'visual-countdown': false,
+  'stop-on-address-change': false,
   'switch': false,
   'sound': false,
   'sound-value': 1,

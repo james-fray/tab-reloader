@@ -49,6 +49,7 @@ const generate = (forced = false) => {
     'skip-auto-add': document.getElementById('skip-auto-add').checked,
     'scroll-to-end': document.getElementById('scroll-to-end').checked,
     'visual-countdown': document.getElementById('visual-countdown').checked,
+    'stop-on-address-change': document.getElementById('stop-on-address-change').checked,
     'switch': document.getElementById('switch').checked,
     'sound': document.getElementById('sound').checked,
     'sound-value': document.getElementById('sound-value').value,
