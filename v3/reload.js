@@ -152,15 +152,11 @@ api.alarms.fired(async o => {
       return skip('tab is discarded');
     }
 
-    if (tab.active && profile.current) {
-      if (profile.nofocus) {
-        const w = await api.tabs.window(tab.windowId);
-        if (w.focused) {
-          return skip('window is focused');
-        }
-      }
-      else {
-        return skip('tab is active');
+    if (profile.nofocus) {
+      const w = await api.tabs.window(tab.windowId);
+
+      if (w.focused) {
+        return skip('window is focused');
       }
     }
 
