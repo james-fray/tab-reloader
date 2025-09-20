@@ -318,6 +318,9 @@ api.tabs.loaded(d => {
         api.button.tooltip(e.message, tabId);
       };
 
+      // print the last updated time
+      api.button.tooltip(chrome.i18n.getMessage('bg_msg_4', [new Date().toLocaleString()]), tabId);
+
       if (profile['scroll-to-end']) {
         api.inject(tabId, {
           files: ['/data/scripts/ste.js']

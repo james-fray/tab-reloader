@@ -359,6 +359,14 @@
   "bg_msg_3": {
     "message": "Warning: Removing the Content Security Policy (CSP) can make the website vulnerable to security risks, such as cross-site scripting (XSS) attacks.\n\nAre you sure you want to proceed?"
   },
+  "bg_msg_4": {
+    "message": "Last reloaded at $date$",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
   "commands_reload_all": {
     "message": "Reload all tabs"
   },

@@ -155,25 +155,21 @@ document.getElementById('opv').addEventListener('click', () => chrome.tabs.creat
 }));
 // example
 document.getElementById('example').addEventListener('click', () => {
-  document.getElementById('json').value = JSON.stringify([{
+  const jobs = [];
+  // extract existing jobs
+  try {
+    jobs.push(...JSON.parse(document.getElementById('json').value));
+  }
+  catch (e) {}
+  jobs.push({
     'hostname': 'www.google.com',
     'dd': 0,
     'hh': 0,
     'mm': 1,
     'ss': 0
-  }, {
-    'dd': 0,
-    'hh': 0,
-    'mm': 2,
-    'ss': 0,
-    'url': 're:.*\\.wikipedia\\.org\\/wiki\\/Book'
-  }, {
-    'dd': 0,
-    'hh': 0,
-    'mm': 3,
-    'ss': 0,
-    'url': 'pt:*.wikipedia.org/wiki/Cat'
-  }], null, 2);
+  });
+  document.getElementById('json').value = JSON.stringify(jobs, null, 2);
+  document.getElementById('json').scrollTop = document.getElementById('json').scrollHeight;
 });
 // export
 document.getElementById('export').addEventListener('click', () => {
