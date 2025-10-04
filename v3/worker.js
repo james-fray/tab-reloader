@@ -91,53 +91,55 @@ const messaging = (request, sender, response = () => {}) => {
     return true;
   }
   else if (request.method === 'add-jobs') {
-    const g = Object.assign({}, defaults.profile, request.profile, {
-      timestamp: Date.now()
-    });
-
-    const period = Math.max(1, api.convert.secods(api.convert.str2obj(g.period)));
-
-    const when = Date.now() + (request.now ? 100 : (
-      g.randomize ? parseInt(Math.random() * period * 1000) : period * 1000
-    ));
-
-    setTimeout(async () => {
-      const storage = {};
-      for (const tab of request.tabs) {
-        const name = tab.id.toString();
-        storage['job-' + name] = Object.assign({
-          href: tab.url
-        }, g);
-        await api.alarms.add(name, {
-          when,
-          // only used as backup. The extension sets a new alarm
-          periodInMinutes: Math.max(1, period / 60)
-        });
-        api.button.icon('active', tab.id);
-        // countdown
-        if (request.profile['visual-countdown']) {
-          api.tabs.countdown(tab.id, request.profile.period).catch(e => console.error(e));
-        }
-        // no discard
-        if (g.nodiscard) {
-          api.tabs.update(tab.id, {
-            autoDiscardable: false
-          });
-        }
-      }
-      await api.storage.set(storage);
-      api.alarms.count().then(c => api.button.badge(c));
-
-      api.post.bg({
-        method: 'reload-interface'
-      }, () => chrome.runtime.lastError);
-      response();
-    });
-
-    // keep in profiles
     api.storage.get({
-      profiles: {}
+      'default-profile': {},
+      'profiles': {}
     }).then(prefs => {
+      const g = Object.assign({}, defaults.profile, prefs['default-profile'], request.profile, {
+        timestamp: Date.now()
+      });
+      delete prefs['default-profile'];
+
+      const period = Math.max(1, api.convert.secods(api.convert.str2obj(g.period)));
+
+      const when = Date.now() + (request.now ? 100 : (
+        g.randomize ? parseInt(Math.random() * period * 1000) : period * 1000
+      ));
+
+      setTimeout(async () => {
+        const storage = {};
+        for (const tab of request.tabs) {
+          const name = tab.id.toString();
+          storage['job-' + name] = Object.assign({
+            href: tab.url
+          }, g);
+          await api.alarms.add(name, {
+            when,
+            // only used as backup. The extension sets a new alarm
+            periodInMinutes: Math.max(1, period / 60)
+          });
+          api.button.icon('active', tab.id);
+          // countdown
+          if (request.profile['visual-countdown']) {
+            api.tabs.countdown(tab.id, request.profile.period).catch(e => console.error(e));
+          }
+          // no discard
+          if (g.nodiscard) {
+            api.tabs.update(tab.id, {
+              autoDiscardable: false
+            });
+          }
+        }
+        await api.storage.set(storage);
+        api.alarms.count().then(c => api.button.badge(c));
+
+        api.post.bg({
+          method: 'reload-interface'
+        }, () => chrome.runtime.lastError);
+        response();
+      });
+
+      // keep in profiles
       for (const tab of request.tabs) {
         try {
           const {hostname} = new URL(tab.url);
