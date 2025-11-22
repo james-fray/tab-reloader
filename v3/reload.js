@@ -240,6 +240,11 @@ api.alarms.fired(async o => {
       }
     }
 
+    // before reloading do we need to remove CSP?
+    if (profile['remove-csp']) {
+      await api.csp.remove(tabId);
+    }
+
     api.tabs.reload(tab, options, profile.form);
   }
   else {

@@ -247,24 +247,7 @@ api.runtime.started(async () => {
                 args: [chrome.i18n.getMessage('bg_msg_3')]
               });
               if (result === true) {
-                await chrome.declarativeNetRequest.updateSessionRules({
-                  removeRuleIds: [tab.id],
-                  addRules: [{
-                    id: tab.id,
-                    action: {
-                      type: 'modifyHeaders',
-                      responseHeaders: [{
-                        header: 'Content-Security-Policy',
-                        operation: 'remove'
-                      }]
-                    },
-                    condition: {
-                      tabIds: [tab.id],
-                      urlFilter: '*/*/*',
-                      resourceTypes: ['main_frame']
-                    }
-                  }]
-                });
+                await api.csp.remove(tab.id);
               }
             }
             catch (e) {
@@ -282,10 +265,7 @@ api.runtime.started(async () => {
       }
     }
     else if (info.menuItemId === 'csp.reset') {
-      chrome.declarativeNetRequest.updateSessionRules({
-        removeRuleIds: [tab.id],
-        addRules: []
-      });
+      api.csp.reset(tab.id);
     }
   };
   api.context.fired(observe);

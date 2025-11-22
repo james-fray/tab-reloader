@@ -29,8 +29,6 @@ document.getElementById('presets').onclick = e => {
 };
 
 const profile = prefs => {
-  console.log(prefs);
-
   for (const [id, value] of Object.entries(prefs)) {
     const e = document.getElementById(id);
     if (e) {

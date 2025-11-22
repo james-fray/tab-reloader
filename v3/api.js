@@ -412,3 +412,32 @@ api.inject = (tabId, o) => {
     ...o
   });
 };
+
+api.csp = {
+  remove(tabId) {
+    return chrome.declarativeNetRequest.updateSessionRules({
+      removeRuleIds: [tabId],
+      addRules: [{
+        id: tabId,
+        action: {
+          type: 'modifyHeaders',
+          responseHeaders: [{
+            header: 'Content-Security-Policy',
+            operation: 'remove'
+          }]
+        },
+        condition: {
+          tabIds: [tabId],
+          urlFilter: '*/*/*',
+          resourceTypes: ['main_frame']
+        }
+      }]
+    });
+  },
+  reset(tabId) {
+    return chrome.declarativeNetRequest.updateSessionRules({
+      removeRuleIds: [tabId],
+      addRules: []
+    });
+  }
+};
