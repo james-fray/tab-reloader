@@ -236,7 +236,14 @@ api.alarms.fired(async o => {
       }
       catch (e) {
         console.warn(e);
-        return skip(`Policy Code Failed "${e.message}"`);
+
+        console.log(profile);
+
+        // if tab is discarded and we have a policy code, skip the check
+        // https://github.com/james-fray/tab-reloader/issues/204
+        if (tab.discarded === false) {
+          return skip(`Policy Code Failed "${e.message}"`);
+        }
       }
     }
 
@@ -248,29 +255,35 @@ api.alarms.fired(async o => {
     api.tabs.reload(tab, options, profile.form);
   }
   else {
-    console.warn('cannot find tab with id', o.name);
-    // is tab discarded (https://github.com/james-fray/tab-reloader/issues/110)
+    // is this tab discarded (https://github.com/james-fray/tab-reloader/issues/110)
+    // if so the id might have changed
 
     const profile = await api.storage.get('job-' + o.name);
 
-    if (profile.discarded !== true) {
-      const tabs = await api.tabs.query({
-        url: profile.href,
-        discarded: true
-      });
+    const tabs = await api.tabs.query({
+      url: profile.href,
+      discarded: true
+    });
+
+    if (tabs.length) {
+      console.warn('replacing tab with id', o.name, 'with a new job');
+    }
+    else {
+      console.warn('cannot find tab with id', o.name);
+    }
+
+    messaging({
+      reason: tabs.length ? 'alarm-replace' : 'tab-not-found-on-alarm',
+      method: 'remove-jobs',
+      ids: [tabId]
+    });
+    if (tabs.length) {
       messaging({
-        reason: tabs.length ? 'alarm-replace' : 'tab-not-found-on-alarm',
-        method: 'remove-jobs',
-        ids: [tabId]
+        method: 'add-jobs',
+        profile,
+        tabs: [tabs[0]],
+        now: true
       });
-      if (tabs.length) {
-        messaging({
-          method: 'add-jobs',
-          profile,
-          tabs: [tabs[0]],
-          now: true
-        });
-      }
     }
   }
 });
