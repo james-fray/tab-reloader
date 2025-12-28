@@ -140,6 +140,9 @@
   "popup_vcd": {
     "message": "Display visual countdown"
   },
+  "popup_bcd": {
+    "message": "Display badge countdown"
+  },
   "popup_stop_on_address_change": {
     "message": "Skip reload on address change"
   },
@@ -190,6 +193,9 @@
   },
   "options_pp_visual_countdown": {
     "message": "Default value for \"Display visual countdown\""
+  },
+  "options_pp_badge_countdown": {
+    "message": "Default value for \"Display badge countdown\""
   },
   "options_pp_stop_on_address_change": {
     "message": "Default value for \"Skip reload on address change\""

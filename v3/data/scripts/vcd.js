@@ -1,3 +1,4 @@
+// display timer on iframe
 {
   const remove = () => {
     for (const e of document.querySelectorAll('.sadh6Hjii')) {

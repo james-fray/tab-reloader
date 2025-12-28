@@ -49,7 +49,9 @@ const once = () => api.alarms.get(tabId).then(o => {
   clearTimeout(timer);
   timer = setTimeout(once, 1000);
 });
-once();
+if (document.visibilityState !== 'hidden') {
+  once();
+}
 
 addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'hidden') {

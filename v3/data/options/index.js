@@ -37,6 +37,7 @@ const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('pp-randomize').checked = prefs['default-profile'].randomize;
   document.getElementById('pp-scroll-to-end').checked = prefs['default-profile']['scroll-to-end'];
   document.getElementById('pp-visual-countdown').checked = prefs['default-profile']['visual-countdown'];
+  document.getElementById('pp-badge-countdown').checked = prefs['default-profile']['badge-countdown'];
   document.getElementById('pp-stop-on-address-change').checked = prefs['default-profile']['stop-on-address-change'];
   document.getElementById('reload.all').checked = prefs['disabled-menu-items'].includes('reload.all');
   document.getElementById('reload.all.discarded').checked =
@@ -86,6 +87,7 @@ document.getElementById('save').addEventListener('click', () => {
     'randomize': document.getElementById('pp-randomize').checked,
     'scroll-to-end': document.getElementById('pp-scroll-to-end').checked,
     'visual-countdown': document.getElementById('pp-visual-countdown').checked,
+    'badge-countdown': document.getElementById('pp-badge-countdown').checked,
     'stop-on-address-change': document.getElementById('pp-stop-on-address-change').checked
   });
 

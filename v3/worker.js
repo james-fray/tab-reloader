@@ -121,7 +121,10 @@ const messaging = (request, sender, response = () => {}) => {
           api.button.icon('active', tab.id);
           // countdown
           if (request.profile['visual-countdown']) {
-            api.tabs.countdown(tab.id, request.profile.period).catch(e => console.error(e));
+            api.tabs.countdown(tab.id, request.profile.period, 'page').catch(e => console.error(e));
+          }
+          if (request.profile['badge-countdown']) {
+            api.tabs.countdown(tab.id, request.profile.period, 'badge').catch(e => console.error(e));
           }
           // no discard
           if (g.nodiscard) {
@@ -284,6 +287,14 @@ const messaging = (request, sender, response = () => {}) => {
         });
       }
     });
+  }
+  else if (request.method === 'get-timer') {
+    api.alarms.get(sender.tab.id.toString()).then(response);
+
+    return true;
+  }
+  else if (request.method === 'set-badge') {
+    api.button.badge(request.content, sender.tab.id);
   }
   else if (request.method === 'echo') {
     response(true);

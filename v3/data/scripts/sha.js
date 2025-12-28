@@ -1,3 +1,4 @@
+// calculate SHA256 hash
 {
   // session storage
   const {href} = location;

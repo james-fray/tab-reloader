@@ -107,15 +107,29 @@ const schedule = (time, prefs) => {
 };
 
 // custom countdown for a tab
-api.tabs.countdown = (tabId, period) => api.inject(tabId, {
-  func: (tabId, period) => {
-    self.tabId = tabId;
-    self.period = period;
-  },
-  args: [tabId, period]
-}).then(() => api.inject(tabId, {
-  files: ['/data/scripts/vcd.js']
-}));
+api.tabs.countdown = async (tabId, period, mode) => {
+  if (mode !== 'page' && mode !== 'badge') {
+    throw Error(`"${mode}" is not supported`);
+  }
+
+  await api.inject(tabId, {
+    func: (tabId, period) => {
+      self.tabId = tabId;
+      self.period = period;
+    },
+    args: [tabId, period]
+  });
+  if (mode === 'page') {
+    await api.inject(tabId, {
+      files: ['/data/scripts/vcd.js']
+    });
+  }
+  else if (mode === 'badge') {
+    await api.inject(tabId, {
+      files: ['/data/scripts/bcd.js']
+    });
+  }
+};
 
 api.alarms.fired(async o => {
   const tabId = Number(o.name);
@@ -237,8 +251,6 @@ api.alarms.fired(async o => {
       catch (e) {
         console.warn(e);
 
-        console.log(profile);
-
         // if tab is discarded and we have a policy code, skip the check
         // https://github.com/james-fray/tab-reloader/issues/204
         if (tab.discarded === false) {
@@ -345,7 +357,10 @@ api.tabs.loaded(d => {
         }).catch(error);
       }
       if (profile['visual-countdown']) {
-        api.tabs.countdown(tabId, profile.period).catch(error);
+        api.tabs.countdown(tabId, profile.period, 'page').catch(error);
+      }
+      if (profile['badge-countdown']) {
+        api.tabs.countdown(tabId, profile.period, 'badge').catch(error);
       }
       if (profile.switch) {
         api.inject(tabId, {
@@ -401,6 +416,10 @@ api.tabs.loaded(d => {
             s.addEventListener('play-sound', e => post({
               method: 'play-sound',
               src: e.detail
+            }));
+            s.addEventListener('set-badge', e => post({
+              method: 'set-badge',
+              content: e.detail
             }));
             document.body.append(s);
             s.remove();
