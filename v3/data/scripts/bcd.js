@@ -16,22 +16,22 @@
       else {
         if (remaining >= 86400) {
           // days
-          badge = Math.floor(remaining / 86400) + 'd';
-          next = remaining % 86400 || 86400;
+          badge = Math.round(remaining / 86400) + 'd';
+          next = remaining % 43200 || 43200;
         }
         else if (remaining >= 3600) {
           // hours
-          badge = Math.floor(remaining / 3600) + 'h';
-          next = remaining % 3600 || 3600;
+          badge = Math.round(remaining / 3600) + 'h';
+          next = remaining % 1800 || 1800;
         }
         else if (remaining >= 60) {
           // minutes
-          badge = Math.floor(remaining / 60) + 'm';
-          next = remaining % 60 || 60;
+          badge = Math.round(remaining / 60) + 'm';
+          next = remaining % 30 || 30;
         }
         else {
           // seconds
-          badge = Math.floor(remaining) + 's';
+          badge = Math.round(remaining) + 's';
           next = 1;
         }
       }
@@ -43,6 +43,7 @@
         content: badge
       });
     }
+    console.log(next, badge);
     timer = setTimeout(once, next * 1000);
   });
   if (document.visibilityState !== 'hidden') {
@@ -69,6 +70,9 @@
         content: '×'
       });
       chrome.runtime.onMessage.removeListener(observe);
+    }
+    else if (request.method === 'popup-opened') {
+      once();
     }
   };
   chrome.runtime.onMessage.addListener(observe);

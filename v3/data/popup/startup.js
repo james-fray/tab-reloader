@@ -65,4 +65,8 @@ api.tabs.active().then(async tabs => {
   for (const c of startup) {
     c(o, true);
   }
+
+  api.post.tab(tab.id, {
+    method: 'popup-opened'
+  }).catch(() => {});
 });

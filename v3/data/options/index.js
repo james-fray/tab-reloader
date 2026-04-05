@@ -108,14 +108,25 @@ document.getElementById('save').addEventListener('click', () => {
   }
 
   try {
+    let json = JSON.parse(document.getElementById('json').value.trim() || '[]');
+    if (!Array.isArray(json)) {
+      // wrong format? user inserted an object instead of an array of objects
+      if (json?.constructor === Object) {
+        json = [json];
+      }
+      else {
+        json = [];
+      }
+    }
+
     chrome.storage.local.set({
       badge,
       presets,
+      json,
       'default-profile': profile,
       'color': document.getElementById('color').value,
       'faqs': document.getElementById('faqs').checked,
       'removed.jobs.enabled': document.getElementById('removed.jobs.enabled').checked,
-      'json': JSON.parse(document.getElementById('json').value.trim() || '[]'),
       'dynamic.json': document.getElementById('dynamic.json').checked,
       'policy': JSON.parse(document.getElementById('policy').value.trim() || '{}'),
       'disabled-menu-items': [...document.querySelectorAll('#disabled_items input:checked')].map(e => e.id),

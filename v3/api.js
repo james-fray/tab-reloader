@@ -223,6 +223,9 @@ api.post = {
   bg: (o, c) => {
     chrome.runtime.sendMessage(o, c);
   },
+  tab: (tabId, o) => { // promised
+    return chrome.tabs.sendMessage(tabId, o);
+  },
   fired(...args) {
     chrome.runtime.onMessage.addListener(...args);
   }
