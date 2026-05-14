@@ -418,6 +418,8 @@ api.inject = (tabId, o) => {
 
 api.csp = {
   remove(tabId) {
+    // This is opt-in. The user explicitly uses the extension interface (right-click context menu) to disable CSP
+    // for a specific tab when script injection is otherwise prohibited but required for the user.
     return chrome.declarativeNetRequest.updateSessionRules({
       removeRuleIds: [tabId],
       addRules: [{

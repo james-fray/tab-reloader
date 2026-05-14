@@ -3,37 +3,42 @@
 {
   const cache = {};
 
-  const ids = [];
-  api.alarms.forEach(async o => {
-    const tabId = Number(o.name);
-    const tab = await api.tabs.get(tabId);
+  api.alarms.keys().then(tabIds => tabIds.map(Number)).then(async tabIds => {
+    const ids = [];
 
-    if (tab) {
-      if (tab.active !== true) {
-        const div = document.createElement('div');
-        div.tabId = tabId;
-        div.classList.add('entry', 'button');
-        div.title = tab.title + ' -> ' + tab.url;
+    // sort
+    tabIds.sort();
+    // current tab
+    const [current] = await api.tabs.active();
 
-        const timer = document.createElement('span');
-        timer.textContent = '00:20';
-        timer.classList.add('timer');
-        div.append(timer);
+    for (const tabId of tabIds) {
+      const tab = await api.tabs.get(tabId);
+      if (tab) {
+        // do not use "active" property of the tab since we want to exclude only the current tab in the active window
+        if (tab.id !== current.id) {
+          const div = document.createElement('div');
+          div.tabId = tabId;
+          div.classList.add('entry', 'button');
+          div.title = tab.title + ' -> ' + tab.url;
 
-        const title = document.createElement('span');
-        title.textContent = tab.title || tab.url;
-        title.classList.add('title');
-        div.append(title);
+          const timer = cache[tabId] = document.createElement('span');
+          timer.textContent = '00:20';
+          timer.classList.add('timer');
+          div.append(timer);
 
-        document.getElementById('actives').append(div);
+          const title = document.createElement('span');
+          title.textContent = tab.title || tab.url;
+          title.classList.add('title');
+          div.append(title);
 
-        cache[tabId] = timer;
+          document.getElementById('actives').append(div);
+        }
+      }
+      else {
+        ids.push(tabId);
       }
     }
-    else {
-      ids.push(tabId);
-    }
-  }).then(() => {
+
     if (ids.length) {
       api.post.bg({
         reason: 'tab-not-found-on-popup',
@@ -42,7 +47,7 @@
       });
     }
 
-    if (Object.keys(cache)) {
+    if (Object.keys(cache).length) {
       let timer;
       const once = () => {
         api.alarms.forEach(o => {
