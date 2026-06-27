@@ -33,7 +33,7 @@ const generate = (forced = false) => {
   const time = api.convert.str2obj(document.getElementById('period').value);
   let period = Math.max(1, api.convert.secods(time));
   if (forced === false) {
-    period = Math.max(10, period);
+    period = Math.max(5, period);
   }
   return {
     'period': api.convert.obj2str(api.convert.sec2obj(period)),

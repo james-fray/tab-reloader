@@ -319,11 +319,6 @@ api.tabs.loaded(d => {
         period = period * factor;
 
         period = Math.max(period, 5);
-
-        console.log(period, factor);
-        // const delta = Math.random() * (profile.variation / 100) * period;
-        // period = period + (Math.random() > 0.5 ? 1 : -1) * delta;
-        // period = Math.max(period, 5); // make sure time is in valid range
       }
 
       api.button.icon('active', tabId);
