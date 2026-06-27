@@ -37,7 +37,7 @@ const generate = (forced = false) => {
   }
   return {
     'period': api.convert.obj2str(api.convert.sec2obj(period)),
-    'variation': Math.min(100, Math.max(0, document.getElementById('variation').value)),
+    'variation': Math.min(300, Math.max(0, document.getElementById('variation').value)),
     'current': document.getElementById('current').checked,
     'nofocus': document.getElementById('nofocus').checked,
     'cache': document.getElementById('cache').checked,

@@ -87,7 +87,7 @@
     "message": "with variation"
   },
   "popup_variation_hint": {
-    "message": "Set variation in percent to randomize reloading time (applies after the first reload)"
+    "message": "Set the variation percentage to randomize the reload time (0%–300%). This takes effect starting from the second reload onward."
   },
   "popup_enable_keys": {
     "message": "'S' key to enable reloading\n'Escape' key to disable reloading\nShift + Escape key to close the popup\nCtrl/Command + 1/10 keys to select a preset"

@@ -311,9 +311,19 @@ api.tabs.loaded(d => {
       let period = Math.max(1, api.convert.secods(time));
       // variation
       if (profile.variation) {
-        const delta = Math.random() * (profile.variation / 100) * period;
-        period = period + (Math.random() > 0.5 ? 1 : -1) * delta;
-        period = Math.max(period, 5); // make sure time is in valid range
+        // Limit the negative side, keep the positive side equal
+        const maxVariation = profile.variation / 100;
+        const negative = Math.min(maxVariation, 1); // can't reduce by more than 100%
+
+        const factor = 1 + (Math.random() * (maxVariation + negative) - negative);
+        period = period * factor;
+
+        period = Math.max(period, 5);
+
+        console.log(period, factor);
+        // const delta = Math.random() * (profile.variation / 100) * period;
+        // period = period + (Math.random() > 0.5 ? 1 : -1) * delta;
+        // period = Math.max(period, 5); // make sure time is in valid range
       }
 
       api.button.icon('active', tabId);
