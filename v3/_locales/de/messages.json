@@ -26,6 +26,9 @@
   "popup_randomize": {
     "message": "Zufällige Verzögerung beim ersten Neuladen"
   },
+  "popup_skip_auto_add": {
+    "message": "Nicht neu laden, falls ohne zu Beenden geschlossen wurde"
+  },
   "popup_nodiscard": {
     "message": "Verhindern, dass der Tab entladen wird"
   },
@@ -84,7 +87,7 @@
     "message": "mit Variation"
   },
   "popup_variation_hint": {
-    "message": "Variation in Prozent, um Tabs zufällig neu zu laden (gilt nach dem ersten Neuladen)"
+    "message": "Legen Sie den Variationsprozentsatz fest, um die Ladezeit zu zufällig zu variieren (0 %–300 %). Dies gilt ab dem zweiten Ladevorgang."
   },
   "popup_enable_keys": {
     "message": "'S'-Taste zum Aktivieren des Reloads\\n'ESC'-Taste zum Deaktivieren des Reloads\\nUmschalttaste + ESC-Taste zum Schließen des Einstellungs-Fensters\\nStrg + 1 bis 10-Tasten zum Auswählen einer Voreinstellung"
@@ -137,6 +140,12 @@
   "popup_vcd": {
     "message": "Visuellen Countdown anzeigen"
   },
+  "popup_bcd": {
+    "message": "Badge Countdown anzeigen"
+  },
+  "popup_stop_on_address_change": {
+    "message": "Bei Adressänderung nicht neu laden"
+  },
   "options_title": {
     "message": "Einstellungen :: Tab Reloader"
   },
@@ -184,6 +193,12 @@
   },
   "options_pp_visual_countdown": {
     "message": "Standardwert für \"Visuellen Countdown anzeigen\""
+  },
+  "options_pp_badge_countdown": {
+    "message": "Standardwert für \"Badge Countdown anzeigen\""
+  },
+  "options_pp_stop_on_address_change": {
+    "message": "Standardwert für \" Bei Adressänderung nicht neu laden\""
   },
   "options_presets": {
     "message": "Vorgaben"
@@ -349,6 +364,14 @@
   },
   "bg_msg_3": {
     "message": "Warnung: Das Entfernen der Content Security Policy (CSP) kann die Website anfällig für Sicherheitsrisiken machen, wie z. B. Cross-Site-Scripting (XSS)-Angriffe.\n\nSind Sie sicher, dass Sie fortfahren möchten?"
+  },
+  "bg_msg_4": {
+    "message": "Neu geladen am $date$",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
   },
   "commands_reload_all": {
     "message": "Alle Tabs neu laden"
