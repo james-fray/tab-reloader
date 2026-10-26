@@ -206,6 +206,9 @@
   "options_custom_jobs": {
     "message": "Custom Jobs"
   },
+  "options_custom_jobs_desc": {
+    "message": "Define custom reloading jobs in JSON format to automatically reload a tab in a custom period or based on a custom schedule."
+  },
   "options_sample": {
     "message": "Insert a Sample"
   },
@@ -229,6 +232,12 @@
   },
   "options_policy": {
     "message": "Reloading Policy"
+  },
+  "options_policy_desc": {
+    "message": "List URL and date policies in JSON format to prevent a reloading job from reloading a tab that matches the rules."
+  },
+  "options_more": {
+    "message": "For more info, visit the FAQs page."
   },
   "options_misc": {
     "message": "Misc"
