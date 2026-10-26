@@ -13,6 +13,7 @@ const config = {
   'presets': defaults.presets,
   'default-profile': defaults.profile,
   'disabled-menu-items': [],
+  'context-menu': true,
   'startup-restore-delay': 5000
 };
 
@@ -39,6 +40,7 @@ const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('pp-visual-countdown').checked = prefs['default-profile']['visual-countdown'];
   document.getElementById('pp-badge-countdown').checked = prefs['default-profile']['badge-countdown'];
   document.getElementById('pp-stop-on-address-change').checked = prefs['default-profile']['stop-on-address-change'];
+  document.getElementById('context-menu').checked = prefs['context-menu'];
   document.getElementById('reload.all').checked = prefs['disabled-menu-items'].includes('reload.all');
   document.getElementById('reload.all.discarded').checked =
     prefs['disabled-menu-items'].includes('reload.all.discarded');
@@ -102,6 +104,9 @@ document.getElementById('save').addEventListener('click', () => {
     });
   }
 
+  // setting to create or remove the whole context menu
+  const contextMenu = document.getElementById('context-menu').checked;
+
   let delay = document.getElementById('startup-restore-delay').valueAsNumber;
   if (isNaN(delay)) {
     delay = 5;
@@ -130,6 +135,7 @@ document.getElementById('save').addEventListener('click', () => {
       'dynamic.json': document.getElementById('dynamic.json').checked,
       'policy': JSON.parse(document.getElementById('policy').value.trim() || '{}'),
       'disabled-menu-items': [...document.querySelectorAll('#disabled_items input:checked')].map(e => e.id),
+      'context-menu': contextMenu,
       'startup-restore-delay': delay * 1000
     }, () => {
       info.textContent = chrome.i18n.getMessage('options_saved');
@@ -144,6 +150,17 @@ document.getElementById('save').addEventListener('click', () => {
         chrome.action.setBadgeText({
           text: ''
         });
+      }
+
+      // create or remove the whole context menu
+      if (contextMenu) {
+        // ask the background service to re-register all menus
+        chrome.runtime.sendMessage({
+          method: 'context-menu-rebuild'
+        });
+      }
+      else {
+        chrome.contextMenus.removeAll();
       }
     });
   }

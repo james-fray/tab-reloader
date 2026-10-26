@@ -1,15 +1,20 @@
 /* global api, messaging */
 
-api.runtime.started(async () => {
+const buildMenus = async () => {
   const prefs = await api.storage.get({
-    'disabled-menu-items': []
+    'disabled-menu-items': [],
+    'context-menu': true
   });
 
+  if (prefs['context-menu'] === false) {
+    return;
+  }
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_every'),
     id: 'reload.every',
     contexts: ['action', 'tab']
   });
+
   api.context.add({
     title: chrome.i18n.getMessage('bg_reload_every_10s'),
     id: 'reload.every.00:00:10',
@@ -144,6 +149,16 @@ api.runtime.started(async () => {
       id: 'options',
       contexts: ['action']
     });
+  }
+};
+
+api.runtime.started(buildMenus);
+
+/* rebuild the whole menu tree when the options page enables it again */
+api.post.fired(request => {
+  if (request.method === 'context-menu-rebuild') {
+    buildMenus();
+    return true;
   }
 });
 {

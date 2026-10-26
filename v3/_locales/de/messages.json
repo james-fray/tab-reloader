@@ -284,6 +284,9 @@
   "options_disables": {
     "message": "Kontextmenüeinträge deaktivieren"
   },
+  "options_context_menu": {
+    "message": "Einträge dieses Kontextmenüs im Rechtsklickmenü des Browsers anzeigen (zum Deaktivieren einzelner Einträge den Abschnitt \"Kontextmenüeinträge deaktivieren\" unten verwenden)"
+  },
   "options_startup_restore_delay": {
     "message": "Verzögerung in Sekunden um früherer Aufträge, nach einem Neustart, erneut zu starten:"
   },

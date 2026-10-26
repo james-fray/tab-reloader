@@ -272,6 +272,9 @@
   "options_disables": {
     "message": "停用右鍵選單"
   },
+  "options_context_menu": {
+    "message": "將擴充功能的右鍵選單項目加入到瀏覽器的右鍵選單（如需停用個別項目，請使用下方「停用右鍵選單」部分）"
+  },
   "options_startup_restore_delay": {
     "message": "重啟後恢復任務延遲時間（秒）："
   },

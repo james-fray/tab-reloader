@@ -43,4 +43,6 @@ defaults['schedule-offset'] = 0;
 
 defaults['badge-color'] = '#5e5e5e';
 
+defaults['context-menu'] = true;
+
 defaults['removed.jobs'] = 5 * 24 * 60 * 60 * 1000; // ms

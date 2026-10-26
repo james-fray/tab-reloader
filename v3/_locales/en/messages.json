@@ -284,6 +284,9 @@
   "options_disables": {
     "message": "Disable Context Menu Items"
   },
+  "options_context_menu": {
+    "message": "Add this extension's context menu items to the browser's context menu (to disable individual items, use the \"Disable Context Menu Items\" section below)"
+  },
   "options_startup_restore_delay": {
     "message": "Delay in seconds to restart previous jobs after restart:"
   },

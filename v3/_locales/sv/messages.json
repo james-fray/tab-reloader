@@ -269,6 +269,9 @@
   "options_disables": {
     "message": "Inaktivera alternativ i högerklicksmenyn"
   },
+  "options_context_menu": {
+    "message": "Visa tilläggets högerklicksmenyalternativ i webbläsarens högerklicksmeny (för att inaktivera enskilda alternativ, använd avsnittet \"Inaktivera alternativ i högerklicksmenyn\" nedan)"
+  },
   "options_startup_restore_delay": {
     "message": "Fördröjning i sekunder innan tidigare jobb startas om efter omstart:"
   },

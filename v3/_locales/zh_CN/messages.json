@@ -272,6 +272,9 @@
   "options_disables": {
     "message": "禁用右键菜单项"
   },
+  "options_context_menu": {
+    "message": "将扩展的右键菜单项添加到浏览器的右键菜单（如需停用单个项目，请使用下方\"禁用右键菜单项\"部分）"
+  },
   "options_startup_restore_delay": {
     "message": "重启后恢复任务的延迟时间(秒)："
   },
