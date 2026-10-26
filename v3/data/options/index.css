@@ -5,6 +5,7 @@
   --bg-desc: #e8e8e8;
   --fg: #4d5156;
   --bt: #4d5156;
+  --link: #1850c1;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -13,6 +14,7 @@
     --bg: #202124;
     --bg-desc: #2b2a33;
     --bt: #202124;
+    --link: #96b2e8;
   }
 }
 
@@ -75,6 +77,9 @@ textarea {
   width: 100%;
   box-sizing: border-box;
   padding: 10px;
+  resize: vertical;
+  field-sizing: content;
+  min-height: 8lh;
 }
 input[type=text] {
   padding: 5px;
@@ -99,7 +104,11 @@ td:first-child {
 a {
   text-decoration: none;
   user-select: none;
-  color: #07c;
+  color: var(--link);
+}
+#presets {
+  width: 100%;
+  box-sizing: border-box;
 }
 .desc {
   background-color: var(--bg-desc);
