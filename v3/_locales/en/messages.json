@@ -203,6 +203,18 @@
   "options_presets": {
     "message": "Presets"
   },
+  "options_presets_desc": {
+    "message": "Presets are pre-defined reloading periods that appear as selectable buttons in the popup. Enter each preset using a human-readable period format (e.g. 30s, 5m, 1h) and separate them with a comma."
+  },
+  "options_tab_general": {
+    "message": "General"
+  },
+  "options_tab_context_menu": {
+    "message": "Context Menu"
+  },
+  "options_tab_advanced": {
+    "message": "Advanced Settings"
+  },
   "options_custom_jobs": {
     "message": "Custom Jobs"
   },
@@ -271,6 +283,9 @@
   },
   "options_permission": {
     "message": "Host Permission"
+  },
+  "options_permission_desc": {
+    "message": "Request access to all URLs to enable features that require the host permission"
   },
   "options_instruction": {
     "message": "Usage Instruction"

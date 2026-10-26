@@ -21,18 +21,49 @@ body {
   font-size: 14px;
   background-color: var(--bg);
   color: var(--fg);
-  margin-inline: auto;
+  margin: 0 auto;
   width: min(100% - 2rem, 70rem);
+  height: 100vh;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-areas: "hdr hdr" "tab main" "bar bar";
+  grid-template-columns: 10rem 1fr;
+  grid-template-rows: auto 1fr auto;
+}
+
+.save-bar {
+  grid-area: hdr;
+  padding-top: 10px;
+}
+.save-bar .save {
+  position: relative;
+  margin: 0 0 10px;
+}
+.save-bar .save button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: unset;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  text-shadow: none;
+  padding: 5px 8px;
+  color: inherit;
+  cursor: pointer;
+  font-size: inherit;
+  font-weight: bold;
+  line-height: 1;
 }
 
 button {
-  height: 24px;
+  padding: 5px;
   color: var(--bt);
   background-image: linear-gradient(rgb(237, 237, 237), rgb(237, 237, 237) 38%, rgb(222, 222, 222));
   box-shadow: rgba(0, 0, 0, 0.08) 0 1px 0, rgba(255, 255, 255, 0.75) 0 1px 2px inset;
   text-shadow: rgb(240, 240, 240) 0 1px 0;
   border: solid 1px rgba(0, 0, 0, 0.25);
-  font-size: inherit;
+  font-size: 13px;
 }
 textarea,
 input[type=text],
@@ -86,8 +117,7 @@ div.desc,
 #events,
 #desc-1,
 #desc-2,
-#desc-3,
-#desc-4 {
+#desc-3 {
   cursor: pointer;
   user-select: none;
   color: #07c;
@@ -111,6 +141,17 @@ div.desc,
 #history_timeout {
   justify-self: end;
 }
+.grid-tool {
+  display: grid;
+  grid-template-columns: 1fr min-content;
+  align-items: center;
+  grid-gap: 5px;
+  margin-top: 10px;
+}
+.grid-tool button {
+  justify-self: end;
+  white-space: nowrap;
+}
 
 .disabled {
   opacity: 0.5;
@@ -125,8 +166,119 @@ div.desc,
   margin-top: 10px;
 }
 
+/* tabs */
+.tabs {
+  grid-area: tab;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  padding-top: 10px;
+}
+.tabs input[type=radio] {
+  display: none;
+}
+.tabs label {
+  padding: 8px 10px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-left: solid 2px transparent;
+}
+.tabs label.active {
+  background-color: var(--bg-desc);
+  border-left-color: #07c;
+  font-weight: bold;
+}
+main {
+  grid-area: main;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 10px 5px 10px 10px;
+  min-width: 0;
+}
+.tab {
+  display: none;
+}
+.tab.active {
+  display: block;
+}
+
+/* bottom bar */
+.bottom-bar {
+  grid-area: bar;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border-top: solid 1px var(--fg);
+  background-color: var(--bg);
+  padding: 8px 5px;
+  margin-top: 10px;
+}
+.footer-section {
+  display: flex;
+  gap: 5px;
+}
+.footer-section button {
+  white-space: nowrap;
+}
+#info {
+  position: absolute;
+  bottom: calc(100% + 5px);
+  right: 10px;
+  background-color: var(--bg);
+  padding: 5px;
+}
+
 @supports (-webkit-hyphens: none) and (not (-moz-appearance: none)) {
   #support {
     display: none;
+  }
+}
+
+/* mobile: move tabs to the top */
+@media (max-width: 600px) {
+  body {
+    grid-template-areas: "hdr" "tab" "main" "bar";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr auto;
+  }
+  .tabs {
+    flex-direction: row;
+    padding-top: 0;
+  }
+  .tabs label {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-left: none;
+    border-bottom: solid 2px transparent;
+  }
+  .tabs label.active {
+    border-left-color: transparent;
+    border-bottom-color: #07c;
+  }
+  button {
+    height: 28px;
+  }
+  .footer-section {
+    gap: 3px;
+  }
+  .bottom-bar {
+    justify-content: stretch;
+    gap: 5px;
+  }
+  .footer-section {
+    flex: 1 1 auto;
+  }
+  .footer-section button {
+    flex: 1 1 auto;
   }
 }

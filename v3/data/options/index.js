@@ -14,7 +14,9 @@ const config = {
   'default-profile': defaults.profile,
   'disabled-menu-items': [],
   'context-menu': true,
-  'startup-restore-delay': 5000
+  'startup-restore-delay': 5000,
+  'save-reminder': true,
+  'options-tab': 'general'
 };
 
 const restore = () => chrome.storage.local.get(config, prefs => {
@@ -41,6 +43,7 @@ const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('pp-badge-countdown').checked = prefs['default-profile']['badge-countdown'];
   document.getElementById('pp-stop-on-address-change').checked = prefs['default-profile']['stop-on-address-change'];
   document.getElementById('context-menu').checked = prefs['context-menu'];
+  document.querySelector('.save-bar').classList.toggle('hide', prefs['save-reminder'] === false);
   document.getElementById('reload.all').checked = prefs['disabled-menu-items'].includes('reload.all');
   document.getElementById('reload.all.discarded').checked =
     prefs['disabled-menu-items'].includes('reload.all.discarded');
@@ -52,6 +55,7 @@ const restore = () => chrome.storage.local.get(config, prefs => {
   document.getElementById('no.reload').checked = prefs['disabled-menu-items'].includes('no.reload');
   document.getElementById('stop.all').checked = prefs['disabled-menu-items'].includes('stop.all');
   document.getElementById('startup-restore-delay').value = Math.round(prefs['startup-restore-delay'] / 1000);
+  selectTab(prefs['options-tab']);
 });
 restore();
 
@@ -260,9 +264,6 @@ document.getElementById('desc-1').addEventListener('click', () => {
 document.getElementById('desc-2').addEventListener('click', () => {
   document.querySelector('[for="desc-2"]').classList.toggle('hide');
 });
-document.getElementById('desc-4').addEventListener('click', () => {
-  document.querySelector('[for="desc-4"]').classList.toggle('hide');
-});
 // permission
 document.getElementById('permission').addEventListener('click', () => chrome.permissions.request({
   origins: ['<all_urls>']
@@ -271,6 +272,30 @@ document.getElementById('permission').addEventListener('click', () => chrome.per
   info.textContent = 'Host permission is ' + (granted ? 'granted' : 'denied');
   window.setTimeout(() => info.textContent = '', 3000);
 }));
+
+// tabs
+const selectTab = name => {
+  const input = document.querySelector(`.tabs input[data-tab="${name}"]`);
+  if (!input) {
+    return;
+  }
+  document.querySelector('.tab.active')?.classList.remove('active');
+  document.querySelector(`.tab[data-tab="${input.dataset.tab}"]`)?.classList.add('active');
+  document.querySelector('.tabs label.active')?.classList.remove('active');
+  input.checked = true;
+  document.querySelector(`.tabs label[for="${input.id}"]`)?.classList.add('active');
+};
+for (const input of document.querySelectorAll('.tabs input')) {
+  input.addEventListener('change', () => {
+    selectTab(input.dataset.tab);
+    chrome.storage.local.set({'options-tab': input.dataset.tab});
+  });
+}
+// save reminder
+document.getElementById('close-save-reminder').addEventListener('click', () => {
+  document.querySelector('.save-bar').classList.add('hide');
+  chrome.storage.local.set({'save-reminder': false});
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   for (const a of [...document.querySelectorAll('[data-href]')]) {

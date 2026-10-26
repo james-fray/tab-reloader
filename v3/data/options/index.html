@@ -8,155 +8,196 @@
 </head>
 
 <body>
-  <p class="save" data-i18n="options_save_reminder"></p>
-  <div class="grid-1">
-    <input type="checkbox" id="badge">
-    <label for="badge" data-i18n="options_badge"></label>
-  </div>
-  <div class="grid-3">
-    <span></span>
-    <label for="color" data-i18n="options_color"></label>
-    <input type="color" id="color">
-  </div>
-  <div class="grid-1">
-    <input type="checkbox" id="context-menu">
-    <label for="context-menu" data-i18n="options_context_menu"></label>
-  </div>
-  <div>
-    <h1 data-i18n="options_defaults"></h1>
-    <div class="grid-1">
-      <span></span>
-      <div>
-        <label for="pp-period" data-i18n="options_default_time"></label>
-        <input type="text" id="pp-period">
+  <header class="save-bar">
+    <p class="save">
+      <span data-i18n="options_save_reminder"></span>
+      <button id="close-save-reminder" title="Close">×</button>
+    </p>
+  </header>
+  <nav class="tabs">
+    <input type="radio" name="tab" id="tab-general" data-tab="general" checked>
+    <label for="tab-general" data-i18n="options_tab_general"></label>
+    <input type="radio" name="tab" id="tab-defaults" data-tab="defaults">
+    <label for="tab-defaults" data-i18n="options_defaults"></label>
+    <input type="radio" name="tab" id="tab-context-menu" data-tab="context-menu">
+    <label for="tab-context-menu" data-i18n="options_tab_context_menu"></label>
+    <input type="radio" name="tab" id="tab-advanced" data-tab="advanced">
+    <label for="tab-advanced" data-i18n="options_tab_advanced"></label>
+  </nav>
+
+  <main>
+    <section class="tab active" data-tab="general">
+      <div class="grid-1">
+        <input type="checkbox" id="badge">
+        <label for="badge" data-i18n="options_badge"></label>
       </div>
-      <span></span>
-      <div>
-        <label for="pp-variation" data-i18n="options_default_variation"></label>
-        <input type="number" id="pp-variation" min="0" max="100">
+      <div class="grid-3">
+        <span></span>
+        <label for="color" data-i18n="options_color"></label>
+        <input type="color" id="color">
       </div>
-      <input type="checkbox" id="pp-current">
-      <label for="pp-current" data-i18n="options_pp_current"></label>
-      <input type="checkbox" id="pp-nofocus">
-      <label for="pp-nofocus" data-i18n="options_pp_nofocus"></label>
-      <input type="checkbox" id="pp-cache">
-      <label for="pp-cache" data-i18n="options_pp_cache"></label>
-      <input type="checkbox" id="pp-form">
-      <label for="pp-form" data-i18n="options_pp_form"></label>
-      <input type="checkbox" id="pp-offline">
-      <label for="pp-offline" data-i18n="options_pp_offline"></label>
-      <input type="checkbox" id="pp-discarded">
-      <label for="pp-discarded" data-i18n="options_pp_discarded"></label>
-      <input type="checkbox" id="pp-nodiscard">
-      <label for="pp-nodiscard" data-i18n="options_pp_nodiscard"></label>
-      <input type="checkbox" id="pp-randomize">
-      <label for="pp-randomize" data-i18n="options_pp_randomize"></label>
-      <input type="checkbox" id="pp-scroll-to-end">
-      <label for="pp-scroll-to-end" data-i18n="options_pp_scroll_to_end"></label>
-      <input type="checkbox" id="pp-visual-countdown">
-      <label for="pp-visual-countdown" data-i18n="options_pp_visual_countdown"></label>
-      <input type="checkbox" id="pp-badge-countdown">
-      <label for="pp-badge-countdown" data-i18n="options_pp_badge_countdown"></label>
-      <input type="checkbox" id="pp-stop-on-address-change">
-      <label for="pp-stop-on-address-change" data-i18n="options_pp_stop_on_address_change"></label>
+      <h1 data-i18n="options_tools"></h1>
+      <div class="grid-tool">
+        <span data-i18n="options_export_desc"></span>
+        <button id="export" data-i18n="options_export"></button>
+      </div>
+      <div class="grid-tool">
+        <span data-i18n="options_import_desc"></span>
+        <button id="import" data-i18n="options_import"></button>
+      </div>
+      <div class="grid-tool">
+        <span data-i18n="options_reset_desc"></span>
+        <button id="reset" data-i18n="options_reset"></button>
+      </div>
+      <div class="grid-tool">
+        <span data-i18n="options_permission_desc"></span>
+        <button id="permission" data-i18n="options_permission"></button>
+      </div>
+      <h1 data-i18n="options_misc"></h1>
+      <div class="grid-1">
+        <span></span>
+        <div>
+          <label for="startup-restore-delay" data-i18n="options_startup_restore_delay"></label>
+          <input type="number" id="startup-restore-delay">
+          (<a data-href="faq33" target="_blank" data-i18n="options_help"></a>)
+        </div>
+        <input type="checkbox" id="removed.jobs.enabled">
+        <label for="removed.jobs.enabled" data-i18n="options_reassign"></label>
+        <input type="checkbox" id="faqs">
+        <label for="faqs" data-i18n="options_faqs"></label>
+      </div>
+    </section>
+
+    <section class="tab" data-tab="defaults">
+      <div>
+        <h1 data-i18n="options_defaults"></h1>
+        <div class="grid-1">
+          <span></span>
+          <div>
+            <label for="pp-period" data-i18n="options_default_time"></label>
+            <input type="text" id="pp-period">
+          </div>
+          <span></span>
+          <div>
+            <label for="pp-variation" data-i18n="options_default_variation"></label>
+            <input type="number" id="pp-variation" min="0" max="100">
+          </div>
+          <input type="checkbox" id="pp-current">
+          <label for="pp-current" data-i18n="options_pp_current"></label>
+          <input type="checkbox" id="pp-nofocus">
+          <label for="pp-nofocus" data-i18n="options_pp_nofocus"></label>
+          <input type="checkbox" id="pp-cache">
+          <label for="pp-cache" data-i18n="options_pp_cache"></label>
+          <input type="checkbox" id="pp-form">
+          <label for="pp-form" data-i18n="options_pp_form"></label>
+          <input type="checkbox" id="pp-offline">
+          <label for="pp-offline" data-i18n="options_pp_offline"></label>
+          <input type="checkbox" id="pp-discarded">
+          <label for="pp-discarded" data-i18n="options_pp_discarded"></label>
+          <input type="checkbox" id="pp-nodiscard">
+          <label for="pp-nodiscard" data-i18n="options_pp_nodiscard"></label>
+          <input type="checkbox" id="pp-randomize">
+          <label for="pp-randomize" data-i18n="options_pp_randomize"></label>
+          <input type="checkbox" id="pp-scroll-to-end">
+          <label for="pp-scroll-to-end" data-i18n="options_pp_scroll_to_end"></label>
+          <input type="checkbox" id="pp-visual-countdown">
+          <label for="pp-visual-countdown" data-i18n="options_pp_visual_countdown"></label>
+          <input type="checkbox" id="pp-badge-countdown">
+          <label for="pp-badge-countdown" data-i18n="options_pp_badge_countdown"></label>
+          <input type="checkbox" id="pp-stop-on-address-change">
+          <label for="pp-stop-on-address-change" data-i18n="options_pp_stop_on_address_change"></label>
+        </div>
+      </div>
+      <div>
+        <h1 data-i18n="options_presets"></h1>
+      </div>
+      <div class="desc" style="margin-top: 10px">
+        <span data-i18n="options_presets_desc"></span>
+      </div>
+      <textarea rows="2" id="presets" style="margin-top: 10px"></textarea>
+    </section>
+
+    <section class="tab" data-tab="context-menu">
+      <div class="grid-1">
+        <input type="checkbox" id="context-menu">
+        <label for="context-menu" data-i18n="options_context_menu"></label>
+      </div>
+      <div>
+        <h1 data-i18n="options_disables"></h1>
+        <div class="grid-1" id="disabled_items">
+          <input type="checkbox" id="reload.all">
+          <label for="reload.all">
+            <span data-i18n="bg_reload_tabs"></span> -> <span data-i18n="bg_all_tabs"></span>
+          </label>
+          <input type="checkbox" id="reload.all.discarded">
+          <label for="reload.all.discarded">
+            <span data-i18n="bg_reload_tabs"></span> -> <span data-i18n="bg_reload_all_discarded"></span>
+          </label>
+          <input type="checkbox" id="reload.window">
+          <label for="reload.window">
+            <span data-i18n="bg_reload_tabs"></span> -> <span data-i18n="bg_reload_window"></span>
+          </label>
+          <input type="checkbox" id="reload.window.discarded">
+          <label for="reload.window.discarded">
+            <span data-i18n="bg_reload_tabs"></span> -> <span data-i18n="bg_reload_window_discarded"></span>
+          </label>
+          <input type="checkbox" id="reload.tabs.left">
+          <label for="reload.tabs.left">
+            <span data-i18n="bg_reload_tabs"></span> -> <span data-i18n="bg_reload_tabs_left"></span>
+          </label>
+          <input type="checkbox" id="reload.tabs.right">
+          <label for="reload.tabs.right">
+            <span data-i18n="bg_reload_tabs"></span> -> <span data-i18n="bg_reload_tabs_right"></span>
+          </label>
+          <input type="checkbox" id="no.reload">
+          <label for="no.reload">
+            <span data-i18n="bg_stop"></span> -> <span data-i18n="bg_no_reload"></span>
+          </label>
+          <input type="checkbox" id="stop.all">
+          <label for="stop.all">
+            <span data-i18n="bg_stop"></span> -> <span data-i18n="bg_all_tabs"></span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab" data-tab="advanced">
+      <div>
+        <h1 data-i18n="options_custom_jobs"></h1> (<span id="example" data-i18n="options_sample"></span>, <span id="keywords" data-i18n="options_keywords"></span>, <span id="events" data-i18n="options_events"></span>, <span id="desc-1" data-i18n="options_desc"></span>)
+      </div>
+      <div class="desc" style="margin-top: 0">
+        <span data-i18n="options_custom_jobs_desc"></span>
+        <a data-href="faq11" target="_blank" data-i18n="options_more"></a>
+      </div>
+      <textarea rows="6" id="json"></textarea>
+      <div for="desc-1" class="desc hide" style="margin: 5px 0">
+        <span data-i18n="options_json_desc"></span>
+      </div>
+      <div class="grid-1 top">
+        <input type="checkbox" id="dynamic.json">
+        <label for="dynamic.json"><span data-i18n="options_dynamic_json"></span> (<span id="desc-2" data-i18n="options_desc"></span>)</label>
+      </div>
+      <div for="desc-2" class="desc hide" style="margin-top: 5px" data-i18n="options_dynamic_json_desc"></div>
+      <div><h1 data-i18n="options_policy"></h1></div>
+      <div class="desc" style="margin-top: 0">
+        <span data-i18n="options_policy_desc"></span>
+        <a data-href="faq14" target="_blank" data-i18n="options_more"></a>
+      </div>
+      <textarea rows="6" id="policy"></textarea>
+    </section>
+  </main>
+
+  <footer class="bottom-bar">
+    <div class="footer-section">
+      <button id="opv" data-i18n="options_instruction"></button>
+      <button id="ofq" data-i18n="options_ofq"></button>
     </div>
-  </div>
-  <div>
-    <h1 data-i18n="options_presets"></h1>
-    <textarea rows="2" id="presets"></textarea>
-  </div>
-  <div>
-    <h1 data-i18n="options_disables"></h1>
-    <div class="grid-1" id="disabled_items">
-      <input type="checkbox" id="reload.all">
-      <label for="reload.all">
-        <span data-i18n="bg_reload_tabs"></span> -> <span data-i18n="bg_all_tabs"></span>
-      </label>
-      <input type="checkbox" id="reload.all.discarded">
-      <label for="reload.all.discarded">
-        <span data-i18n="bg_reload_tabs"></span> -> <span data-i18n="bg_reload_all_discarded"></span>
-      </label>
-      <input type="checkbox" id="reload.window">
-      <label for="reload.window">
-        <span data-i18n="bg_reload_tabs"></span> -> <span data-i18n="bg_reload_window"></span>
-      </label>
-      <input type="checkbox" id="reload.window.discarded">
-      <label for="reload.window.discarded">
-        <span data-i18n="bg_reload_tabs"></span> -> <span data-i18n="bg_reload_window_discarded"></span>
-      </label>
-      <input type="checkbox" id="reload.tabs.left">
-      <label for="reload.tabs.left">
-        <span data-i18n="bg_reload_tabs"></span> -> <span data-i18n="bg_reload_tabs_left"></span>
-      </label>
-      <input type="checkbox" id="reload.tabs.right">
-      <label for="reload.tabs.right">
-        <span data-i18n="bg_reload_tabs"></span> -> <span data-i18n="bg_reload_tabs_right"></span>
-      </label>
-      <input type="checkbox" id="no.reload">
-      <label for="no.reload">
-        <span data-i18n="bg_stop"></span> -> <span data-i18n="bg_no_reload"></span>
-      </label>
-      <input type="checkbox" id="stop.all">
-      <label for="stop.all">
-        <span data-i18n="bg_stop"></span> -> <span data-i18n="bg_all_tabs"></span>
-      </label>
+    <div class="footer-section">
+      <button id="support" title="Support Development" data-i18n="options_support"></button>
+      <button id="save" data-i18n="options_save"></button>
     </div>
-  </div>
-  <div>
-    <h1 data-i18n="options_custom_jobs"></h1> (<span id="example" data-i18n="options_sample"></span>, <span id="keywords" data-i18n="options_keywords"></span>, <span id="events" data-i18n="options_events"></span>, <span id="desc-1" data-i18n="options_desc"></span>)
-  </div>
-  <div class="desc" style="margin-top: 0">
-    <span data-i18n="options_custom_jobs_desc"></span>
-    <a data-href="faq11" target="_blank" data-i18n="options_more"></a>
-  </div>
-  <textarea rows="6" id="json"></textarea>
-  <div for="desc-1" class="desc hide" style="margin: 5px 0">
-    <span data-i18n="options_json_desc"></span>
-  </div>
-  <div class="grid-1 top">
-    <input type="checkbox" id="dynamic.json">
-    <label for="dynamic.json"><span data-i18n="options_dynamic_json"></span> (<span id="desc-2" data-i18n="options_desc"></span>)</label>
-  </div>
-  <div for="desc-2" class="desc hide"  style="margin-top: 5px" data-i18n="options_dynamic_json_desc"></div>
-  <div><h1 data-i18n="options_policy"></h1></div>
-  <div class="desc" style="margin-top: 0">
-    <span data-i18n="options_policy_desc"></span>
-    <a data-href="faq14" target="_blank" data-i18n="options_more"></a>
-  </div>
-  <textarea rows="6" id="policy"></textarea>
-  <h1 data-i18n="options_misc"></h1>
-  <div class="grid-1">
-    <span></span>
-    <div>
-      <label for="startup-restore-delay" data-i18n="options_startup_restore_delay"></label>
-      <input type="number" id="startup-restore-delay">
-      (<a data-href="faq33" target="_blank" data-i18n="options_help"></a>)
-    </div>
-    <input type="checkbox" id="removed.jobs.enabled">
-    <label for="removed.jobs.enabled" data-i18n="options_reassign"></label>
-    <input type="checkbox" id="faqs">
-    <label for="faqs" data-i18n="options_faqs"></label>
-  </div>
-  <div>
-    <h1 data-i18n="options_tools"></h1> (<span id="desc-4" data-i18n="options_desc"></span>)
-  </div>
-  <div for="desc-4" class="desc hide" style="margin-bottom: 10px">
-    <span data-i18n="options_export_desc"></span>
-    <br>
-    <span data-i18n="options_import_desc"></span>
-    <br>
-    <span data-i18n="options_reset_desc"></span>
-  </div>
-  <div class="top">
-    <button id="export" data-i18n="options_export"></button>
-    <button id="import" data-i18n="options_import"></button> - <button id="reset" data-i18n="options_reset"></button> - <button id="permission" data-i18n="options_permission"></button>
-  </div>
-  <div class="top">
-    <button id="opv" data-i18n="options_instruction"></button>
-    <button id="ofq" data-i18n="options_ofq"></button>
-    <button id="support" title="Support Development" data-i18n="options_support"></button> - <button id="save" data-i18n="options_save"></button>
     <span id="info"></span>
-  </div>
+  </footer>
 
   <script src="/defaults.js"></script>
   <script src="/api.js"></script>
